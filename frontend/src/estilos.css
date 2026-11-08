@@ -1,0 +1,18 @@
+/*
+ * frontend/src/estilos.css — RESPONSABLE: Persona C (Frontend)
+ * Estilos mínimos para que se vea ordenado. Persona C decide el diseño final.
+ * REGLA: colores y tipografía como variables aquí arriba; no repartirlos por los componentes.
+ * PENDIENTE: [ ] Definir paleta y tipografía propias  [ ] Revisar que se vea bien en celular
+ */
+:root { --texto: #1c2b24; --fondo: #f6f8f7; --acento: #1f6b45; --borde: #cdd8d2; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, sans-serif; color: var(--texto); background: var(--fondo); }
+nav { display: flex; gap: 1rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--borde); align-items: center; }
+nav .espacio { flex: 1; }
+main { max-width: 960px; margin: 0 auto; padding: 1rem; }
+label { display: block; margin: 0.5rem 0; }
+select, input, textarea, button { font: inherit; padding: 0.5rem; }
+button { background: var(--acento); color: #fff; border: 0; border-radius: 6px; cursor: pointer; }
+.error { color: #a02020; }
+.aviso { padding: 0.5rem; border: 1px solid var(--borde); border-radius: 6px; background: #fff; }
+.mapa { height: 360px; margin: 1rem 0; border-radius: 8px; }

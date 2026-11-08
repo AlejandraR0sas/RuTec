@@ -1,0 +1,4 @@
+{
+  "_instrucciones": "Persona C: llena lat/lng de cada estación usando el ID de prolog/conocimiento.pl. Ejemplo de formato abajo. Las claves que empiezan con _ se ignoran.",
+  "_ejemplo": { "id_de_estacion": { "lat": 0, "lng": 0 } }
+}
