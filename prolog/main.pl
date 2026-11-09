@@ -15,7 +15,6 @@
  *  - [ ] Probar con `swipl` instalado y ajustar si la lista de argumentos cambia según la versión.
  */
 
-:- set_stream(user_output, encoding(utf8)).
 :- consult(conocimiento).
 :- consult(reglas).
 :- consult(salida_json).
