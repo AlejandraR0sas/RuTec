@@ -14,7 +14,10 @@
  * PENDIENTE:
  *  - [ ] Probar con `swipl` instalado y ajustar si la lista de argumentos cambia según la versión.
  */
-
+:- (   stream_property(user_output, tty(true))
+   ->  true
+   ;   set_stream(user_output, encoding(utf8))
+   ).
 :- consult(conocimiento).
 :- consult(reglas).
 :- consult(salida_json).
