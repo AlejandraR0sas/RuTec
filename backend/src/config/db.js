@@ -1,6 +1,6 @@
 /**
  * ARCHIVO: backend/src/config/db.js
- * RESPONSABLE: Persona B (Backend)
+ * RESPONSABLE: Antulio (F2)
  * QUÉ HACE: Conexión a MongoDB con Mongoose.
  * REGLAS: la URI sale SIEMPRE de process.env.MONGO_URI, nunca escrita en el código.
  */

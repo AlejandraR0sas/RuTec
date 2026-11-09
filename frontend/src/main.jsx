@@ -1,4 +1,4 @@
-/** frontend/src/main.jsx — RESPONSABLE: Persona C. Punto de entrada de React. */
+/** frontend/src/main.jsx — RESPONSABLE: COMPARTIDO (los tres). Punto de entrada de React. */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';

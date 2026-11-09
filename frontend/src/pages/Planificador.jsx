@@ -1,6 +1,6 @@
 /**
  * ARCHIVO: frontend/src/pages/Planificador.jsx
- * RESPONSABLE: Persona C (Frontend)
+ * RESPONSABLE: Ale (F1) (los pendientes de ubicación, Nominatim y clima los hace Osiel (F3))
  * QUÉ HACE: Pantalla principal. El usuario elige origen y destino, pide la recomendación y ve el resultado en mapa.
  *
  * REGLAS:

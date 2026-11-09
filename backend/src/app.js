@@ -1,6 +1,6 @@
 /**
  * ARCHIVO: backend/src/app.js
- * RESPONSABLE: Persona B (Backend)
+ * RESPONSABLE: Antulio (F2)
  * QUÉ HACE: Configura Express: JSON, sesiones (MongoDB), rutas y manejo de errores.
  *
  * REGLAS:

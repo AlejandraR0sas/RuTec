@@ -1,7 +1,7 @@
 :- encoding(utf8).
 /**
  * ARCHIVO: prolog/main.pl
- * RESPONSABLE: Persona A (IA / Prolog)
+ * RESPONSABLE: Ale (F1)
  * QUÉ HACE: Punto de entrada. El backend lo ejecuta así:
  *     swipl -q -s prolog/main.pl -g main -t halt -- recomendar ORIGEN DESTINO HORA MIN DIA
  *     swipl -q -s prolog/main.pl -g main -t halt -- lineas

@@ -1,6 +1,6 @@
 /**
  * ARCHIVO: frontend/src/pages/Login.jsx
- * RESPONSABLE: Persona C (Frontend)
+ * RESPONSABLE: Antulio (F2)
  * QUÉ HACE: Iniciar sesión o crear cuenta (un solo formulario con dos modos).
  * REGLAS: errores del servidor se muestran tal cual (ya vienen legibles). Contraseña mínimo 8 caracteres.
  * PENDIENTE: [ ] Mejorar diseño y validaciones en el formulario

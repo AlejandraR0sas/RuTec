@@ -1,6 +1,6 @@
 /**
  * ARCHIVO: frontend/src/api/cliente.js
- * RESPONSABLE: Persona C (Frontend)
+ * RESPONSABLE: COMPARTIDO: cada quien edita solo su sección (auth → Antulio, rutas → Ale y Osiel, solicitudes/admin → Antulio)
  * QUÉ HACE: ÚNICO lugar donde se llama a la API propia. Los componentes usan estas funciones, nunca fetch directo.
  * REGLAS:
  *  - Siempre credentials: 'include' (para que viaje la cookie de sesión).

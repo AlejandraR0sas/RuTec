@@ -1,6 +1,6 @@
 /**
  * ARCHIVO: backend/src/routes/index.js
- * RESPONSABLE: Persona B (Backend)
+ * RESPONSABLE: COMPARTIDO (los tres)
  * QUÉ HACE: Une todas las rutas bajo /api. Cada ruta nueva debe estar documentada en docs/API.md.
  */
 const router = require('express').Router();

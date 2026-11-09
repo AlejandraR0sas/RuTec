@@ -1,6 +1,6 @@
 /**
  * ARCHIVO: frontend/src/services/apisPublicas.js
- * RESPONSABLE: Persona C (Frontend)
+ * RESPONSABLE: Osiel (F3)
  * QUÉ HACE: Consumo de APIs PÚBLICAS (no son nuestro backend). ← parte de la materia Interacción con Servicios Web.
  * REGLAS:
  *  - Nominatim (OpenStreetMap): máximo 1 petición por segundo; buscar solo al presionar un botón, no en cada tecla.

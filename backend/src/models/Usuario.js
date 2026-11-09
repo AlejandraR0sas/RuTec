@@ -1,6 +1,6 @@
 /**
  * ARCHIVO: backend/src/models/Usuario.js
- * RESPONSABLE: Persona B (Backend)
+ * RESPONSABLE: Antulio (F2)
  * QUÉ HACE: Modelo de usuario (estudiante o admin).
  * REGLAS:
  *  - Campos en snake_case. Nunca guardar la contraseña en texto plano: solo password_hash (bcrypt).

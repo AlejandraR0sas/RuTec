@@ -1,4 +1,4 @@
-/** backend/src/routes/authRoutes.js — RESPONSABLE: Persona B. Rutas de autenticación (ver docs/API.md). */
+/** backend/src/routes/authRoutes.js — RESPONSABLE: Antulio (F2). Rutas de autenticación (ver docs/API.md). */
 const router = require('express').Router();
 const c = require('../controllers/authController');
 const { requiereLogin } = require('../middlewares/auth');

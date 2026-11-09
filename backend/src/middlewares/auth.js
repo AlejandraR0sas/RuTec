@@ -1,6 +1,6 @@
 /**
  * ARCHIVO: backend/src/middlewares/auth.js
- * RESPONSABLE: Persona B (Backend)
+ * RESPONSABLE: Antulio (F2)
  * QUÉ HACE: Protege rutas según la sesión.
  * REGLAS:
  *  - requiereLogin → 401 si no hay sesión.

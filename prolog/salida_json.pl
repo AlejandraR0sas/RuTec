@@ -1,13 +1,13 @@
 :- encoding(utf8).
 /**
  * ARCHIVO: prolog/salida_json.pl
- * RESPONSABLE: Persona A (IA / Prolog)   ← OJO: B depende de este formato
+ * RESPONSABLE: COMPARTIDO: recomendar_json → Ale (F1); lineas_json → Osiel (F3)
  * QUÉ HACE: Convierte los resultados de reglas.pl a JSON para que el backend los lea.
  *
  * REGLAS:
  *  - El JSON de salida debe coincidir EXACTAMENTE con docs/API.md (sección "Recomendación" y "Líneas").
  *  - Imprimir SOLO el JSON en la salida estándar (nada de mensajes de depuración con format/print).
- *  - Si cambias una clave del JSON: actualizar docs/API.md y avisar a B y C.
+ *  - Si cambias una clave del JSON: actualizar docs/API.md y avisar al equipo.
  *
  * PENDIENTE:
  *  - [ ] Revisar que los acentos salgan bien en el JSON.

@@ -1,6 +1,6 @@
 /**
  * ARCHIVO: frontend/src/context/AuthContext.jsx
- * RESPONSABLE: Persona C (Frontend)
+ * RESPONSABLE: Antulio (F2)
  * QUÉ HACE: Guarda quién está logueado (la sesión vive en el servidor; aquí solo se refleja).
  * REGLAS: al cargar la app se pregunta a /api/auth/yo. No guardar contraseñas ni tokens en el navegador.
  */

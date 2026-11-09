@@ -1,6 +1,6 @@
 /**
  * ARCHIVO: frontend/src/pages/Solicitud.jsx
- * RESPONSABLE: Persona C (Frontend)
+ * RESPONSABLE: Antulio (F2)
  * QUÉ HACE: Formulario para solicitar una ruta que no existe. Llega con origen/destino ya llenos desde el Planificador.
  * REGLAS:
  *  - Solo usuarios logueados (si no, mandar a /login).

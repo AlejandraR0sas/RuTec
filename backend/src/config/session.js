@@ -1,6 +1,6 @@
 /**
  * ARCHIVO: backend/src/config/session.js
- * RESPONSABLE: Persona B (Backend)
+ * RESPONSABLE: Antulio (F2)
  * QUÉ HACE: Sesiones con express-session guardadas en MongoDB (connect-mongo).
  *           ← REQUISITO DE LA MAESTRA.
  *

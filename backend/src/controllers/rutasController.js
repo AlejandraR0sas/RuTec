@@ -1,6 +1,6 @@
 /**
  * ARCHIVO: backend/src/controllers/rutasController.js
- * RESPONSABLE: Persona B (Backend)
+ * RESPONSABLE: COMPARTIDO: recomendacion → Ale (F1); lineas y coordenadas → Osiel (F3)
  * QUÉ HACE: Líneas, coordenadas y recomendación de ruta (le pregunta al sistema experto en Prolog).
  * REGLAS:
  *  - VALIDAR origen/destino con /^[a-z][a-z0-9_]*$/ antes de pasarlos a Prolog.

@@ -1,7 +1,7 @@
 :- encoding(utf8).
 /**
  * ARCHIVO: prolog/conocimiento.pl
- * RESPONSABLE: Persona A (IA / Prolog)
+ * RESPONSABLE: Osiel (F3)
  * QUÉ HACE: Base de conocimiento = HECHOS (líneas, estaciones, frecuencias, horarios).
  *           Aquí NO va lógica; la lógica va en reglas.pl.
  *
@@ -74,7 +74,7 @@ estacion(l1_a, 25, eje_126,         'Eje 126').
 estacion(l1_a, 26, cetram,          'CETRAM').
 
 % L1-B: CETRAM → ITSSLPC (NO está en el mapa oficial; levantar en campo)
-% TODO(Persona A + equipo): insertar las paradas intermedias entre CETRAM y el Tec
+% TODO(Osiel + equipo): insertar las paradas intermedias entre CETRAM y el Tec
 %       y recorrer los números de orden.
 estacion(l1_b,  1, cetram,          'CETRAM').
 estacion(l1_b,  2, itsslpc,         'ITSSLPC (Tec Superior Capital)').

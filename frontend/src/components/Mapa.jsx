@@ -1,6 +1,6 @@
 /**
  * ARCHIVO: frontend/src/components/Mapa.jsx
- * RESPONSABLE: Persona C (Frontend)
+ * RESPONSABLE: Osiel (F3)
  * QUÉ HACE: Mapa con Leaflet + OpenStreetMap, centrado en San Luis Potosí.
  * REGLAS:
  *  - Los marcadores usan las coordenadas de /api/coordenadas (clave = ID de estación).

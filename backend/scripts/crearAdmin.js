@@ -1,6 +1,6 @@
 /**
  * ARCHIVO: backend/scripts/crearAdmin.js
- * RESPONSABLE: Persona B (Backend)
+ * RESPONSABLE: Antulio (F2)
  * QUÉ HACE: Crea (o actualiza) el usuario administrador con los datos de .env (ADMIN_*).
  * USO: npm run seed:admin
  */

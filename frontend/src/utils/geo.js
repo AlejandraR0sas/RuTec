@@ -1,6 +1,6 @@
 /**
  * ARCHIVO: frontend/src/utils/geo.js
- * RESPONSABLE: Persona C (Frontend)
+ * RESPONSABLE: Osiel (F3)
  * QUÉ HACE: Distancia entre dos puntos y estación más cercana (para "usar mi ubicación").
  */
 export function distanciaKm(a, b) {

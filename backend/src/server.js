@@ -1,6 +1,6 @@
 /**
  * ARCHIVO: backend/src/server.js
- * RESPONSABLE: Persona B (Backend)
+ * RESPONSABLE: Antulio (F2)
  * QUÉ HACE: Arranca el servidor: carga .env, conecta a MongoDB y levanta Express.
  *
  * REGLAS:

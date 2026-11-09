@@ -1,6 +1,6 @@
 /**
  * ARCHIVO: backend/src/models/RutaAprobada.js
- * RESPONSABLE: Persona B (Backend)  — Persona A debe conocer el formato
+ * RESPONSABLE: Antulio (F2)
  * QUÉ HACE: Línea nueva creada por el admin al aprobar solicitudes.
  *           Se traduce a hechos de Prolog en prolog/rutas_aprobadas.pl.
  * REGLAS:

@@ -1,6 +1,6 @@
 /**
  * ARCHIVO: frontend/src/pages/Admin.jsx
- * RESPONSABLE: Persona C (Frontend), con Persona B para el formato de aprobación
+ * RESPONSABLE: Antulio (F2)
  * QUÉ HACE: Panel del administrador. Lista solicitudes agrupadas por trayecto con su contador.
  * REGLAS:
  *  - Resaltar las que traen sugerida:true (ya llegaron al umbral).

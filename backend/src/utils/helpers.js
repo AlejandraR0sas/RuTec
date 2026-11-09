@@ -1,6 +1,6 @@
 /**
  * ARCHIVO: backend/src/utils/helpers.js
- * RESPONSABLE: Persona B (Backend)
+ * RESPONSABLE: COMPARTIDO (los tres)
  * QUÉ HACE: Funciones pequeñas compartidas (texto y fecha/hora de México).
  */
 const DIAS = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes', 'sabado', 'domingo'];

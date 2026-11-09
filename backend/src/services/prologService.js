@@ -1,6 +1,6 @@
 /**
  * ARCHIVO: backend/src/services/prologService.js
- * RESPONSABLE: Persona B (Backend) — acordar el formato de salida con Persona A
+ * RESPONSABLE: COMPARTIDO: recomendar → Ale (F1); regenerarRutasAprobadas → Antulio (F2); lineas → Osiel (F3)
  * QUÉ HACE: Puente Node ↔ Prolog. Ejecuta `swipl` con argumentos y lee el JSON que imprime.
  *           También regenera prolog/rutas_aprobadas.pl cuando el admin aprueba una ruta.
  *

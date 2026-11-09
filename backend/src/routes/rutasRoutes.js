@@ -1,4 +1,4 @@
-/** backend/src/routes/rutasRoutes.js — RESPONSABLE: Persona B. Líneas, coordenadas y recomendación (ver docs/API.md). */
+/** backend/src/routes/rutasRoutes.js — RESPONSABLE: COMPARTIDO: Ale (F1) y Osiel (F3). Líneas, coordenadas y recomendación (ver docs/API.md). */
 const router = require('express').Router();
 const c = require('../controllers/rutasController');
 

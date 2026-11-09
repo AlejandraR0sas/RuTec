@@ -1,13 +1,13 @@
 :- encoding(utf8).
 /**
  * ARCHIVO: prolog/reglas.pl
- * RESPONSABLE: Persona A (IA / Prolog)
+ * RESPONSABLE: COMPARTIDO: rutas y tiempo → Ale (F1); siguiente camión y ocupación → Osiel (F3)
  * QUÉ HACE: Reglas del sistema experto: encontrar ruta con transbordos, estimar tiempo,
  *           calcular el siguiente camión y estimar la ocupación.
  *
  * REGLAS:
  *  - Aquí NO se escriben hechos de líneas/estaciones (eso va en conocimiento.pl).
- *  - No cambiar el nombre ni los argumentos de los predicados públicos sin avisar a B:
+ *  - No cambiar el nombre ni los argumentos de los predicados públicos sin avisar al equipo:
  *      mejor_ruta/3, tiempo_viaje/2, siguiente_camion/4, ocupacion/3, nombre_estacion/2, nombre_linea/2
  *  - Los parámetros de simulación (minutos por parada, horas pico) se ajustan SOLO aquí arriba.
  *  - Cada regla nueva lleva una prueba en pruebas.pl.

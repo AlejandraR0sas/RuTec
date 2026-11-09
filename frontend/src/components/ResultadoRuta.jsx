@@ -1,6 +1,6 @@
 /**
  * ARCHIVO: frontend/src/components/ResultadoRuta.jsx
- * RESPONSABLE: Persona C (Frontend)
+ * RESPONSABLE: Ale (F1)
  * QUÉ HACE: Muestra la respuesta de /api/recomendacion (formato en docs/API.md).
  * REGLAS: no calcular nada aquí; todo viene del sistema experto. Solo presentar.
  * PENDIENTE: [ ] Mejorar presentación (pasos, íconos de línea, aviso visual de ocupación alta)

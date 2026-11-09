@@ -1,7 +1,7 @@
 :- encoding(utf8).
 /**
  * ARCHIVO: prolog/pruebas.pl
- * RESPONSABLE: Persona A (IA / Prolog)
+ * RESPONSABLE: COMPARTIDO: pruebas de rutas → Ale (F1); tiempos y ocupación → Osiel (F3); rutas aprobadas → Antulio (F2)
  * QUÉ HACE: Pruebas unitarias del sistema experto.
  * CORRER:   swipl -g run_tests -t halt prolog/pruebas.pl
  *

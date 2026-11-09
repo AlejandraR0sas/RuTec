@@ -1,4 +1,4 @@
-/** backend/src/routes/solicitudesRoutes.js — RESPONSABLE: Persona B. Solicitudes (usuario) y administración (admin). */
+/** backend/src/routes/solicitudesRoutes.js — RESPONSABLE: Antulio (F2). Solicitudes (usuario) y administración (admin). */
 const router = require('express').Router();
 const c = require('../controllers/solicitudesController');
 const { requiereLogin, requiereAdmin } = require('../middlewares/auth');

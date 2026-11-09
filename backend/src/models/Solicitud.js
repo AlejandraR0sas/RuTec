@@ -1,6 +1,6 @@
 /**
  * ARCHIVO: backend/src/models/Solicitud.js
- * RESPONSABLE: Persona B (Backend)
+ * RESPONSABLE: Antulio (F2)
  * QUÉ HACE: Solicitud de una ruta que no existe.
  * REGLAS:
  *  - `clave` = origen y destino normalizados (utils/helpers.js → claveTrayecto). Sirve para AGRUPAR solicitudes iguales.

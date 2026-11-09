@@ -1,6 +1,6 @@
 /**
  * ARCHIVO: backend/src/controllers/authController.js
- * RESPONSABLE: Persona B (Backend)
+ * RESPONSABLE: Antulio (F2)
  * QUÉ HACE: Registro, login, logout y "quién soy" usando sesiones (MongoDB).
  * REGLAS:
  *  - El registro SIEMPRE crea rol 'estudiante' (ignorar cualquier `rol` que venga en el body).

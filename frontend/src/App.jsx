@@ -1,6 +1,6 @@
 /**
  * ARCHIVO: frontend/src/App.jsx
- * RESPONSABLE: Persona C (Frontend)
+ * RESPONSABLE: COMPARTIDO: cada quien agrega solo su ruta y su enlace
  * QUÉ HACE: Navegación y rutas de la app (React Router).
  * REGLAS:
  *  - /admin solo se muestra a usuarios con rol 'admin' (el back igual valida; esto es solo para la interfaz).

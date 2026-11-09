@@ -43,24 +43,55 @@ Usuario ──► React (Vite) ──► API Express (MVC) ──► swipl (Prol
 
 **Flujo de solicitudes:** si Prolog responde `sin_ruta`, el usuario (logueado) puede solicitarla → se guarda en MongoDB → el admin las ve agrupadas por trayecto con contador → al aprobar, se crea una línea nueva en Mongo y el backend regenera `prolog/rutas_aprobadas.pl` → desde ese momento Prolog la usa.
 
-## 6. Equipo y responsabilidades
+## 6. Equipo y reparto del trabajo
 
-| Rol | Persona | Carpeta dueña | Materia |
-|---|---|---|---|
-| **A – IA / Prolog** | _(escribir nombre)_ | `prolog/` | Inteligencia Artificial |
-| **B – Backend** | _(escribir nombre)_ | `backend/` | Infraestructura de Servicios Web |
-| **C – Frontend** | _(escribir nombre)_ | `frontend/` | Interacción con Servicios Web |
+Los tres participamos en **las tres materias**. El trabajo se divide por **funcionalidad completa** (Prolog + backend + front), no por capa, para que todos entiendan todo el sistema.
 
-Cada quien es dueño de su carpeta. Si necesitas cambiar algo en la carpeta de otro, **avísale o abre un Pull Request**; no lo edites directo.
+| Funcionalidad | Dueño/a | Prolog (IA) | Backend (Infraestructura) | Front (Interacción) |
+|---|---|---|---|---|
+| **F1. Recomendar ruta** | **Ale** | Reglas de ruta, transbordos y tiempo (`reglas.pl`, `main.pl`, `recomendar_json`) | `POST /api/recomendacion` y el puente con Prolog (`prologService.recomendar`) | `Planificador` y `ResultadoRuta` |
+| **F2. Cuentas y solicitudes** | **Antulio** | Generar y cargar rutas aprobadas (`rutas_aprobadas.pl`) y sus pruebas | Sesiones en MongoDB, login con roles, solicitudes y aprobación del admin | `Login`, `Solicitud` y `Admin` |
+| **F3. Datos, horarios y mapa** | **Osiel** | Completar `conocimiento.pl` (L1-B), `siguiente_camion` y `ocupacion` | `GET /api/lineas` y `GET /api/coordenadas` | `Mapa`, geolocalización, Nominatim, clima y estación más cercana |
+
+### Reglas del reparto
+
+1. Cada funcionalidad tiene un **dueño/a**, que decide cómo se hace y cuida que quede terminada. Pero se trabaja en las **tres capas**.
+2. **Los Pull Requests los revisa otra persona**, así cada quien aprende cómo funciona la parte de los demás.
+3. **Archivos compartidos** (`salida_json.pl`, `reglas.pl`, `prologService.js`, `rutasController.js`, `routes/index.js`, `App.jsx`, `api/cliente.js`, `estilos.css`): cada quien edita **solo su sección**, con cambios pequeños y frecuentes. El encabezado de cada archivo dice quién es dueño de qué parte.
+4. **Orden:** F3 arranca primero (completar L1-B y coordenadas), porque F1 y F2 necesitan esos datos. Mientras tanto F1 y F2 avanzan con los datos que ya hay.
+5. **Rotación a mitad del proyecto:** cada quien explica su funcionalidad a los otros dos. Es ensayo para la presentación: los tres deben poder explicar las tres materias.
+
+### Primeros pasos por funcionalidad
+
+**F1 – Ale**
+- [ ] Correr las pruebas de rutas en Prolog y corregir lo que falle
+- [ ] Probar `recomendar_json` desde la terminal con `swipl`
+- [ ] Probar `POST /api/recomendacion` (Postman o curl) con Prolog conectado
+- [ ] Mostrar el resultado real en `Planificador`
+- [ ] Caso sin ruta → botón "Solicitar esta ruta"
+
+**F2 – Antulio**
+- [ ] Levantar MongoDB y el backend, correr `npm run seed:admin`
+- [ ] Probar registro, login y logout (ver la colección `sesiones` en MongoDB)
+- [ ] Solicitudes: crear, listar agrupadas por trayecto y rechazar
+- [ ] Aprobar: formulario en `Admin` + `regenerarRutasAprobadas`; comprobar que Prolog usa la línea nueva
+- [ ] Pantallas `Login`, `Solicitud` y `Admin`
+
+**F3 – Osiel**
+- [ ] Levantar L1-B en campo y completar `conocimiento.pl`
+- [ ] Llenar `backend/src/data/coordenadas.json`
+- [ ] Mapa con marcadores y dibujar el recorrido
+- [ ] Ubicación → estación más cercana, Nominatim y clima
+- [ ] Ajustar frecuencias y horas pico con observación real + pruebas
 
 ## 7. Requisitos de la maestra (checklist)
 
-- [ ] Manejo de **sesiones con MongoDB** (`express-session` + `connect-mongo`) → Persona B
-- [ ] **Framework de backend** (Express) → Persona B
-- [ ] **Framework de frontend** (React) → Persona C
-- [ ] Sistema experto en Prolog con base de conocimiento → Persona A
-- [ ] API REST con métodos HTTP (GET, POST, PUT) → Persona B
-- [ ] Consumo de APIs públicas → Persona C
+- [ ] Manejo de **sesiones con MongoDB** (`express-session` + `connect-mongo`) → Antulio (F2)
+- [ ] **Framework de backend** (Express) → los tres
+- [ ] **Framework de frontend** (React) → los tres
+- [ ] Sistema experto en Prolog con base de conocimiento → Ale (F1) y Osiel (F3)
+- [ ] API REST con métodos HTTP (GET, POST, PUT) → los tres
+- [ ] Consumo de APIs públicas → Osiel (F3)
 - [ ] Servicio en la nube (AWS u otro) → decidirlo entre los tres
 
 ## 8. Reglas generales (aplican a los tres)
@@ -77,7 +108,7 @@ Cada quien es dueño de su carpeta. Si necesitas cambiar algo en la carpeta de o
 
 ### Git
 - Rama `main` = lo que funciona. Nadie hace push directo a `main` salvo cambios de README.
-- Cada quien trabaja en su rama: `a/prolog-reglas`, `b/auth-sesiones`, `c/mapa`.
+- Cada quien trabaja en su rama: `ale/recomendacion`, `antulio/sesiones`, `osiel/mapa`.
 - Commits cortos y en español, en infinitivo: `Agregar regla de ocupación`.
 - Pull Request con al menos una revisión de otro compañero antes de unir a `main`.
 - **Nunca** subir `.env` ni contraseñas. Usen `.env.example`.
@@ -111,8 +142,8 @@ swipl -g run_tests -t halt prolog/pruebas.pl
 ## 10. Estado del cascarón (honesto)
 
 - El backend pasó revisión de sintaxis, pero **no se ha corrido contra MongoDB ni contra Prolog**.
-- Los archivos de Prolog **no se han ejecutado** (no había `swipl` disponible al generarlos). Lo primero que debe hacer Persona A: correr `pruebas.pl` y corregir lo que falle.
-- El frontend **no se ha levantado** todavía; lo primero de Persona C: `npm install && npm run dev` y arreglar lo que salga.
+- Los archivos de Prolog **no se han ejecutado** (no había `swipl` disponible al generarlos). Lo primero: que Ale y Osiel corran `pruebas.pl` y corrijan lo que falle.
+- El frontend **no se ha levantado** todavía; lo primero: que cualquiera corra `npm install && npm run dev` y arregle lo que salga.
 - Las coordenadas de las estaciones están vacías (`backend/src/data/coordenadas.json`).
 
 ## 11. Datos y fuentes

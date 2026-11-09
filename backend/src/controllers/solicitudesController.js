@@ -1,6 +1,6 @@
 /**
  * ARCHIVO: backend/src/controllers/solicitudesController.js
- * RESPONSABLE: Persona B (Backend)
+ * RESPONSABLE: Antulio (F2)
  * QUÉ HACE: Solicitudes de rutas nuevas (usuarios) y su gestión (administrador).
  * REGLAS:
  *  - Crear solicitud: solo usuarios logueados; 1 por usuario por trayecto (409 si repite).
