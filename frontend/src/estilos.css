@@ -250,3 +250,18 @@ button { background: var(--acento); color: #fff; border: 0; border-radius: 6px; 
 .resultado__simulado span {
   color: var(--res-texto-secundario);
 }
+.planificador__invertir {
+  display: block;
+  width: 100%;
+  margin: 0.25rem 0 0.75rem;
+  border: 1px solid var(--acento);
+  background: transparent;
+  color: var(--acento);
+  font-weight: 650;
+}
+
+.planificador__invertir:hover,
+.planificador__invertir:focus-visible {
+  background: var(--acento);
+  color: #fff;
+}

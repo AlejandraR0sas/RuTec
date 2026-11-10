@@ -72,6 +72,17 @@ export default function Planificador() {
             {estaciones.map((s) => <option key={s.id} value={s.id}>{s.nombre}</option>)}
           </select>
         </label>
+        <button
+          type="button"
+          className="planificador__invertir"
+          onClick={() => {
+            setOrigen(destino);
+            setDestino(origen);
+            setResultado(null);
+          }}
+        >
+          Invertir (regreso a casa)
+        </button>
         <button type="submit">Buscar ruta</button>
       </form>
 
