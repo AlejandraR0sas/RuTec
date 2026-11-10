@@ -56,11 +56,25 @@ export default function ResultadoRuta({ resultado }) {
           </div>
         ))}
       </div>
-      <p>
-        {siguiente_camion
-          ? `El siguiente camión pasa en ${siguiente_camion.en_minutos} min (cada ${siguiente_camion.frecuencia_min} min).`
-          : 'Esta línea no está en servicio a esta hora.'}
-      </p>
+      <div className="resultado__camion">
+        <p className="resultado__camion-titulo">Siguiente camión</p>
+        {siguiente_camion === null ? (
+          <p className="resultado__camion-mensaje">
+            Esta línea no está en servicio a esta hora.
+          </p>
+        ) : (
+          <>
+            <p className="resultado__camion-mensaje">
+              {siguiente_camion.en_minutos === 0
+                ? 'Está pasando ahora'
+                : `Pasa en ${siguiente_camion.en_minutos} min`}
+            </p>
+            <p className="resultado__frecuencia">
+              Pasa cada {siguiente_camion.frecuencia_min} min.
+            </p>
+          </>
+        )}
+      </div>
       <p>Ocupación estimada: {ocupacion}</p>
       {simulado && <small>Horarios y ocupación simulados: es un prototipo.</small>}
     </section>
