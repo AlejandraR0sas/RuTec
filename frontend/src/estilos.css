@@ -24,6 +24,9 @@ button { background: var(--acento); color: #fff; border: 0; border-radius: 6px; 
   --res-texto: #f5f8f2;
   --res-borde: rgba(245, 248, 242, 0.2);
   --res-texto-secundario: #d6e2d8;
+  --res-ocupacion-alta: #ffb86b;
+  --res-ocupacion-media: #f2d36b;
+  --res-ocupacion-baja: #8cdda5;
   padding: 1rem;
   border: 1px solid var(--res-borde);
   border-radius: 1.25rem;
@@ -176,6 +179,56 @@ button { background: var(--acento); color: #fff; border: 0; border-radius: 6px; 
 
 .resultado__frecuencia {
   margin: 0.35rem 0 0;
+  color: var(--res-texto-secundario);
+  font-size: 1rem;
+}
+.resultado__ocupacion {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--res-borde);
+  border-left-width: 0.35rem;
+  border-radius: 1rem;
+  background: var(--res-panel);
+}
+
+.resultado__ocupacion--alta {
+  border-left-color: var(--res-ocupacion-alta);
+}
+
+.resultado__ocupacion--media {
+  border-left-color: var(--res-ocupacion-media);
+}
+
+.resultado__ocupacion--baja {
+  border-left-color: var(--res-ocupacion-baja);
+}
+
+.resultado__ocupacion-titulo {
+  margin: 0 0 0.35rem;
+  color: var(--res-texto-secundario);
+  font-size: 0.95rem;
+}
+
+.resultado__ocupacion-mensaje {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.resultado__ocupacion--alta .resultado__ocupacion-mensaje {
+  color: var(--res-ocupacion-alta);
+}
+
+.resultado__ocupacion--media .resultado__ocupacion-mensaje {
+  color: var(--res-ocupacion-media);
+}
+
+.resultado__ocupacion--baja .resultado__ocupacion-mensaje {
+  color: var(--res-ocupacion-baja);
+}
+
+.resultado__ocupacion-sugerencia {
+  margin: 0.6rem 0 0;
   color: var(--res-texto-secundario);
   font-size: 1rem;
 }

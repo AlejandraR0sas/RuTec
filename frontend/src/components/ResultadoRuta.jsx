@@ -75,7 +75,21 @@ export default function ResultadoRuta({ resultado }) {
           </>
         )}
       </div>
-      <p>Ocupación estimada: {ocupacion}</p>
+      <div className={`resultado__ocupacion resultado__ocupacion--${ocupacion}`}>
+        <p className="resultado__ocupacion-titulo">Ocupación estimada</p>
+        <p className="resultado__ocupacion-mensaje">
+          {ocupacion === 'alta'
+            ? 'Es probable que vaya lleno'
+            : ocupacion === 'media'
+              ? 'Ocupación media'
+              : 'Suele ir con espacio'}
+        </p>
+        {ocupacion === 'alta' && (
+          <p className="resultado__ocupacion-sugerencia">
+            Si puedes, considera salir unos minutos antes o después.
+          </p>
+        )}
+      </div>
       {simulado && <small>Horarios y ocupación simulados: es un prototipo.</small>}
     </section>
   );
