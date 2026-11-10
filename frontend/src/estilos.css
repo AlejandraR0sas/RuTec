@@ -232,3 +232,21 @@ button { background: var(--acento); color: #fff; border: 0; border-radius: 6px; 
   color: var(--res-texto-secundario);
   font-size: 1rem;
 }
+.resultado__simulado {
+  display: grid;
+  gap: 0.25rem;
+  margin-top: 1rem;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--res-acento);
+  border-radius: 0.9rem;
+  background: var(--res-panel);
+  font-size: 1rem;
+}
+
+.resultado__simulado strong {
+  color: var(--res-acento);
+}
+
+.resultado__simulado span {
+  color: var(--res-texto-secundario);
+}

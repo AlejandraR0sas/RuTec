@@ -90,7 +90,12 @@ export default function ResultadoRuta({ resultado }) {
           </p>
         )}
       </div>
-      {simulado && <small>Horarios y ocupación simulados: es un prototipo.</small>}
+      {simulado && (
+      <aside className="resultado__simulado">
+        <strong>Datos simulados</strong>
+        <span>Los horarios y la ocupación son aproximados; esto es un prototipo.</span>
+      </aside>
+    )}
     </section>
   );
 }
