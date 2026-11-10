@@ -16,3 +16,64 @@ button { background: var(--acento); color: #fff; border: 0; border-radius: 6px; 
 .error { color: #a02020; }
 .aviso { padding: 0.5rem; border: 1px solid var(--borde); border-radius: 6px; background: #fff; }
 .mapa { height: 360px; margin: 1rem 0; border-radius: 8px; }
+/* Resultado de ruta (F1 – Ale) */
+.resultado {
+  --res-fondo: #153d2d;
+  --res-panel: #204c39;
+  --res-acento: #c4ed62;
+  --res-texto: #f5f8f2;
+  --res-borde: rgba(245, 248, 242, 0.2);
+
+  padding: 1rem;
+  border: 1px solid var(--res-borde);
+  border-radius: 1.25rem;
+  background: var(--res-fondo);
+  color: var(--res-texto);
+}
+
+.resultado__resumen {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--res-borde);
+  border-radius: 1rem;
+  background: var(--res-panel);
+}
+
+.resultado__tiempo,
+.resultado__transbordos {
+  margin: 0;
+}
+
+.resultado__tiempo {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.resultado__tiempo strong {
+  color: var(--res-acento);
+  font-size: clamp(3rem, 14vw, 4rem);
+  line-height: 1;
+}
+
+.resultado__tiempo span {
+  font-size: 1.1rem;
+}
+
+.resultado__transbordos {
+  display: grid;
+  justify-items: end;
+  text-align: right;
+}
+
+.resultado__transbordos strong {
+  color: var(--res-acento);
+  font-size: 1.5rem;
+}
+
+.resultado__transbordos span {
+  font-size: 1rem;
+}

@@ -9,8 +9,18 @@ export default function ResultadoRuta({ resultado }) {
   if (!resultado.encontrada) return <p className="aviso">{resultado.mensaje}</p>;
   const { plan, transbordos, minutos_estimados, siguiente_camion, ocupacion, simulado } = resultado;
   return (
-    <section className="aviso">
+    <section className="resultado">
       <h2>Tu ruta</h2>
+      <div className="resultado__resumen">
+        <p className="resultado__tiempo">
+          <strong>{minutos_estimados}</strong>
+          <span>min</span>
+        </p>
+        <p className="resultado__transbordos">
+          <strong>{transbordos}</strong>
+          <span>{transbordos === 1 ? 'transbordo' : 'transbordos'}</span>
+        </p>
+      </div>
       <ol>
         {plan.map((p, i) => (
           <li key={i}>
@@ -18,9 +28,6 @@ export default function ResultadoRuta({ resultado }) {
           </li>
         ))}
       </ol>
-      <p>
-        {transbordos === 0 ? 'Sin transbordos' : `${transbordos} transbordo(s)`} · aprox. {minutos_estimados} min
-      </p>
       <p>
         {siguiente_camion
           ? `El siguiente camión pasa en ${siguiente_camion.en_minutos} min (cada ${siguiente_camion.frecuencia_min} min).`
