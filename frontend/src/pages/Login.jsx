@@ -37,7 +37,7 @@ export default function Login() {
         <label>Nombre <input value={nombre} onChange={(e) => setNombre(e.target.value)} required /></label>
       )}
       <label>Correo <input type="email" value={correo} onChange={(e) => setCorreo(e.target.value)} required /></label>
-      <label>Contraseña <input type="password" minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} required /></label>
+      <label>Contraseña <input type="password" minLength={modoRegistro ? 8 : undefined} value={password} onChange={(e) => setPassword(e.target.value)} required/></label>
       {error && <p className="error">{error}</p>}
       <button type="submit">{modoRegistro ? 'Crear cuenta' : 'Entrar'}</button>{' '}
       <button type="button" onClick={() => setModoRegistro(!modoRegistro)}>
