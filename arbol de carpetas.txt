@@ -1,0 +1,69 @@
+┣ 📂backend
+┃ ┣ 📂node_modules
+┃ ┣ 📂scripts
+┃ ┃ ┗ 📜crearAdmin.js
+┃ ┣ 📂src
+┃ ┃ ┣ 📂config
+┃ ┃ ┃ ┣ 📜db.js
+┃ ┃ ┃ ┗ 📜session.js
+┃ ┃ ┣ 📂controllers
+┃ ┃ ┃ ┣ 📜authController.js
+┃ ┃ ┃ ┣ 📜rutasController.js
+┃ ┃ ┃ ┗ 📜solicitudesController.js
+┃ ┃ ┣ 📂data
+┃ ┃ ┃ ┗ 📜coordenadas.json
+┃ ┃ ┣ 📂middlewares
+┃ ┃ ┃ ┗ 📜auth.js
+┃ ┃ ┣ 📂models
+┃ ┃ ┃ ┣ 📜RutaAprobada.js
+┃ ┃ ┃ ┣ 📜Solicitud.js
+┃ ┃ ┃ ┗ 📜Usuario.js
+┃ ┃ ┣ 📂routes
+┃ ┃ ┃ ┣ 📜authRoutes.js
+┃ ┃ ┃ ┣ 📜index.js
+┃ ┃ ┃ ┣ 📜rutasRoutes.js
+┃ ┃ ┃ ┗ 📜solicitudesRoutes.js
+┃ ┃ ┣ 📂services
+┃ ┃ ┃ ┗ 📜prologService.js
+┃ ┃ ┣ 📂utils
+┃ ┃ ┃ ┗ 📜helpers.js
+┃ ┃ ┣ 📜app.js
+┃ ┃ ┗ 📜server.js
+┃ ┣ 📜.env.example
+┃ ┗ 📜package.json
+┣ 📂docs
+┃ ┗ 📜API.md
+┣ 📂frontend
+┃ ┣ 📂src
+┃ ┃ ┣ 📂api
+┃ ┃ ┃ ┗ 📜cliente.js
+┃ ┃ ┣ 📂components
+┃ ┃ ┃ ┣ 📜Mapa.jsx
+┃ ┃ ┃ ┗ 📜ResultadoRuta.jsx
+┃ ┃ ┣ 📂context
+┃ ┃ ┃ ┗ 📜AuthContext.jsx
+┃ ┃ ┣ 📂pages
+┃ ┃ ┃ ┣ 📜Admin.jsx
+┃ ┃ ┃ ┣ 📜Login.jsx
+┃ ┃ ┃ ┣ 📜Planificador.jsx
+┃ ┃ ┃ ┗ 📜Solicitud.jsx
+┃ ┃ ┣ 📂services
+┃ ┃ ┃ ┗ 📜apisPublicas.js
+┃ ┃ ┣ 📂utils
+┃ ┃ ┃ ┗ 📜geo.js
+┃ ┃ ┣ 📜App.jsx
+┃ ┃ ┣ 📜estilos.css
+┃ ┃ ┗ 📜main.jsx
+┃ ┣ 📜index.html
+┃ ┣ 📜package.json
+┃ ┗ 📜vite.config.js
+┣ 📂prolog
+┃ ┣ 📜conocimiento.pl
+┃ ┣ 📜main.pl
+┃ ┣ 📜pruebas.pl
+┃ ┣ 📜reglas.pl
+┃ ┣ 📜rutas_aprobadas.pl
+┃ ┗ 📜salida_json.pl
+┣ 📜.gitignore
+┣ 📜estructura.txt
+┗ 📜README.md
