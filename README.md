@@ -24,7 +24,7 @@ Desarrollar un prototipo web que oriente a estudiantes del ITSSLPC en sus trasla
 
 **Dentro:** solo MetroRed; líneas que conectan con el ITSSLPC (L1-A, L1-B) y, como ejemplo/prueba de transbordos, L2 y L4; traslados casa–escuela–casa; datos de horarios y ocupación **simulados**.
 
-**Fuera (por ahora):** camiones urbanos y taxis, otras escuelas, ubicación en tiempo real, L3 (circular), líneas de otras ciudades.
+**Fuera (por ahora):** camiones urbanos y taxis, otras escuelas, ubicación en tiempo real de las unidades, L3 (circular), líneas de otras ciudades.
 
 ## 5. Arquitectura
 
@@ -78,10 +78,11 @@ Los tres participamos en **las tres materias**. El trabajo se divide por **funci
 - [ ] Pantallas `Login`, `Solicitud` y `Admin`
 
 **F3 – Osiel**
-- [ ] Levantar L1-B en campo y completar `conocimiento.pl`
+- [x] Registrar en `conocimiento.pl` la extensión L1 CETRAM → Noria de San José → ITSSLPC documentada por TV Azteca.
 - [ ] Llenar `backend/src/data/coordenadas.json`
-- [ ] Mapa con marcadores y dibujar el recorrido
-- [ ] Ubicación → estación más cercana, Nominatim y clima
+- [x] Integrar mapa, marcadores y trazado condicionado a disponer de coordenadas completas por línea.
+- [x] Integrar geolocalización, búsqueda de direcciones con Nominatim y consulta del clima.
+- [ ] Activar marcadores, trazados y estación más cercana al cargar coordenadas verificadas.
 - [ ] Ajustar frecuencias y horas pico con observación real + pruebas
 
 ## 7. Requisitos de la maestra (checklist)
@@ -144,12 +145,13 @@ swipl -g run_tests -t halt prolog/pruebas.pl
 - El backend pasó revisión de sintaxis, pero **no se ha corrido contra MongoDB ni contra Prolog**.
 - Los archivos de Prolog **no se han ejecutado** (no había `swipl` disponible al generarlos). Lo primero: que Ale y Osiel corran `pruebas.pl` y corrijan lo que falle.
 - El frontend **no se ha levantado** todavía; lo primero: que cualquiera corra `npm install && npm run dev` y arregle lo que salga.
-- Las coordenadas de las estaciones están vacías (`backend/src/data/coordenadas.json`).
+- Coordenadas de paraderos: pendientes. La coordenada del campus ITSSLPC está documentada como referencia en `_referencias`, no como punto de parada. No se asignan coordenadas aproximadas porque el buscador de estación más cercana requiere puntos reales de ascenso/descenso.
 
 ## 11. Datos y fuentes
 
-- Líneas L1, L2 y L4: mapas oficiales de la SCT / mi RedMetro (2026).
-- **L1-B (CETRAM → ITSSLPC): pendiente de levantar en campo**, aún no aparece en el mapa oficial. Completar paradas intermedias en `prolog/conocimiento.pl`.
+- Estaciones de L1, L2 y L4: lista de [TV Azteca, publicada el 23/07/2026](https://www.aztecaqueretaro.com/san-luis/notas/metrored-slp-cuales-son-las-4-lineas-paradas-y-rutas-que-la-conforman/); para L2 también se consultó la [guía de Antena San Luis](https://antenasanluis.mx/metrored-slp-guia-completa-de-estaciones-y-rutas/). Son referencias periodísticas; contrastar cambios de operación con SCT/MetroRed.
+- El [mapa oficial de SCT publicado en julio de 2026](https://codigosanluis.com/conoce-el-mapa-oficial-de-la-metrored-de-la-zona-metropolitana/) confirma L1 Eje 128–Alameda, L2 Los Salazares, L3 Circuito Potosí y L4 Valle de los Fantasmas. El mapa gráfico es esquemático; no contiene coordenadas descargables.
+- Extensión de L1 desde CETRAM: TV Azteca lista Noria de San José e ITSSLPC. Es una extensión descrita en esa guía y no aparece en el esquema gráfico metropolitano citado; verificar su operación vigente y el punto exacto de parada antes de geolocalizarla.
 - Frecuencias, horarios de servicio y reglas de ocupación: **simulados**, se pueden ajustar con observación propia.
 - L3 (Circuito Potosí) no se modela por ahora.
 

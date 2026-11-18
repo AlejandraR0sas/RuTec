@@ -1,4 +1,11 @@
 {
   "_instrucciones": "Osiel: llena lat/lng de cada estación usando el ID de prolog/conocimiento.pl. Ejemplo de formato abajo. Las claves que empiezan con _ se ignoran.",
-  "_ejemplo": { "id_de_estacion": { "lat": 0, "lng": 0 } }
+  "_ejemplo": { "id_de_estacion": { "lat": 0, "lng": 0 } },
+  "_fuentes": {
+    "itsslpc": "Coordenada del campus tomada como referencia del destino, no posición exacta del paradero: https://es.wikipedia.org/wiki/Instituto_Tecnol%C3%B3gico_Superior_de_San_Luis_Potos%C3%AD,_Capital",
+    "pendientes": "Faltan coordenadas verificables de los paraderos MetroRed. El esquema publicado por SCT en julio de 2026 es esquemático y no proporciona latitud/longitud; no usar sus posiciones dibujadas como coordenadas."
+  },
+  "_referencias": {
+    "itsslpc": { "lat": 22.06972, "lng": -100.86778 }
+  }
 }

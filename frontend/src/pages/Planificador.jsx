@@ -10,16 +10,17 @@
  *  - Mostrar siempre un aviso de que horarios y ocupación son SIMULADOS (campo `simulado`).
  *
  * PENDIENTE:
- *  - [ ] "Usar mi ubicación": estación más cercana (services/apisPublicas.js + utils/geo.js).
- *  - [ ] Buscar dirección con Nominatim para origen/destino que no sean estaciones.
- *  - [ ] Mostrar el clima (Open-Meteo).
- *  - [ ] Dibujar el recorrido en el mapa.
+ *  - [ ] Cargar coordenadas verificadas para todas las estaciones (coordenadas.json).
+ *  - [ ] Probar ubicación, Nominatim, clima y recorrido una vez cargadas las coordenadas.
+ *  - [x] Integrar controles de ubicación/direcciones/clima y dibujo condicional del recorrido.
  */
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../api/cliente.js';
 import Mapa from '../components/Mapa.jsx';
 import ResultadoRuta from '../components/ResultadoRuta.jsx';
+import { buscarDireccion as buscarDireccionPublica, obtenerClima, obtenerUbicacion } from '../services/apisPublicas.js';
+import { estacionMasCercana } from '../utils/geo.js';
 
 export default function Planificador() {
   const [lineas, setLineas] = useState([]);
@@ -28,6 +29,11 @@ export default function Planificador() {
   const [destino, setDestino] = useState('');
   const [resultado, setResultado] = useState(null);
   const [error, setError] = useState('');
+  const [direccion, setDireccion] = useState('');
+  const [campoDireccion, setCampoDireccion] = useState('origen');
+  const [coincidencias, setCoincidencias] = useState([]);
+  const [clima, setClima] = useState(null);
+  const [cargandoUbicacion, setCargandoUbicacion] = useState(false);
   const navegar = useNavigate();
 
   useEffect(() => {
@@ -52,6 +58,44 @@ export default function Planificador() {
     }
   }
 
+  async function usarUbicacion() {
+    setError('');
+    setCargandoUbicacion(true);
+    try {
+      const punto = await obtenerUbicacion();
+      const cercana = estacionMasCercana(punto, coords);
+      if (!cercana) throw new Error('Aún no hay coordenadas de estaciones para comparar tu ubicación.');
+      setOrigen(cercana);
+      setClima(await obtenerClima(punto.lat, punto.lng));
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setCargandoUbicacion(false);
+    }
+  }
+
+  async function buscarDireccion(e) {
+    e.preventDefault();
+    setError('');
+    setCoincidencias([]);
+    try {
+      setCoincidencias(await buscarDireccionPublica(direccion));
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
+  function elegirDireccion(punto) {
+    const cercana = estacionMasCercana(punto, coords);
+    if (!cercana) {
+      setError('Aún no hay coordenadas de estaciones para asignar la estación más cercana.');
+      return;
+    }
+    if (campoDireccion === 'origen') setOrigen(cercana);
+    else setDestino(cercana);
+    setCoincidencias([]);
+  }
+
   const nombreDe = (id) => estaciones.find((x) => x.id === id)?.nombre || id;
 
   return (
@@ -73,10 +117,38 @@ export default function Planificador() {
           </select>
         </label>
         <button type="submit">Buscar ruta</button>
+        <button type="button" onClick={usarUbicacion} disabled={cargandoUbicacion}>
+          {cargandoUbicacion ? 'Buscando…' : 'Usar mi ubicación como origen'}
+        </button>
       </form>
 
+      <form onSubmit={buscarDireccion}>
+        <label>
+          Buscar dirección para
+          <select value={campoDireccion} onChange={(e) => setCampoDireccion(e.target.value)}>
+            <option value="origen">origen</option>
+            <option value="destino">destino</option>
+          </select>
+        </label>
+        <label>
+          Dirección en San Luis Potosí
+          <input value={direccion} onChange={(e) => setDireccion(e.target.value)} required />
+        </label>
+        <button type="submit">Buscar dirección</button>
+      </form>
+      {coincidencias.length > 0 && (
+        <ul aria-label="Resultados de direcciones">
+          {coincidencias.map((p, i) => (
+            <li key={`${p.lat}-${p.lng}-${i}`}>
+              <button type="button" onClick={() => elegirDireccion(p)}>{p.nombre}</button>
+            </li>
+          ))}
+        </ul>
+      )}
+
       {error && <p className="error">{error}</p>}
-      <Mapa estaciones={estaciones} coordenadas={coords} />
+      {clima && <p className="aviso">Clima en tu ubicación: {clima.temperature_2m} °C; precipitación {clima.precipitation} mm.</p>}
+      <Mapa estaciones={estaciones} coordenadas={coords} lineas={lineas} resultado={resultado} />
       {resultado && <ResultadoRuta resultado={resultado} />}
       {resultado && !resultado.encontrada && resultado.puede_solicitar && (
         <button onClick={() => navegar('/solicitar', { state: { origen: nombreDe(origen), destino: nombreDe(destino) } })}>

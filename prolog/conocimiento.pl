@@ -15,8 +15,8 @@
  *  - Frecuencias y horarios son SIMULADOS.
  *
  * PENDIENTE:
- *  - [ ] Completar las paradas intermedias de L1-B (CETRAM → ITSSLPC) por observación en campo.
- *  - [ ] Confirmar nombre exacto de la estación del ITSSLPC en L1-B.
+ *  - [x] Registrar la extensión L1 hacia Noria de San José e ITSSLPC según la guía de TV Azteca (23/07/2026).
+ *  - [ ] Verificar que la extensión siga operando y confirmar las ubicaciones exactas de CETRAM, Noria de San José e ITSSLPC.
  *  - [ ] Ajustar frecuencias y horarios con observación real.
  *  - [ ] (Backlog) Modelar L3 circular.
  */
@@ -26,7 +26,7 @@
 
 % ---------- Líneas: linea(Id, NombreVisible) ----------
 linea(l1_a, 'L1 Eje 128 – Alameda').
-linea(l1_b, 'L1 CETRAM – ITSSLPC').
+linea(l1_b, 'L1 Extensión CETRAM – ITSSLPC').
 linea(l2,   'L2 Los Salazares').
 linea(l4,   'L4 Valle de los Fantasmas').
 
@@ -73,46 +73,47 @@ estacion(l1_a, 24, pozos,           'Pozos').
 estacion(l1_a, 25, eje_126,         'Eje 126').
 estacion(l1_a, 26, cetram,          'CETRAM').
 
-% L1-B: CETRAM → ITSSLPC (NO está en el mapa oficial; levantar en campo)
-% TODO(Osiel + equipo): insertar las paradas intermedias entre CETRAM y el Tec
-%       y recorrer los números de orden.
+% Extensión L1 desde CETRAM hacia Noria de San José e ITSSLPC.
+% Fuente: TV Azteca, publicada 23/07/2026. No aparece en el esquema gráfico metropolitano SCT;
+% verificar operación vigente y posiciones exactas antes de asignar coordenadas.
 estacion(l1_b,  1, cetram,          'CETRAM').
-estacion(l1_b,  2, itsslpc,         'ITSSLPC (Tec Superior Capital)').
+estacion(l1_b,  2, noria_de_san_jose,'Noria de San José').
+estacion(l1_b,  3, itsslpc,         'ITSSLPC (Tec Superior Capital)').
 
-% L2: Los Salazares → Alameda (mapa oficial). El orden de las 2 primeras es aproximado (lazo inicial).
-estacion(l2,  1, zt_salazares,      'Zona de Transferencia Los Salazares').
-estacion(l2,  2, wenceslao,         'Wenceslao').
-estacion(l2,  3, san_angelin,       'San Angelín').
-estacion(l2,  4, condado_del_sauzal,'Condado del Sauzal').
-estacion(l2,  5, el_rosedal,        'El Rosedal').
-estacion(l2,  6, humboldt,          'Humboldt').
-estacion(l2,  7, san_pedro,         'San Pedro').
-estacion(l2,  8, saucito,           'Saucito').
-estacion(l2,  9, centauro_del_norte,'Centauro del Norte').
-estacion(l2, 10, utan,              'UTAN').
-estacion(l2, 11, bienestar,         'Bienestar').
-estacion(l2, 12, vasco_de_quiroga,  'Vasco de Quiroga').
-estacion(l2, 13, auditorio,         'Auditorio').
-estacion(l2, 14, tangamanga_ii,     'Tangamanga II').
-estacion(l2, 15, temazcalli,        'Temazcalli').
-estacion(l2, 16, juan_del_jarro,    'Juan del Jarro').
-estacion(l2, 17, santiago,          'Santiago').
-estacion(l2, 18, caracol,           'Caracol').
-estacion(l2, 19, ponciano_arriaga,  'Ponciano Arriaga').
-estacion(l2, 20, barrio_de_tlaxcala,'Barrio de Tlaxcala').
-estacion(l2, 21, ignacio_altamirano,'Ignacio Altamirano').
-estacion(l2, 22, zt_alameda,        'Zona de Transferencia Alameda').
+% L2: Alameda → Los Salazares. Lista publicada por Antena San Luis (16/08/2024).
+estacion(l2,  1, zt_alameda,        'Zona de Transferencia Alameda').
+estacion(l2,  2, ignacio_altamirano,'Ignacio Altamirano').
+estacion(l2,  3, barrio_de_tlaxcala,'Barrio de Tlaxcala').
+estacion(l2,  4, ponciano_arriaga,  'Ponciano Arriaga').
+estacion(l2,  5, caracol,           'Caracol').
+estacion(l2,  6, santiago,          'Santiago').
+estacion(l2,  7, juan_del_jarro,    'Juan del Jarro').
+estacion(l2,  8, temazcalli,        'Temazcalli').
+estacion(l2,  9, tangamanga_ii,     'Tangamanga II').
+estacion(l2, 10, auditorio,         'Auditorio').
+estacion(l2, 11, vasco_de_quiroga,  'Vasco de Quiroga').
+estacion(l2, 12, panteon,           'Panteón').
+estacion(l2, 13, utan,              'UTAN').
+estacion(l2, 14, centauro_del_norte,'Centauro del Norte').
+estacion(l2, 15, saucito,           'Saucito').
+estacion(l2, 16, san_pedro,         'San Pedro').
+estacion(l2, 17, humboldt,          'Humboldt').
+estacion(l2, 18, el_rosedal,        'El Rosedal').
+estacion(l2, 19, condado_del_sauzal,'Condado del Sauzal').
+estacion(l2, 20, san_angelin,       'San Angelín').
+estacion(l2, 21, wenceslao,         'Wenceslao').
+estacion(l2, 22, zt_salazares,      'Zona de Transferencia Los Salazares').
 
-% L4: Alameda → Ciudad Satélite (mapa oficial)
+% L4: Alameda → Ciudad Satélite. Lista TV Azteca, publicada 23/07/2026.
 % OJO: "Tecnológico de San Luis" (tec_san_luis) es el OTRO Tec (ITSLP), no el ITSSLPC.
 estacion(l4,  1, zt_alameda,        'Zona de Transferencia Alameda').
-estacion(l4,  2, distribuidor_juarez,'Distribuidor Juárez').
+estacion(l4,  2, distribuidor_juarez,'Distribuidor Benito Juárez').
 estacion(l4,  3, av_de_los_pinos,   'Av. de los Pinos').
 estacion(l4,  4, tec_san_luis,      'Tecnológico de San Luis').
 estacion(l4,  5, circuito_potosi,   'Circuito Potosí').
 estacion(l4,  6, privadas_de_la_hacienda,'Privadas de la Hacienda').
-estacion(l4,  7, cactus,            'Cactus').
-estacion(l4,  8, los_gomez,         'Los Gómez').
+estacion(l4,  7, los_gomez,         'Los Gómez').
+estacion(l4,  8, cactus,            'Cactus').
 estacion(l4,  9, bosques_de_la_florida,'Bosques de la Florida').
 estacion(l4, 10, san_nicolas_de_los_jassos,'San Nicolás de los Jassos').
 estacion(l4, 11, ciudad_satelite,   'Ciudad Satélite').

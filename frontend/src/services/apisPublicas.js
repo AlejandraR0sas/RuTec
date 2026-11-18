@@ -21,8 +21,24 @@ export function obtenerUbicacion() {
 }
 
 // 2) Búsqueda de direcciones con Nominatim (limitada a México)
+let ultimaBusquedaNominatim = 0;
+let colaNominatim = Promise.resolve();
+
 export async function buscarDireccion(texto) {
-  const url = `https://nominatim.openstreetmap.org/search?format=json&limit=5&countrycodes=mx&q=${encodeURIComponent(texto + ', San Luis Potosí')}`;
+  const consulta = texto.trim();
+  if (!consulta) throw new Error('Escribe una dirección para buscarla.');
+  const turnoAnterior = colaNominatim;
+  let liberarTurno;
+  colaNominatim = new Promise((resolve) => { liberarTurno = resolve; });
+  await turnoAnterior;
+  try {
+    const espera = Math.max(0, 1000 - (Date.now() - ultimaBusquedaNominatim));
+    if (espera) await new Promise((resolve) => setTimeout(resolve, espera));
+    ultimaBusquedaNominatim = Date.now();
+  } finally {
+    liberarTurno();
+  }
+  const url = `https://nominatim.openstreetmap.org/search?format=json&limit=5&countrycodes=mx&q=${encodeURIComponent(consulta + ', San Luis Potosí')}`;
   const resp = await fetch(url);
   if (!resp.ok) throw new Error('No se pudo buscar la dirección');
   const datos = await resp.json();
