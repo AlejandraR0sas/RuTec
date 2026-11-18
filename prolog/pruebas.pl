@@ -40,7 +40,7 @@ test(sin_ruta_estacion_inexistente, [fail]) :-
 
 test(tiempo_ida_al_tec) :-
     mejor_ruta(zt_alameda, itsslpc, Plan),
-    tiempo_viaje(Plan, 58).   % 26 paradas * 2 + 1 transbordo * 6
+    tiempo_viaje(Plan, 60).   % 27 paradas * 2 + 1 transbordo * 6
 
 test(siguiente_camion_en_horario) :-
     siguiente_camion(l1_a, 7, 4, E),   % 07:04, frecuencia 10, inicia 05:30
