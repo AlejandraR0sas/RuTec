@@ -139,3 +139,16 @@ test(horarios_plan_segundo_tramo_fuera_de_servicio) :-
     ], null).
 
 :- end_tests(horarios_plan).
+:- consult(salida_json).
+
+% --- Horarios por tramo (F1 – Ale) ---
+:- begin_tests(formato_hora).
+
+test(minutos_a_hora_con_ceros) :-
+    minutos_a_hora(450, '07:30'),
+    minutos_a_hora(5, '00:05').
+
+test(minutos_a_hora_despues_de_un_dia) :-
+    minutos_a_hora(1445, '00:05').
+
+:- end_tests(formato_hora).

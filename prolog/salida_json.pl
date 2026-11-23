@@ -82,3 +82,10 @@ estaciones_de(L, Es) :-
             Pares),
     keysort(Pares, Ordenados),
     pairs_values(Ordenados, Es).
+% --- Conversión de minutos a hora (F1 – Ale) ---
+% minutos_a_hora(+Minutos, -HoraTexto): convierte minutos desde medianoche a HH:MM.
+minutos_a_hora(Minutos, HoraTexto) :-
+    MinutosDelDia is Minutos mod 1440,
+    Hora is MinutosDelDia // 60,
+    Minuto is MinutosDelDia mod 60,
+    format(atom(HoraTexto), '~|~`0t~d~2+:~|~`0t~d~2+', [Hora, Minuto]).
