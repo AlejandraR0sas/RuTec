@@ -77,3 +77,22 @@ test(proxima_salida_despues_del_cierre, [fail]) :-
     proxima_salida(l1_a, 1321, _).
 
 :- end_tests(horarios_por_tramo).
+% --- Horarios por tramo (F1 – Ale) ---
+:- begin_tests(proximas_salidas).
+
+test(proximas_salidas_l1_a_tres) :-
+    proximas_salidas(l1_a, 450, 3, [450, 460, 470]).
+
+test(proximas_salidas_l1_b_tres) :-
+    proximas_salidas(l1_b, 510, 3, [510, 525, 540]).
+
+test(proximas_salidas_hasta_el_cierre) :-
+    proximas_salidas(l1_a, 1310, 3, [1310, 1320]).
+
+test(proximas_salidas_cero_solicitadas) :-
+    proximas_salidas(l1_a, 450, 0, []).
+
+test(proximas_salidas_despues_del_cierre) :-
+    proximas_salidas(l1_a, 1321, 3, []).
+
+:- end_tests(proximas_salidas).

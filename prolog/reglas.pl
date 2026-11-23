@@ -98,3 +98,26 @@ proxima_salida(L, T, S) :-
     Indice is (T - Ini + F - 1) // F,
     S is Ini + Indice * F,
     S =< Fin.
+% --- Horarios por tramo (F1 – Ale) ---
+% proximas_salidas(+L, +S, +N, -Lista): hasta N salidas desde S, sin superar el cierre.
+proximas_salidas(L, S, N, Lista) :-
+    horario_servicio(L, Ini, Fin),
+    frecuencia(L, F),
+    integer(S),
+    S >= Ini,
+    integer(N),
+    N >= 0,
+    proximas_salidas_(S, Fin, N, F, Lista).
+
+proximas_salidas_(_, _, 0, _, []) :-
+    !.
+proximas_salidas_(S, Fin, N, F, [S | Resto]) :-
+    N > 0,
+    S =< Fin,
+    !,
+    Siguiente is S + F,
+    Restantes is N - 1,
+    proximas_salidas_(Siguiente, Fin, Restantes, F, Resto).
+proximas_salidas_(S, Fin, N, _, []) :-
+    N > 0,
+    S > Fin.
