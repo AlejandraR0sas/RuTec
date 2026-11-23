@@ -265,3 +265,56 @@ button { background: var(--acento); color: #fff; border: 0; border-radius: 6px; 
   background: var(--acento);
   color: #fff;
 }
+/* Selector de horario (F1 – Ale) */
+.horario-selector {
+  display: grid;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.horario-selector__titulo {
+  margin: 0;
+  font-weight: 650;
+}
+
+.horario-selector__opciones {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.horario-selector__boton {
+  min-height: 2.75rem;
+  border: 1px solid var(--borde);
+  background: #fff;
+  color: var(--texto);
+}
+
+.horario-selector__boton[aria-pressed='true'] {
+  border-color: var(--acento);
+  background: var(--acento);
+  color: #fff;
+}
+
+.horario-selector__campos {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+.horario-selector__campo {
+  margin: 0;
+}
+
+.horario-selector__campo input,
+.horario-selector__campo select {
+  display: block;
+  width: 100%;
+  margin-top: 0.35rem;
+}
+
+@media (min-width: 520px) {
+  .horario-selector__campos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
