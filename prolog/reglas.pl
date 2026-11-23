@@ -88,3 +88,13 @@ hora_pico(H) :-
 ocupacion(Dia, H, alta)  :- dia_laboral(Dia), hora_pico(H), !.
 ocupacion(Dia, H, media) :- dia_laboral(Dia), between(10, 17, H), !.
 ocupacion(_, _, baja).
+% --- Horarios por tramo (F1 – Ale) ---
+% proxima_salida(+L, +T, -S): primera salida de L desde el minuto T.
+proxima_salida(L, T, S) :-
+    horario_servicio(L, Ini, Fin),
+    frecuencia(L, F),
+    T >= Ini,
+    T =< Fin,
+    Indice is (T - Ini + F - 1) // F,
+    S is Ini + Indice * F,
+    S =< Fin.

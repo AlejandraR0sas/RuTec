@@ -58,3 +58,22 @@ test(media_entre_semana) :- ocupacion(martes, 11, media).
 test(baja_fin_de_semana) :- ocupacion(domingo, 8, baja).
 
 :- end_tests(ocupacion).
+% --- Horarios por tramo (F1 – Ale) ---
+:- begin_tests(horarios_por_tramo).
+
+test(proxima_salida_hora_exacta) :-
+    proxima_salida(l1_a, 450, 450).
+
+test(proxima_salida_siguiente_intervalo) :-
+    proxima_salida(l1_a, 454, 460).
+
+test(proxima_salida_l1_b_despues_transbordo) :-
+    proxima_salida(l1_b, 506, 510).
+
+test(proxima_salida_antes_de_apertura, [fail]) :-
+    proxima_salida(l1_a, 180, _).
+
+test(proxima_salida_despues_del_cierre, [fail]) :-
+    proxima_salida(l1_a, 1321, _).
+
+:- end_tests(horarios_por_tramo).
