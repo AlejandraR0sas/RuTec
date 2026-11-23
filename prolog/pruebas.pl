@@ -96,3 +96,46 @@ test(proximas_salidas_despues_del_cierre) :-
     proximas_salidas(l1_a, 1321, 3, []).
 
 :- end_tests(proximas_salidas).
+% --- Horarios por tramo (F1 – Ale) ---
+:- begin_tests(horarios_plan).
+
+test(horarios_plan_ida_al_tec) :-
+    Plan = [
+        viaje(l1_a, zt_alameda, cetram),
+        viaje(l1_b, cetram, itsslpc)
+    ],
+    horarios_plan(Plan, 450, [
+        tramo(l1_a, 450, 0, [450, 460, 470], 500),
+        tramo(l1_b, 510, 4, [510, 525, 540], 514)
+    ]),
+    llegada_plan([
+        tramo(l1_a, 450, 0, [450, 460, 470], 500),
+        tramo(l1_b, 510, 4, [510, 525, 540], 514)
+    ], 514).
+
+test(horarios_plan_todo_fuera_de_servicio) :-
+    Plan = [
+        viaje(l1_a, zt_alameda, cetram),
+        viaje(l1_b, cetram, itsslpc)
+    ],
+    horarios_plan(Plan, 180, [
+        sin_servicio(l1_a),
+        sin_servicio(l1_b)
+    ]),
+    llegada_plan([sin_servicio(l1_a), sin_servicio(l1_b)], null).
+
+test(horarios_plan_segundo_tramo_fuera_de_servicio) :-
+    Plan = [
+        viaje(l1_a, zt_alameda, cetram),
+        viaje(l1_b, cetram, itsslpc)
+    ],
+    horarios_plan(Plan, 1310, [
+        tramo(l1_a, 1310, 0, [1310, 1320], 1360),
+        sin_servicio(l1_b)
+    ]),
+    llegada_plan([
+        tramo(l1_a, 1310, 0, [1310, 1320], 1360),
+        sin_servicio(l1_b)
+    ], null).
+
+:- end_tests(horarios_plan).
