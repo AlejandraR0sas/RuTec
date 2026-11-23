@@ -21,7 +21,14 @@ import Mapa from '../components/Mapa.jsx';
 import ResultadoRuta from '../components/ResultadoRuta.jsx';
 import { buscarDireccion as buscarDireccionPublica, obtenerClima, obtenerUbicacion } from '../services/apisPublicas.js';
 import { estacionMasCercana } from '../utils/geo.js';
+function obtenerDiaActual() {
+  const dia = new Intl.DateTimeFormat('es-MX', {
+    timeZone: 'America/Mexico_City',
+    weekday: 'long',
+  }).format(new Date());
 
+  return dia.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
 export default function Planificador() {
   const [lineas, setLineas] = useState([]);
   const [coords, setCoords] = useState({});
@@ -29,6 +36,9 @@ export default function Planificador() {
   const [destino, setDestino] = useState('');
   const [resultado, setResultado] = useState(null);
   const [error, setError] = useState('');
+  const [modoHorario, setModoHorario] = useState('ahora');
+  const [horaSalida, setHoraSalida] = useState('');
+  const [diaSalida, setDiaSalida] = useState(obtenerDiaActual);
   const [direccion, setDireccion] = useState('');
   const [campoDireccion, setCampoDireccion] = useState('origen');
   const [coincidencias, setCoincidencias] = useState([]);
