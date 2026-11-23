@@ -36,6 +36,9 @@ armar_respuesta(O, D, Plan, H, M, Dia, Dict) :-
     T0 is H * 60 + M,
     horarios_plan(Plan, T0, Horarios),
     plan_a_dicts(Plan, Horarios, PlanDicts),
+    minutos_a_hora(T0, Salida),
+    llegada_plan(Horarios, LlegadaMinutos),
+    llegada_a_hora(LlegadaMinutos, Llegada),
     length(Plan, N),
     Transbordos is N - 1,
     tiempo_viaje(Plan, Minutos),
@@ -46,12 +49,14 @@ armar_respuesta(O, D, Plan, H, M, Dia, Dict) :-
     ;   Sig = null
     ),
     ocupacion(Dia, H, Ocup),
-    Dict = _{ encontrada: true,
+            Dict = _{ encontrada: true,
               origen:  _{id: O, nombre: NO},
               destino: _{id: D, nombre: ND},
               plan: PlanDicts,
               transbordos: Transbordos,
               minutos_estimados: Minutos,
+              salida: Salida,
+              llegada: Llegada,
               siguiente_camion: Sig,
               ocupacion: Ocup,
               simulado: true }.
@@ -79,7 +84,10 @@ horario_a_campos(tramo(_, Abordaje, Espera, Salidas, Bajada),
     maplist(minutos_a_hora, Salidas, Proximos),
     minutos_a_hora(Bajada, HoraBajada).
 horario_a_campos(sin_servicio(_), null, null, [], null).
-
+llegada_a_hora(null, null) :-
+    !.
+llegada_a_hora(Minutos, HoraTexto) :-
+    minutos_a_hora(Minutos, HoraTexto).
 % lineas_json: lista todas las líneas con sus estaciones en orden
 lineas_json :-
     findall(Dict,
