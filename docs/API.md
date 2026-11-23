@@ -41,13 +41,13 @@ Body: `{ "origen": "zt_alameda", "destino": "itsslpc", "hora": 7, "minuto": 30, 
     { "linea": "l1_a", "linea_nombre": "L1 Eje 128 – Alameda",
       "desde": "zt_alameda", "desde_nombre": "Zona de Transferencia Alameda",
       "hasta": "cetram", "hasta_nombre": "CETRAM", "paradas": 25 },
-    { "linea": "l1_b", "linea_nombre": "L1 CETRAM – ITSSLPC",
+    { "linea": "l1_b", "linea_nombre": "L1 Extensión CETRAM – ITSSLPC",
       "desde": "cetram", "desde_nombre": "CETRAM",
-      "hasta": "itsslpc", "hasta_nombre": "ITSSLPC", "paradas": 1 }
+      "hasta": "itsslpc", "hasta_nombre": "ITSSLPC (Tec Superior Capital)", "paradas": 2 }
   ],
   "transbordos": 1,
-  "minutos_estimados": 58,
-  "siguiente_camion": { "en_minutos": 4, "frecuencia_min": 10 },
+  "minutos_estimados": 60,
+  "siguiente_camion": { "en_minutos": 0, "frecuencia_min": 10 },
   "ocupacion": "alta",
   "simulado": true
 }

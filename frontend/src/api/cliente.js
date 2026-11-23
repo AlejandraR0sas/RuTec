@@ -28,7 +28,11 @@ export const api = {
   // rutas
   lineas: () => pedir('/lineas'),
   coordenadas: () => pedir('/coordenadas'),
-  recomendar: (origen, destino) => pedir('/recomendacion', { metodo: 'POST', cuerpo: { origen, destino } }),
+  recomendar: (origen, destino, { hora, minuto, dia } = {}) =>
+    pedir('/recomendacion', {
+      metodo: 'POST',
+      cuerpo: { origen, destino, hora, minuto, dia },
+    }),  
   // solicitudes
   crearSolicitud: (origen, destino, comentario) => pedir('/solicitudes', { metodo: 'POST', cuerpo: { origen, destino, comentario } }),
   // admin

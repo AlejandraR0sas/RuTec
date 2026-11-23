@@ -21,14 +21,33 @@ import Mapa from '../components/Mapa.jsx';
 import ResultadoRuta from '../components/ResultadoRuta.jsx';
 import { buscarDireccion as buscarDireccionPublica, obtenerClima, obtenerUbicacion } from '../services/apisPublicas.js';
 import { estacionMasCercana } from '../utils/geo.js';
+function obtenerDiaActual() {
+  const dia = new Intl.DateTimeFormat('es-MX', {
+    timeZone: 'America/Mexico_City',
+    weekday: 'long',
+  }).format(new Date());
 
-export default function Planificador() {
+  return dia.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+  const diasSemana = [
+    { valor: 'lunes', etiqueta: 'Lunes' },
+    { valor: 'martes', etiqueta: 'Martes' },
+    { valor: 'miercoles', etiqueta: 'Miércoles' },
+    { valor: 'jueves', etiqueta: 'Jueves' },
+    { valor: 'viernes', etiqueta: 'Viernes' },
+    { valor: 'sabado', etiqueta: 'Sábado' },
+    { valor: 'domingo', etiqueta: 'Domingo' },
+  ];
+  export default function Planificador() {
   const [lineas, setLineas] = useState([]);
   const [coords, setCoords] = useState({});
   const [origen, setOrigen] = useState('');
   const [destino, setDestino] = useState('');
   const [resultado, setResultado] = useState(null);
   const [error, setError] = useState('');
+  const [modoHorario, setModoHorario] = useState('ahora');
+  const [horaSalida, setHoraSalida] = useState('');
+  const [diaSalida, setDiaSalida] = useState(obtenerDiaActual);
   const [direccion, setDireccion] = useState('');
   const [campoDireccion, setCampoDireccion] = useState('origen');
   const [coincidencias, setCoincidencias] = useState([]);
@@ -51,8 +70,27 @@ export default function Planificador() {
     e.preventDefault();
     setError('');
     setResultado(null);
+
+    if (modoHorario === 'salir' && !horaSalida) {
+      setError('Selecciona una hora de salida antes de buscar la ruta.');
+      return;
+    }
+
     try {
-      setResultado(await api.recomendar(origen, destino));
+      let respuesta;
+
+      if (modoHorario === 'salir') {
+        const [hora, minuto] = horaSalida.split(':').map(Number);
+        respuesta = await api.recomendar(origen, destino, {
+          hora,
+          minuto,
+          dia: diaSalida,
+        });
+      } else {
+        respuesta = await api.recomendar(origen, destino);
+      }
+
+      setResultado(respuesta);
     } catch (err) {
       setError(err.message);
     }
@@ -116,6 +154,55 @@ export default function Planificador() {
             {estaciones.map((s) => <option key={s.id} value={s.id}>{s.nombre}</option>)}
           </select>
         </label>
+        <div className="horario-selector">
+            <p className="horario-selector__titulo">Horario</p>
+
+          <div className="horario-selector__opciones" role="group" aria-label="Elegir horario">
+            <button
+              type="button"
+              className="horario-selector__boton"
+              aria-pressed={modoHorario === 'ahora'}
+              onClick={() => setModoHorario('ahora')}
+            >
+              Ahora
+            </button>
+            <button
+              type="button"
+              className="horario-selector__boton"
+              aria-pressed={modoHorario === 'salir'}
+              onClick={() => setModoHorario('salir')}
+            >
+              Salir a las
+            </button>
+          </div>
+
+          {modoHorario === 'salir' && (
+            <div className="horario-selector__campos">
+              <label className="horario-selector__campo">
+                Hora de salida
+                <input
+                  type="time"
+                  value={horaSalida}
+                  onChange={(e) => setHoraSalida(e.target.value)}
+                />
+              </label>
+
+              <label className="horario-selector__campo">
+                Día
+                <select
+                  value={diaSalida}
+                  onChange={(e) => setDiaSalida(e.target.value)}
+                >
+                  {diasSemana.map((dia) => (
+                    <option key={dia.valor} value={dia.valor}>
+                      {dia.etiqueta}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+          )}
+      </div>
         <button
           type="button"
           className="planificador__invertir"
