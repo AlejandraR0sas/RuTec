@@ -30,7 +30,7 @@ Reglas: el registro siempre crea `estudiante`. El admin se crea con `npm run see
 Body: `{ "origen": "zt_alameda", "destino": "itsslpc", "hora": 7, "minuto": 30, "dia": "lunes" }`
 `hora`, `minuto` y `dia` son opcionales (si no vienen, se usa la hora actual de México).
 `dia` ∈ `lunes, martes, miercoles, jueves, viernes, sabado, domingo`.
-
+El body no recibe un parámetro de lluvia. Prolog determina el clima automáticamente y de forma simulada según la hora de salida.
 **200 – ruta encontrada**
 ```json
 {
@@ -55,6 +55,7 @@ Body: `{ "origen": "zt_alameda", "destino": "itsslpc", "hora": 7, "minuto": 30, 
   "llegada": "08:34",
   "siguiente_camion": { "en_minutos": 0, "frecuencia_min": 10 },
   "ocupacion": "alta",
+  "clima": { "lluvia": false, "retraso_extra_min": 0 },
   "simulado": true
 }
 ```
@@ -67,6 +68,10 @@ Campos de horario (se agregan a los anteriores, no cambian nada de lo que ya exi
 - `salida` y `llegada`: hora de salida y llegada de todo el viaje.
 - `minutos_estimados` sigue siendo solo el tiempo en camión más los transbordos, **sin esperas**.
 - Si una línea no está en servicio a esa hora: `proximos` es `[]`; `abordaje`, `espera_min` y `bajada` son `null`; y `llegada` también es `null`.
+- `clima` aparece siempre cuando `encontrada` es `true`: contiene `lluvia` (`true` o `false`) y `retraso_extra_min` (número). Si no llueve, el retraso es `0`.
+- Regla simulada basada en las tormentas de la tarde: hay lluvia si la hora de salida cae entre 14:00 y 15:59, o entre 18:00 y 19:29, cualquier día de la semana.
+- Con lluvia, `retraso_extra_min` es `10` y `ocupacion` sube un nivel: `baja` pasa a `media`, `media` a `alta` y `alta` permanece `alta`. El valor de `ocupacion` de la respuesta ya incluye este ajuste.
+- El retraso es informativo: no modifica `minutos_estimados`, `salida`, `llegada` ni los horarios de los tramos.
 `siguiente_camion` es `null` si la primera línea está fuera de servicio a esa hora. `ocupacion` ∈ `alta | media | baja`.
 
 **200 – no hay ruta** (no es error, es resultado)
