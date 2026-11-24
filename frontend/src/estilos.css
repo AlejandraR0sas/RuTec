@@ -777,3 +777,180 @@ button { background: var(--acento); color: #fff; border: 0; border-radius: 6px; 
 .planificador__direcciones[open] summary {
   margin-bottom: 0.75rem;
 }
+/* Aviso de lluvia simulada (F1 – Ale) */
+.resultado__lluvia {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--res-ocupacion-media);
+  border-left: 0.3rem solid var(--res-ocupacion-media);
+  border-radius: 0.75rem;
+  background: var(--res-panel);
+}
+
+.resultado__lluvia-icono {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+  fill: none;
+  stroke: var(--res-ocupacion-media);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.resultado__lluvia-mensaje {
+  margin: 0;
+  color: var(--res-texto);
+  font-weight: 650;
+}
+/* Navegación principal */
+.encabezado {
+  --cabecera-fondo: #04321f;
+  --cabecera-acento: #91c91f;
+  --cabecera-texto: #f7fbf8;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 0.65rem max(1rem, calc((100vw - 1280px) / 2));
+  border: 0;
+  border-bottom: 3px solid var(--cabecera-acento);
+  background: var(--cabecera-fondo);
+  color: var(--cabecera-texto);
+}
+
+.encabezado__marca {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-self: start;
+  gap: 0.65rem;
+  color: var(--cabecera-texto);
+  text-decoration: none;
+}
+
+.encabezado__icono {
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+  padding: 0.3rem;
+  border: 2px solid var(--cabecera-acento);
+  border-radius: 50%;
+  color: var(--cabecera-acento);
+}
+
+.encabezado__icono-forma,
+.encabezado__icono-detalle {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.encabezado__marca-texto {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.encabezado__marca-texto strong {
+  font-size: 1.2rem;
+  font-style: italic;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.encabezado__marca-texto small {
+  color: #d6e2d8;
+  font-size: 0.75rem;
+}
+
+.encabezado__enlaces {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+}
+
+.encabezado__enlace {
+  display: inline-flex;
+  min-height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.65rem;
+  color: var(--cabecera-texto);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.encabezado__enlace[aria-current='page'] {
+  background: var(--cabecera-acento);
+  color: var(--cabecera-fondo);
+}
+
+.encabezado__enlace:hover,
+.encabezado__enlace:focus-visible,
+.encabezado__salir:hover,
+.encabezado__salir:focus-visible {
+  background: rgb(255 255 255 / 14%);
+}
+
+.encabezado__cuenta {
+  display: flex;
+  align-items: center;
+  justify-self: end;
+  gap: 0.65rem;
+}
+
+.encabezado__usuario {
+  color: var(--cabecera-texto);
+  font-size: 0.9rem;
+}
+
+.encabezado__salir {
+  min-height: 2.5rem;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid var(--cabecera-acento);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--cabecera-texto);
+  font-weight: 650;
+}
+
+.encabezado__salir:hover,
+.encabezado__salir:focus-visible {
+  background: var(--cabecera-acento);
+  color: var(--cabecera-fondo);
+}
+
+@media (max-width: 700px) {
+  .encabezado {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "marca cuenta"
+      "enlaces enlaces";
+    gap: 0.5rem;
+    padding: 0.65rem 1rem;
+  }
+
+  .encabezado__marca {
+    grid-area: marca;
+  }
+
+  .encabezado__enlaces {
+    grid-area: enlaces;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .encabezado__cuenta {
+    grid-area: cuenta;
+  }
+}

@@ -7,9 +7,9 @@
  */
 export default function ResultadoRuta({ resultado }) {
   if (!resultado.encontrada) return <p className="aviso">{resultado.mensaje}</p>;
-    const { plan, transbordos, minutos_estimados, siguiente_camion, ocupacion, simulado, salida, llegada } = resultado;  return (
-    <section className="resultado">
-      <h2>Tu ruta</h2>
+  const { plan, transbordos, minutos_estimados, siguiente_camion, ocupacion, simulado, salida, llegada, clima } = resultado;
+  return (
+    <section className="resultado">      <h2>Tu ruta</h2>
     <div className="resultado__resumen">
         <div className="resultado__resumen-metricas">
           <div className="resultado__resumen-metrica resultado__resumen-metrica--duracion">
@@ -53,6 +53,22 @@ export default function ResultadoRuta({ resultado }) {
           </p>
         </div>
       </div>
+      {clima?.lluvia && (
+        <aside className="resultado__lluvia" role="status">
+          <svg
+            className="resultado__lluvia-icono"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path d="M7.5 16.5h9a4.5 4.5 0 0 0 .6-8.96 6 6 0 0 0-11.4 1.8A3.6 3.6 0 0 0 7.5 16.5Z" />
+            <path d="m9 19-1 2m5-2-1 2m5-2-1 2" />
+          </svg>
+          <p className="resultado__lluvia-mensaje">
+            Lluvia: considera un retraso de {clima.retraso_extra_min} min.
+          </p>
+        </aside>
+      )}
       <div className="resultado__tramos">
         {plan.map((p, i) => (
           <div className="resultado__paso" key={p.linea}>
