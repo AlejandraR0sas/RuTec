@@ -228,29 +228,33 @@ function obtenerDiaActual() {
         </button>
       </form>
 
-      <form onSubmit={buscarDireccion}>
-        <label>
-          Buscar dirección para
-          <select value={campoDireccion} onChange={(e) => setCampoDireccion(e.target.value)}>
-            <option value="origen">origen</option>
-            <option value="destino">destino</option>
-          </select>
-        </label>
-        <label>
-          Dirección en San Luis Potosí
-          <input value={direccion} onChange={(e) => setDireccion(e.target.value)} required />
-        </label>
-        <button type="submit">Buscar dirección</button>
-      </form>
-      {coincidencias.length > 0 && (
-        <ul aria-label="Resultados de direcciones">
-          {coincidencias.map((p, i) => (
-            <li key={`${p.lat}-${p.lng}-${i}`}>
-              <button type="button" onClick={() => elegirDireccion(p)}>{p.nombre}</button>
-            </li>
-          ))}
-        </ul>
-      )}
+      <details className="planificador__direcciones">
+        <summary>¿No encuentras tu estación? Buscar por dirección</summary>
+
+        <form onSubmit={buscarDireccion}>
+          <label>
+            Buscar dirección para
+            <select value={campoDireccion} onChange={(e) => setCampoDireccion(e.target.value)}>
+              <option value="origen">origen</option>
+              <option value="destino">destino</option>
+            </select>
+          </label>
+          <label>
+            Dirección en San Luis Potosí
+            <input value={direccion} onChange={(e) => setDireccion(e.target.value)} required />
+          </label>
+          <button type="submit">Buscar dirección</button>
+        </form>
+        {coincidencias.length > 0 && (
+          <ul aria-label="Resultados de direcciones">
+            {coincidencias.map((p, i) => (
+              <li key={`${p.lat}-${p.lng}-${i}`}>
+                <button type="button" onClick={() => elegirDireccion(p)}>{p.nombre}</button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </details>
 
           {error && <p className="error">{error}</p>}
           {clima && <p className="aviso">Clima en tu ubicación: {clima.temperature_2m} °C; precipitación {clima.precipitation} mm.</p>}
