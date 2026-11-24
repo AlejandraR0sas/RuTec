@@ -29,8 +29,20 @@ export default function App() {
             aria-hidden="true"
             focusable="false"
           >
-            <path className="encabezado__icono-forma" d="M6 5.5h12a2 2 0 0 1 2 2v10H4v-10a2 2 0 0 1 2-2Z" />
-            <path className="encabezado__icono-detalle" d="M5 12h14M7 8h10M7 18v1m10-1v1" />
+            <path
+              className="encabezado__icono-forma"
+              d="M7 4.5h10A2.5 2.5 0 0 1 19.5 7v11.5h-15V7A2.5 2.5 0 0 1 7 4.5Z"
+            />
+            <path
+              className="encabezado__icono-detalle"
+              d="M7 7h10l1 4H6l1-4Z"
+            />
+            <circle className="encabezado__icono-detalle" cx="7.5" cy="14" r="0.8" />
+            <circle className="encabezado__icono-detalle" cx="16.5" cy="14" r="0.8" />
+            <path
+              className="encabezado__icono-detalle"
+              d="M10 13.5h4M10 16h4M6.5 18h11M8 20v0.5m8-.5v0.5"
+            />
           </svg>
 
           <span className="encabezado__marca-texto">
