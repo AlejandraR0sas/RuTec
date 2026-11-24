@@ -165,3 +165,6 @@ lluvia(T0) :-
     ;   between(1080, 1169, T0)
     ),
     !.
+% --- Clima simulado (F1 – Ale) ---
+% retraso_lluvia(-Min): retraso adicional simulado, expresado en minutos.
+retraso_lluvia(10).

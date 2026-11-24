@@ -180,3 +180,10 @@ test(lluvia_madrugada, [fail]) :-
     lluvia(180).
 
 :- end_tests(clima_simulado).
+% --- Clima simulado (F1 – Ale) ---
+:- begin_tests(retraso_lluvia).
+
+test(retraso_lluvia_diez) :-
+    retraso_lluvia(10).
+
+:- end_tests(retraso_lluvia).
