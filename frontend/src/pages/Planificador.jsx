@@ -138,6 +138,8 @@ function obtenerDiaActual() {
 
   return (
     <>
+        <div className="planificador__layout">
+        <div className="planificador__columna">
       <h1>¿A dónde vas?</h1>
       <form onSubmit={buscar}>
         <label>
@@ -244,15 +246,17 @@ function obtenerDiaActual() {
         </ul>
       )}
 
-      {error && <p className="error">{error}</p>}
-      {clima && <p className="aviso">Clima en tu ubicación: {clima.temperature_2m} °C; precipitación {clima.precipitation} mm.</p>}
-      <Mapa estaciones={estaciones} coordenadas={coords} lineas={lineas} resultado={resultado} />
-      {resultado && <ResultadoRuta resultado={resultado} />}
-      {resultado && !resultado.encontrada && resultado.puede_solicitar && (
-        <button onClick={() => navegar('/solicitar', { state: { origen: nombreDe(origen), destino: nombreDe(destino) } })}>
-          Solicitar esta ruta
-        </button>
-      )}
+          {error && <p className="error">{error}</p>}
+          {clima && <p className="aviso">Clima en tu ubicación: {clima.temperature_2m} °C; precipitación {clima.precipitation} mm.</p>}
+          {resultado && <ResultadoRuta resultado={resultado} />}
+          {resultado && !resultado.encontrada && resultado.puede_solicitar && (
+            <button onClick={() => navegar('/solicitar', { state: { origen: nombreDe(origen), destino: nombreDe(destino) } })}>
+              Solicitar esta ruta
+            </button>
+          )}
+        </div>
+        <Mapa estaciones={estaciones} coordenadas={coords} lineas={lineas} resultado={resultado} />
+      </div>
     </>
   );
 }
