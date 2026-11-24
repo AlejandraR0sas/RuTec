@@ -33,12 +33,15 @@ export default function Login() {
 
   return (
     <main className="login">
-      <section className="login__tarjeta">
+      <section
+        className={`login__tarjeta ${modoRegistro ? 'login__tarjeta--registro' : ''}`}
+      >
         <div className="login__formularios">
           <form
-            className="login__formulario"
+            className={`login__formulario ${
+              modoRegistro ? 'login__formulario--oculto' : 'login__formulario--activo'
+            }`}
             onSubmit={enviar}
-            hidden={modoRegistro}
           >
             <h1>Iniciar sesión</h1>
 
@@ -68,9 +71,10 @@ export default function Login() {
           </form>
 
           <form
-            className="login__formulario"
+            className={`login__formulario ${
+              modoRegistro ? 'login__formulario--activo' : 'login__formulario--oculto'
+            }`}
             onSubmit={enviar}
-            hidden={!modoRegistro}
           >
             <h1>Crear cuenta</h1>
 
