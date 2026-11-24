@@ -31,18 +31,101 @@ export default function Login() {
   }
 
   return (
-    <form onSubmit={enviar}>
-      <h1>{modoRegistro ? 'Crear cuenta' : 'Entrar'}</h1>
-      {modoRegistro && (
-        <label>Nombre <input value={nombre} onChange={(e) => setNombre(e.target.value)} required /></label>
-      )}
-      <label>Correo <input type="email" value={correo} onChange={(e) => setCorreo(e.target.value)} required /></label>
-      <label>Contraseña <input type="password" minLength={modoRegistro ? 8 : undefined} value={password} onChange={(e) => setPassword(e.target.value)} required/></label>
-      {error && <p className="error">{error}</p>}
-      <button type="submit">{modoRegistro ? 'Crear cuenta' : 'Entrar'}</button>{' '}
-      <button type="button" onClick={() => setModoRegistro(!modoRegistro)}>
-        {modoRegistro ? 'Ya tengo cuenta' : 'Crear cuenta nueva'}
-      </button>
-    </form>
+    <main className="login">
+      <section className="login__tarjeta">
+        <div className="login__formularios">
+          <form
+            className="login__formulario"
+            onSubmit={enviar}
+            hidden={modoRegistro}
+          >
+            <h1>Iniciar sesión</h1>
+
+            <label>
+              Correo
+              <input
+                type="email"
+                value={correo}
+                onChange={(e) => setCorreo(e.target.value)}
+                required
+              />
+            </label>
+
+            <label>
+              Contraseña
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </label>
+
+            {error && <p className="error">{error}</p>}
+
+            <button type="submit">Iniciar sesión</button>
+          </form>
+
+          <form
+            className="login__formulario"
+            onSubmit={enviar}
+            hidden={!modoRegistro}
+          >
+            <h1>Crear cuenta</h1>
+
+            <label>
+              Nombre
+              <input
+                value={nombre}
+                onChange={(e) => setNombre(e.target.value)}
+                required
+              />
+            </label>
+
+            <label>
+              Correo
+              <input
+                type="email"
+                value={correo}
+                onChange={(e) => setCorreo(e.target.value)}
+                required
+              />
+            </label>
+
+            <label>
+              Contraseña
+              <input
+                type="password"
+                minLength={8}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </label>
+
+            {error && <p className="error">{error}</p>}
+
+            <button type="submit">Crear cuenta</button>
+          </form>
+        </div>
+
+        <aside className="login__panel">
+          <h2>
+            {modoRegistro ? '¡Qué bueno verte de nuevo!' : '¿Aún no tienes cuenta?'}
+          </h2>
+          <p>
+            {modoRegistro
+              ? 'Inicia sesión para planear tu viaje en RuTec.'
+              : 'Crea tu cuenta para usar las funciones de RuTec.'}
+          </p>
+          <button
+            type="button"
+            onClick={() => setModoRegistro(!modoRegistro)}
+          >
+            {modoRegistro ? 'Iniciar sesión' : 'Crear cuenta'}
+          </button>
+        </aside>
+      </section>
+    </main>
   );
 }
