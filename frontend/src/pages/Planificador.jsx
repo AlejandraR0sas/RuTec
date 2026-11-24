@@ -138,22 +138,41 @@ function obtenerDiaActual() {
 
   return (
     <>
+        <div className="planificador__pagina">
+          <div className="planificador__columna">
+             <div className="planificador__busqueda">
       <h1>¿A dónde vas?</h1>
       <form onSubmit={buscar}>
-        <label>
-          Origen
-          <select value={origen} onChange={(e) => setOrigen(e.target.value)} required>
-            <option value="">Elige una estación</option>
-            {estaciones.map((s) => <option key={s.id} value={s.id}>{s.nombre}</option>)}
-          </select>
-        </label>
-        <label>
-          Destino
-          <select value={destino} onChange={(e) => setDestino(e.target.value)} required>
-            <option value="">Elige una estación</option>
-            {estaciones.map((s) => <option key={s.id} value={s.id}>{s.nombre}</option>)}
-          </select>
-        </label>
+                <div className="planificador__campos-estaciones">
+          <label>
+            Origen
+            <select value={origen} onChange={(e) => setOrigen(e.target.value)} required>
+              <option value="">Elige una estación</option>
+              {estaciones.map((s) => <option key={s.id} value={s.id}>{s.nombre}</option>)}
+            </select>
+          </label>
+
+          <button
+            type="button"
+            className="planificador__invertir"
+            aria-label="Intercambiar origen y destino"
+            onClick={() => {
+              setOrigen(destino);
+              setDestino(origen);
+              setResultado(null);
+            }}
+          >
+            <span aria-hidden="true">⇅</span>
+          </button>
+
+          <label>
+            Destino
+            <select value={destino} onChange={(e) => setDestino(e.target.value)} required>
+              <option value="">Elige una estación</option>
+              {estaciones.map((s) => <option key={s.id} value={s.id}>{s.nombre}</option>)}
+            </select>
+          </label>
+        </div>
         <div className="horario-selector">
             <p className="horario-selector__titulo">Horario</p>
 
@@ -203,56 +222,52 @@ function obtenerDiaActual() {
             </div>
           )}
       </div>
-        <button
-          type="button"
-          className="planificador__invertir"
-          onClick={() => {
-            setOrigen(destino);
-            setDestino(origen);
-            setResultado(null);
-          }}
-        >
-          Invertir (regreso a casa)
-        </button>
         <button type="submit">Buscar ruta</button>
         <button type="button" onClick={usarUbicacion} disabled={cargandoUbicacion}>
           {cargandoUbicacion ? 'Buscando…' : 'Usar mi ubicación como origen'}
         </button>
       </form>
 
-      <form onSubmit={buscarDireccion}>
-        <label>
-          Buscar dirección para
-          <select value={campoDireccion} onChange={(e) => setCampoDireccion(e.target.value)}>
-            <option value="origen">origen</option>
-            <option value="destino">destino</option>
-          </select>
-        </label>
-        <label>
-          Dirección en San Luis Potosí
-          <input value={direccion} onChange={(e) => setDireccion(e.target.value)} required />
-        </label>
-        <button type="submit">Buscar dirección</button>
-      </form>
-      {coincidencias.length > 0 && (
-        <ul aria-label="Resultados de direcciones">
-          {coincidencias.map((p, i) => (
-            <li key={`${p.lat}-${p.lng}-${i}`}>
-              <button type="button" onClick={() => elegirDireccion(p)}>{p.nombre}</button>
-            </li>
-          ))}
-        </ul>
-      )}
+      <details className="planificador__direcciones">
+        <summary>¿No encuentras tu estación? Buscar por dirección</summary>
 
-      {error && <p className="error">{error}</p>}
-      {clima && <p className="aviso">Clima en tu ubicación: {clima.temperature_2m} °C; precipitación {clima.precipitation} mm.</p>}
-      <Mapa estaciones={estaciones} coordenadas={coords} lineas={lineas} resultado={resultado} />
-      {resultado && <ResultadoRuta resultado={resultado} />}
-      {resultado && !resultado.encontrada && resultado.puede_solicitar && (
-        <button onClick={() => navegar('/solicitar', { state: { origen: nombreDe(origen), destino: nombreDe(destino) } })}>
-          Solicitar esta ruta
-        </button>
-      )}
+        <form onSubmit={buscarDireccion}>
+          <label>
+            Buscar dirección para
+            <select value={campoDireccion} onChange={(e) => setCampoDireccion(e.target.value)}>
+              <option value="origen">origen</option>
+              <option value="destino">destino</option>
+            </select>
+          </label>
+          <label>
+            Dirección en San Luis Potosí
+            <input value={direccion} onChange={(e) => setDireccion(e.target.value)} required />
+          </label>
+          <button type="submit">Buscar dirección</button>
+        </form>
+        {coincidencias.length > 0 && (
+          <ul aria-label="Resultados de direcciones">
+            {coincidencias.map((p, i) => (
+              <li key={`${p.lat}-${p.lng}-${i}`}>
+                <button type="button" onClick={() => elegirDireccion(p)}>{p.nombre}</button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </details>
+
+          {error && <p className="error">{error}</p>}
+          {clima && <p className="aviso">Clima en tu ubicación: {clima.temperature_2m} °C; precipitación {clima.precipitation} mm.</p>}
+                 </div>
+          {resultado && <ResultadoRuta resultado={resultado} />}
+          {resultado && !resultado.encontrada && resultado.puede_solicitar && (
+            <button onClick={() => navegar('/solicitar', { state: { origen: nombreDe(origen), destino: nombreDe(destino) } })}>
+              Solicitar esta ruta
+            </button>
+          )}
+        </div>
+        <Mapa estaciones={estaciones} coordenadas={coords} lineas={lineas} resultado={resultado} />
+      </div>
     </>
   );
 }
