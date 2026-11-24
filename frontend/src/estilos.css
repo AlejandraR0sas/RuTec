@@ -18,15 +18,19 @@ button { background: var(--acento); color: #fff; border: 0; border-radius: 6px; 
 .mapa { height: 360px; margin: 1rem 0; border-radius: 8px; }
 /* Resultado de ruta (F1 – Ale) */
 .resultado {
-  --res-fondo: #153d2d;
-  --res-panel: #204c39;
+  --res-fondo: #f5f8f2;
+  --res-panel: #ffffff;
   --res-acento: #c4ed62;
-  --res-texto: #f5f8f2;
-  --res-borde: rgba(245, 248, 242, 0.2);
-  --res-texto-secundario: #d6e2d8;
-  --res-ocupacion-alta: #ffb86b;
-  --res-ocupacion-media: #f2d36b;
-  --res-ocupacion-baja: #8cdda5;
+  --res-texto: #123d2b;
+  --res-borde: #cbd8ce;
+  --res-texto-secundario: #405b4a;
+  --res-ocupacion-alta: #a84f00;
+  --res-ocupacion-media: #755b00;
+  --res-ocupacion-baja: #17633a;
+  --res-resumen-fondo: #07512f;
+  --res-resumen-texto: #f5f8f2;
+  --res-resumen-secundario: #d6e2d8;
+  --res-acento-sobre-claro: #237a3d;
   padding: 1rem;
   border: 1px solid var(--res-borde);
   border-radius: 1.25rem;
@@ -330,9 +334,9 @@ button { background: var(--acento); color: #fff; border: 0; border-radius: 6px; 
 }
 
 .resultado__proximos-hora--primera {
-  border-color: var(--res-acento);
-  background: var(--res-acento);
-  color: var(--res-fondo);
+  border-color: var(--res-acento-sobre-claro);
+  background: var(--res-acento-sobre-claro);
+  color: #ffffff;
   font-weight: 700;
 }
 
@@ -345,7 +349,7 @@ button { background: var(--acento); color: #fff; border: 0; border-radius: 6px; 
 .resultado__sin-servicio {
   margin: 1rem 0 0;
   padding: 0.75rem;
-  border-left: 3px solid var(--res-acento);
+  border-left: 3px solid var(--res-acento-sobre-claro);
   border-radius: 0.5rem;
   background: var(--res-fondo);
   font-size: 1rem;
@@ -358,6 +362,206 @@ button { background: var(--acento); color: #fff; border: 0; border-radius: 6px; 
     grid-template-areas: "tiempo horas transbordos";
     align-items: center;
   }
+}
+.resultado__resumen {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: none;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.resultado__resumen-metricas {
+  display: grid;
+  grid-template-columns: 1.2fr 0.9fr 1.1fr;
+}
+
+.resultado__resumen-metrica {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.3rem;
+  padding: 0.75rem;
+}
+
+.resultado__resumen-metrica:not(:last-child) {
+  border-right: 1px solid var(--res-borde);
+}
+
+.resultado__resumen-etiqueta {
+  color: var(--res-texto-secundario);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.resultado__resumen-metrica--duracion .resultado__tiempo {
+  gap: 0.25rem;
+}
+
+.resultado__resumen-metrica--duracion .resultado__tiempo span {
+  text-transform: uppercase;
+}
+
+.resultado__resumen-valor {
+  overflow-wrap: anywhere;
+  font-size: 1.2rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.resultado__resumen-extra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.65rem 0.75rem;
+  border-top: 1px solid var(--res-borde);
+}
+
+.resultado__resumen-lineas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.resultado__resumen-secuencia {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.resultado__resumen-distintivo {
+  display: inline-flex;
+  min-height: 2rem;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--res-acento);
+  border-radius: 0.6rem;
+  color: var(--res-texto);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.resultado__resumen-flecha {
+  color: var(--res-acento);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.resultado__resumen-transbordos {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+  color: var(--res-texto-secundario);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 420px) {
+  .resultado__resumen-metrica {
+    padding: 0.65rem 0.45rem;
+  }
+
+  .resultado__resumen-metrica--duracion .resultado__tiempo strong {
+    font-size: clamp(2.25rem, 11vw, 3rem);
+  }
+
+  .resultado__resumen-valor {
+    font-size: 1rem;
+  }
+}
+.resultado__tramos {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.resultado__paso {
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: 0.75rem;
+}
+
+.resultado__paso-riel {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.resultado__paso-distintivo {
+  display: inline-flex;
+  width: 2.5rem;
+  min-height: 2.25rem;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--res-acento-sobre-claro);
+  border-radius: 0.65rem;
+  background: var(--res-panel);
+  color: var(--res-texto);
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.resultado__paso-linea {
+  width: 3px;
+  min-height: 1rem;
+  flex: 1;
+  margin-top: 0.25rem;
+  border-radius: 999px;
+  background: var(--res-acento-sobre-claro);
+}
+
+.resultado__tramo {
+  grid-column: 2;
+  padding: 1rem;
+  border: 1px solid var(--res-borde);
+  border-radius: 1rem;
+  background: var(--res-panel);
+}
+
+.resultado__encabezado-tramo {
+  margin-bottom: 0.5rem;
+}
+
+.resultado__transbordo {
+  grid-column: 2;
+  justify-self: start;
+  max-width: 100%;
+  margin: 0 0 0.9rem;
+  padding: 0.4rem 0.65rem;
+  border-left: 3px solid var(--res-acento-sobre-claro);
+  border-radius: 0.5rem;
+  background: var(--res-panel);
+}
+.resultado__resumen {
+  background: var(--res-resumen-fondo);
+  color: var(--res-resumen-texto);
+}
+
+.resultado__resumen-etiqueta {
+  color: var(--res-resumen-secundario);
+}
+
+.resultado__resumen-distintivo {
+  color: var(--res-resumen-texto);
+}
+
+.resultado__resumen-transbordos {
+  color: var(--res-resumen-secundario);
+}
+
+.resultado__camion-titulo,
+.resultado__proximos-titulo,
+.resultado__simulado strong {
+  color: var(--res-texto);
 }
 .planificador__invertir {
   display: block;

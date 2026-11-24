@@ -10,34 +10,63 @@ export default function ResultadoRuta({ resultado }) {
     const { plan, transbordos, minutos_estimados, siguiente_camion, ocupacion, simulado, salida, llegada } = resultado;  return (
     <section className="resultado">
       <h2>Tu ruta</h2>
-      <div className="resultado__resumen">
-        <p className="resultado__tiempo">
-          <strong>{minutos_estimados}</strong>
-          <span>min</span>
-        </p>
-        <p className="resultado__transbordos">
-          <strong>{transbordos}</strong>
-          <span>{transbordos === 1 ? 'transbordo' : 'transbordos'}</span>
-        </p>
-        <div className="resultado__horas">
-          <p>
-            <span>Sale</span>
-            <strong>{salida}</strong>
-          </p>
-          <p>
-            <span>Llega</span>
-            <strong>{llegada === null ? 'Sin servicio a esta hora' : llegada}</strong>
+    <div className="resultado__resumen">
+        <div className="resultado__resumen-metricas">
+          <div className="resultado__resumen-metrica resultado__resumen-metrica--duracion">
+            <span className="resultado__resumen-etiqueta">Duración</span>
+            <p className="resultado__tiempo">
+              <strong>{minutos_estimados}</strong>
+              <span>min</span>
+            </p>
+          </div>
+
+          <div className="resultado__resumen-metrica">
+            <span className="resultado__resumen-etiqueta">Sales</span>
+            <strong className="resultado__resumen-valor">{salida}</strong>
+          </div>
+
+          <div className="resultado__resumen-metrica">
+            <span className="resultado__resumen-etiqueta">Llegas</span>
+            <strong className="resultado__resumen-valor">
+              {llegada === null ? 'Sin servicio a esta hora' : llegada}
+            </strong>
+          </div>
+        </div>
+
+        <div className="resultado__resumen-extra">
+          <div className="resultado__resumen-lineas" aria-label="Líneas del recorrido">
+            {plan.map((tramo, indice) => (
+              <span className="resultado__resumen-secuencia" key={tramo.linea}>
+                <span className="resultado__resumen-distintivo">
+                  {tramo.linea.replace('_', '-').toUpperCase()}
+                </span>
+                {indice < plan.length - 1 && (
+                  <span className="resultado__resumen-flecha" aria-hidden="true">→</span>
+                )}
+              </span>
+            ))}
+          </div>
+
+          <p className="resultado__resumen-transbordos">
+            <span aria-hidden="true">⇄</span>
+            <span>{transbordos} {transbordos === 1 ? 'transbordo' : 'transbordos'}</span>
           </p>
         </div>
       </div>
       <div className="resultado__tramos">
         {plan.map((p, i) => (
-          <div key={i}>
+          <div className="resultado__paso" key={p.linea}>
+            <div className="resultado__paso-riel" aria-hidden="true">
+              <span className="resultado__paso-distintivo">
+                {p.linea.replace('_', '-').toUpperCase()}
+              </span>
+              {i < plan.length - 1 && (
+                <span className="resultado__paso-linea" />
+              )}
+            </div>
+
             <article className="resultado__tramo">
               <div className="resultado__encabezado-tramo">
-                <span className="resultado__distintivo">
-                  {p.linea.split('_')[0].toUpperCase()}
-                </span>
                 <strong className="resultado__nombre-linea">{p.linea_nombre}</strong>
               </div>
 
