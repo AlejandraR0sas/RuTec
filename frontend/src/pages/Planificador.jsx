@@ -222,17 +222,6 @@ function obtenerDiaActual() {
             </div>
           )}
       </div>
-        <button
-          type="button"
-          className="planificador__invertir"
-          onClick={() => {
-            setOrigen(destino);
-            setDestino(origen);
-            setResultado(null);
-          }}
-        >
-          Invertir (regreso a casa)
-        </button>
         <button type="submit">Buscar ruta</button>
         <button type="button" onClick={usarUbicacion} disabled={cargandoUbicacion}>
           {cargandoUbicacion ? 'Buscando…' : 'Usar mi ubicación como origen'}
