@@ -157,3 +157,11 @@ llegada_plan([tramo(_, _, _, _, Bajada)], Bajada) :-
     !.
 llegada_plan([tramo(_, _, _, _, _) | Resto], Llegada) :-
     llegada_plan(Resto, Llegada).
+% --- Clima simulado (F1 – Ale) ---
+% lluvia(+T0): es verdadero si la salida cae en uno de los horarios simulados de lluvia.
+lluvia(T0) :-
+    integer(T0),
+    (   between(840, 959, T0)
+    ;   between(1080, 1169, T0)
+    ),
+    !.

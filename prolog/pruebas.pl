@@ -152,3 +152,31 @@ test(minutos_a_hora_despues_de_un_dia) :-
     minutos_a_hora(1445, '00:05').
 
 :- end_tests(formato_hora).
+% --- Clima simulado (F1 – Ale) ---
+:- begin_tests(clima_simulado).
+
+test(lluvia_inicio_primer_intervalo) :-
+    lluvia(840).
+
+test(lluvia_fin_primer_intervalo) :-
+    lluvia(959).
+
+test(lluvia_despues_primer_intervalo, [fail]) :-
+    lluvia(960).
+
+test(lluvia_antes_primer_intervalo, [fail]) :-
+    lluvia(839).
+
+test(lluvia_inicio_segundo_intervalo) :-
+    lluvia(1080).
+
+test(lluvia_fin_segundo_intervalo) :-
+    lluvia(1169).
+
+test(lluvia_despues_segundo_intervalo, [fail]) :-
+    lluvia(1170).
+
+test(lluvia_madrugada, [fail]) :-
+    lluvia(180).
+
+:- end_tests(clima_simulado).
