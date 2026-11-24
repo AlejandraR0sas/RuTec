@@ -999,3 +999,14 @@ button { background: var(--acento); color: #fff; border: 0; border-radius: 6px; 
     padding-bottom: 1.5rem;
   }
 }
+/* Ajustar el ancho de la portada */
+main:has(.planificador__intro) {
+  max-width: none;
+  padding: 0;
+}
+
+.planificador__intro {
+  left: auto;
+  width: 100%;
+  transform: none;
+}
