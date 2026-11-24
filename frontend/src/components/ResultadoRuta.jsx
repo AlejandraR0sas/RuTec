@@ -41,13 +41,13 @@ export default function ResultadoRuta({ resultado }) {
                 <strong className="resultado__nombre-linea">{p.linea_nombre}</strong>
               </div>
 
-                            <div className="resultado__puntos">
+              <div className="resultado__puntos">
                 <p className="resultado__punto">
-                  <span>Sube en</span>
+                  <span>Sube a las {p.abordaje}</span>
                   <strong>{p.desde_nombre}</strong>
                 </p>
                 <p className="resultado__punto">
-                  <span>Bájate en</span>
+                  <span>Baja a las {p.bajada}</span>
                   <strong>{p.hasta_nombre}</strong>
                 </p>
               </div>
