@@ -8,6 +8,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
+import './Login.css';
 
 export default function Login() {
   const { iniciarSesion, registrar } = useAuth();

@@ -1,0 +1,105 @@
+.login {
+  --login-panel: #04321f;
+  --login-lima: #91c91f;
+  --login-superficie: #ffffff;
+  --login-texto: var(--texto);
+  --login-borde: var(--borde);
+
+  display: grid;
+  place-items: center;
+  width: 100%;
+}
+
+.login__tarjeta {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.85fr);
+  width: min(100%, 900px);
+  min-height: 480px;
+  overflow: hidden;
+  border: 1px solid var(--login-borde);
+  border-radius: 28px;
+  background: var(--login-superficie);
+  box-shadow: 0 18px 48px rgb(18 61 43 / 14%);
+}
+
+.login__formularios {
+  display: grid;
+  align-items: center;
+  padding: clamp(1.5rem, 5vw, 3.5rem);
+}
+
+.login__formulario[hidden] {
+  display: none;
+}
+
+.login__formulario h1 {
+  margin: 0 0 1.5rem;
+  color: var(--login-texto);
+  font-size: clamp(1.7rem, 3vw, 2.25rem);
+}
+
+.login__formulario label {
+  display: block;
+  margin: 1rem 0;
+  color: var(--login-texto);
+  font-weight: 600;
+}
+
+.login__formulario input {
+  display: block;
+  width: 100%;
+  margin-top: 0.4rem;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--login-borde);
+  border-radius: 10px;
+  background: var(--login-superficie);
+  color: var(--login-texto);
+}
+
+.login__formulario button[type="submit"] {
+  width: 100%;
+  margin-top: 0.75rem;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  background: var(--acento);
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.login__panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem;
+  border-radius: 5rem 0 0 5rem;
+  background: var(--login-panel);
+  color: #ffffff;
+  text-align: center;
+}
+
+.login__panel h2 {
+  margin: 0 0 1rem;
+  color: var(--login-lima);
+  font-size: clamp(1.7rem, 3vw, 2.25rem);
+}
+
+.login__panel p {
+  max-width: 24rem;
+  margin: 0 0 1.75rem;
+  line-height: 1.6;
+}
+
+.login__panel button {
+  padding: 0.75rem 1.5rem;
+  border: 1px solid var(--login-lima);
+  border-radius: 10px;
+  background: transparent;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.login__panel button:hover {
+  background: var(--login-lima);
+  color: var(--login-panel);
+}
