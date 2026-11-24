@@ -41,43 +41,47 @@ export default function ResultadoRuta({ resultado }) {
                 <strong className="resultado__nombre-linea">{p.linea_nombre}</strong>
               </div>
 
-              <div className="resultado__puntos">
-                <p className="resultado__punto">
-                  <span>Sube a las {p.abordaje}</span>
-                  <strong>{p.desde_nombre}</strong>
+              {p.proximos.length === 0 || p.abordaje === null ? (
+                <p className="resultado__sin-servicio">
+                  No hay servicio a esta hora
                 </p>
-                <p className="resultado__punto">
-                  <span>Baja a las {p.bajada}</span>
-                  <strong>{p.hasta_nombre}</strong>
-                </p>
-              </div>
+              ) : (
+                <>
+                  <div className="resultado__puntos">
+                    <p className="resultado__punto">
+                      <span>Sube a las {p.abordaje}</span>
+                      <strong>{p.desde_nombre}</strong>
+                    </p>
+                    <p className="resultado__punto">
+                      <span>Baja a las {p.bajada}</span>
+                      <strong>{p.hasta_nombre}</strong>
+                    </p>
+                  </div>
 
-              <p className="resultado__cantidad-paradas">
-                {p.paradas} {p.paradas === 1 ? 'parada' : 'paradas'}
-              </p>
+                  <p className="resultado__cantidad-paradas">
+                    {p.paradas} {p.paradas === 1 ? 'parada' : 'paradas'}
+                  </p>
 
-              <div className="resultado__proximos">
-                <p className="resultado__proximos-titulo">Próximos camiones</p>
-                <div className="resultado__proximos-horas">
-                  {p.proximos.map((hora, indice) => (
-                    <span
-                      key={`${hora}-${indice}`}
-                      className={`resultado__proximos-hora${indice === 0 ? ' resultado__proximos-hora--primera' : ''}`}
-                    >
-                      {hora}
-                    </span>
-                  ))}
-                </div>
-                <p className="resultado__espera">
-                  {p.espera_min === 0
-                    ? 'Está pasando ahora'
-                    : `Espera ~${p.espera_min} min`}
-                </p>
-              </div>
-
-              <p className="resultado__cantidad-paradas">
-                {p.paradas} {p.paradas === 1 ? 'parada' : 'paradas'}
-              </p>
+                  <div className="resultado__proximos">
+                    <p className="resultado__proximos-titulo">Próximos camiones</p>
+                    <div className="resultado__proximos-horas">
+                      {p.proximos.map((hora, indice) => (
+                        <span
+                          key={`${hora}-${indice}`}
+                          className={`resultado__proximos-hora${indice === 0 ? ' resultado__proximos-hora--primera' : ''}`}
+                        >
+                          {hora}
+                        </span>
+                      ))}
+                    </div>
+                    <p className="resultado__espera">
+                      {p.espera_min === 0
+                        ? 'Está pasando ahora'
+                        : `Espera ~${p.espera_min} min`}
+                    </p>
+                  </div>
+                </>
+              )}
             </article>
 
             {i < plan.length - 1 && (
