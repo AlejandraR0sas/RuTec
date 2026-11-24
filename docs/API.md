@@ -40,18 +40,33 @@ Body: `{ "origen": "zt_alameda", "destino": "itsslpc", "hora": 7, "minuto": 30, 
   "plan": [
     { "linea": "l1_a", "linea_nombre": "L1 Eje 128 – Alameda",
       "desde": "zt_alameda", "desde_nombre": "Zona de Transferencia Alameda",
-      "hasta": "cetram", "hasta_nombre": "CETRAM", "paradas": 25 },
+      "hasta": "cetram", "hasta_nombre": "CETRAM", "paradas": 25,
+      "abordaje": "07:30", "espera_min": 0,
+      "proximos": ["07:30", "07:40", "07:50"], "bajada": "08:20" },
     { "linea": "l1_b", "linea_nombre": "L1 Extensión CETRAM – ITSSLPC",
       "desde": "cetram", "desde_nombre": "CETRAM",
-      "hasta": "itsslpc", "hasta_nombre": "ITSSLPC (Tec Superior Capital)", "paradas": 2 }
+      "hasta": "itsslpc", "hasta_nombre": "ITSSLPC (Tec Superior Capital)", "paradas": 2,
+      "abordaje": "08:30", "espera_min": 4,
+      "proximos": ["08:30", "08:45", "09:00"], "bajada": "08:34" }
   ],
   "transbordos": 1,
   "minutos_estimados": 60,
+  "salida": "07:30",
+  "llegada": "08:34",
   "siguiente_camion": { "en_minutos": 0, "frecuencia_min": 10 },
   "ocupacion": "alta",
   "simulado": true
 }
 ```
+Campos de horario (se agregan a los anteriores, no cambian nada de lo que ya existía):
+
+- `abordaje`: hora en que sube al camión en ese tramo ("HH:MM").
+- `espera_min`: minutos que espera en la parada. En el primer tramo cuenta desde la hora de salida; en los siguientes, cuenta después de los minutos de transbordo (`minutos_transbordo`) desde que llega a la estación de transbordo.
+- `proximos`: hasta 3 horas de camiones de esa línea, empezando por el que va a tomar.
+- `bajada`: hora en que llega al final del tramo.
+- `salida` y `llegada`: hora de salida y llegada de todo el viaje.
+- `minutos_estimados` sigue siendo solo el tiempo en camión más los transbordos, **sin esperas**.
+- Si una línea no está en servicio a esa hora: `proximos` es `[]`; `abordaje`, `espera_min` y `bajada` son `null`; y `llegada` también es `null`.
 `siguiente_camion` es `null` si la primera línea está fuera de servicio a esa hora. `ocupacion` ∈ `alta | media | baja`.
 
 **200 – no hay ruta** (no es error, es resultado)

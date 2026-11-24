@@ -88,3 +88,72 @@ hora_pico(H) :-
 ocupacion(Dia, H, alta)  :- dia_laboral(Dia), hora_pico(H), !.
 ocupacion(Dia, H, media) :- dia_laboral(Dia), between(10, 17, H), !.
 ocupacion(_, _, baja).
+% --- Horarios por tramo (F1 – Ale) ---
+% proxima_salida(+L, +T, -S): primera salida de L desde el minuto T.
+proxima_salida(L, T, S) :-
+    horario_servicio(L, Ini, Fin),
+    frecuencia(L, F),
+    T >= Ini,
+    T =< Fin,
+    Indice is (T - Ini + F - 1) // F,
+    S is Ini + Indice * F,
+    S =< Fin.
+% --- Horarios por tramo (F1 – Ale) ---
+% proximas_salidas(+L, +S, +N, -Lista): hasta N salidas desde S, sin superar el cierre.
+proximas_salidas(L, S, N, Lista) :-
+    horario_servicio(L, Ini, Fin),
+    frecuencia(L, F),
+    integer(S),
+    S >= Ini,
+    integer(N),
+    N >= 0,
+    proximas_salidas_(S, Fin, N, F, Lista).
+
+proximas_salidas_(_, _, 0, _, []) :-
+    !.
+proximas_salidas_(S, Fin, N, F, [S | Resto]) :-
+    N > 0,
+    S =< Fin,
+    !,
+    Siguiente is S + F,
+    Restantes is N - 1,
+    proximas_salidas_(Siguiente, Fin, Restantes, F, Resto).
+proximas_salidas_(S, Fin, N, _, []) :-
+    N > 0,
+    S > Fin.
+% --- Horarios por tramo (F1 – Ale) ---
+% horarios_plan(+Plan, +T0, -Tramos): calcula horarios para cada viaje del plan.
+horarios_plan(Plan, T0, Tramos) :-
+    minutos_por_parada(MP),
+    minutos_transbordo(MT),
+    horarios_plan_(Plan, T0, MP, MT, Tramos),
+    !.
+
+horarios_plan_([], _, _, _, []).
+horarios_plan_([viaje(L, A, B) | Resto], Disponible, MP, MT, [Tramo | Tramos]) :-
+    (   proxima_salida(L, Disponible, Abordaje)
+    ->  paradas_entre(L, A, B, Paradas),
+        Espera is Abordaje - Disponible,
+        Bajada is Abordaje + Paradas * MP,
+        proximas_salidas(L, Abordaje, 3, Proximos),
+        Tramo = tramo(L, Abordaje, Espera, Proximos, Bajada),
+        SiguienteDisponible is Bajada + MT,
+        horarios_plan_(Resto, SiguienteDisponible, MP, MT, Tramos)
+    ;   Tramo = sin_servicio(L),
+        marcar_sin_servicio(Resto, Tramos)
+    ).
+
+marcar_sin_servicio([], []).
+marcar_sin_servicio([viaje(L, _, _) | Resto], [sin_servicio(L) | Tramos]) :-
+    marcar_sin_servicio(Resto, Tramos).
+
+% llegada_plan(+Tramos, -Llegada): null si algún tramo no tiene servicio.
+llegada_plan(Tramos, null) :-
+    member(sin_servicio(_), Tramos),
+    !.
+llegada_plan([], null) :-
+    !.
+llegada_plan([tramo(_, _, _, _, Bajada)], Bajada) :-
+    !.
+llegada_plan([tramo(_, _, _, _, _) | Resto], Llegada) :-
+    llegada_plan(Resto, Llegada).
