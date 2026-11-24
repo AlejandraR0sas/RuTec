@@ -187,3 +187,19 @@ test(retraso_lluvia_diez) :-
     retraso_lluvia(10).
 
 :- end_tests(retraso_lluvia).
+% --- Clima simulado (F1 – Ale) ---
+:- begin_tests(ajustar_ocupacion).
+
+test(lluvia_subir_baja_a_media) :-
+    ajustar_ocupacion(true, baja, media).
+
+test(lluvia_subir_media_a_alta) :-
+    ajustar_ocupacion(true, media, alta).
+
+test(lluvia_mantener_alta) :-
+    ajustar_ocupacion(true, alta, alta).
+
+test(sin_lluvia_conservar_baja) :-
+    ajustar_ocupacion(false, baja, baja).
+
+:- end_tests(ajustar_ocupacion).

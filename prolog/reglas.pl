@@ -168,3 +168,13 @@ lluvia(T0) :-
 % --- Clima simulado (F1 – Ale) ---
 % retraso_lluvia(-Min): retraso adicional simulado, expresado en minutos.
 retraso_lluvia(10).
+% --- Clima simulado (F1 – Ale) ---
+% ajustar_ocupacion(+Lluvia, +Base, -Final): ajusta la ocupación simulada por lluvia.
+ajustar_ocupacion(false, Base, Base) :-
+    !.
+ajustar_ocupacion(true, baja, media) :-
+    !.
+ajustar_ocupacion(true, media, alta) :-
+    !.
+ajustar_ocupacion(true, alta, alta) :-
+    !.
