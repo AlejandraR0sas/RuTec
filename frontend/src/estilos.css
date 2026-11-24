@@ -631,3 +631,133 @@ button { background: var(--acento); color: #fff; border: 0; border-radius: 6px; 
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+/* Distribución del planificador (F1 – Ale) */
+.planificador__pagina {
+  position: relative;
+  left: 50%;
+  width: min(1280px, calc(100vw - 2rem));
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns: minmax(360px, 0.75fr) minmax(0, 1.35fr);
+  align-items: start;
+  gap: 1.5rem;
+}
+
+.planificador__columna {
+  display: grid;
+  min-width: 0;
+  gap: 1rem;
+}
+
+.planificador__busqueda {
+  padding: 1rem;
+  border: 1px solid var(--borde);
+  border-radius: 1rem;
+  background: #fff;
+}
+
+.planificador__busqueda h1 {
+  margin-top: 0;
+}
+
+.planificador__pagina > .mapa {
+  position: sticky;
+  top: 1rem;
+  height: min(85vh, 820px);
+  min-height: 32rem;
+  margin: 0;
+  border: 2px solid var(--acento);
+  border-radius: 1.25rem;
+}
+
+@media (max-width: 900px) {
+  .planificador__pagina {
+    width: min(760px, calc(100vw - 2rem));
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .planificador__pagina > .mapa {
+    position: static;
+    height: 420px;
+    min-height: 360px;
+  }
+}
+/* Controles de búsqueda (F1 – Ale) */
+.planificador__busqueda form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.planificador__busqueda label {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+.planificador__busqueda select,
+.planificador__busqueda input {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--borde);
+  border-radius: 0.75rem;
+  background: #fff;
+  color: var(--texto);
+}
+
+.planificador__busqueda form > button {
+  width: 100%;
+  min-height: 2.75rem;
+  border-radius: 0.75rem;
+}
+
+.planificador__busqueda .planificador__invertir {
+  background: #fff;
+  color: var(--acento);
+}
+.planificador__campos-estaciones {
+  position: relative;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.planificador__busqueda .planificador__campos-estaciones > .planificador__invertir {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  right: 0.75rem;
+  display: grid;
+  width: 1.75rem;
+  height: 1.75rem;
+  min-height: 1.75rem;
+  place-items: center;
+  padding: 0;
+  transform: translateY(-50%);
+  border: 1px solid var(--borde);
+  border-radius: 50%;
+  background: #eaf4e9;
+  color: var(--acento);
+  font-size: 0.9rem;
+  line-height: 1;
+}
+/* Tarjetas independientes del resultado (F1 – Ale) */
+.resultado {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.resultado > h2 {
+  margin: 0 0 0.75rem;
+}
+
+.resultado__resumen {
+  border: 2px solid var(--res-acento);
+  border-radius: 1rem;
+  background: var(--res-resumen-fondo);
+}
+
+.resultado__tramos {
+  gap: 0.75rem;
+}
