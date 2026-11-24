@@ -66,7 +66,7 @@ Campos de horario (se agregan a los anteriores, no cambian nada de lo que ya exi
 - `bajada`: hora en que llega al final del tramo.
 - `salida` y `llegada`: hora de salida y llegada de todo el viaje.
 - `minutos_estimados` sigue siendo solo el tiempo en camión más los transbordos, **sin esperas**.
-- Si una línea no está en servicio a esa hora: `proximos` es `[]`, `abordaje` y `bajada` son `null`, y `llegada` también es `null`.
+- Si una línea no está en servicio a esa hora: `proximos` es `[]`; `abordaje`, `espera_min` y `bajada` son `null`; y `llegada` también es `null`.
 `siguiente_camion` es `null` si la primera línea está fuera de servicio a esa hora. `ocupacion` ∈ `alta | media | baja`.
 
 **200 – no hay ruta** (no es error, es resultado)
