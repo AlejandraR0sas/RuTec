@@ -954,3 +954,48 @@ button { background: var(--acento); color: #fff; border: 0; border-radius: 6px; 
     grid-area: cuenta;
   }
 }
+/* Bienvenida del planificador */
+.planificador__intro {
+  --intro-fondo: #04321f;
+  --intro-acento: #91c91f;
+  --intro-texto: #f7fbf8;
+  --intro-secundario: #d6e2d8;
+  position: relative;
+  left: 50%;
+  width: 100vw;
+  margin: 0 0 1rem;
+  padding: 2rem max(1rem, calc((100vw - 1280px) / 2));
+  transform: translateX(-50%);
+  border-bottom: 3px solid var(--intro-acento);
+  background: var(--intro-fondo);
+  color: var(--intro-texto);
+}
+
+.planificador__intro h1 {
+  max-width: 54rem;
+  margin: 0 0 0.5rem;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-style: italic;
+  font-weight: 850;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.planificador__intro-acento {
+  color: var(--intro-acento);
+}
+
+.planificador__intro p {
+  max-width: 42rem;
+  margin: 0;
+  color: var(--intro-secundario);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 700px) {
+  .planificador__intro {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+}

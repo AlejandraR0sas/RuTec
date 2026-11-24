@@ -138,10 +138,17 @@ function obtenerDiaActual() {
 
   return (
     <>
+      <section className="planificador__intro" aria-labelledby="planificador-titulo">
+        <h1 id="planificador-titulo">
+          ¿Cómo llego al <span className="planificador__intro-acento">TEC</span> hoy?
+        </h1>
+        <p>
+          Te decimos qué línea tomar, dónde transbordar, cuánto tardas y cuándo pasa el siguiente camión.
+        </p>
+      </section>
         <div className="planificador__pagina">
           <div className="planificador__columna">
              <div className="planificador__busqueda">
-      <h1>¿A dónde vas?</h1>
       <form onSubmit={buscar}>
                 <div className="planificador__campos-estaciones">
           <label>
