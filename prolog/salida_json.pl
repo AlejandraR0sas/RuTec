@@ -54,6 +54,11 @@ armar_respuesta(O, D, Plan, H, M, Dia, Dict) :-
     ;   Lluvia = false
     ),
     ajustar_ocupacion(Lluvia, OcupacionBase, Ocup),
+        (   Lluvia == true
+    ->  retraso_lluvia(RetrasoExtraMin)
+    ;   RetrasoExtraMin = 0
+    ),
+    Clima = _{lluvia: Lluvia, retraso_extra_min: RetrasoExtraMin},
             Dict = _{ encontrada: true,
               origen:  _{id: O, nombre: NO},
               destino: _{id: D, nombre: ND},
@@ -64,6 +69,7 @@ armar_respuesta(O, D, Plan, H, M, Dia, Dict) :-
               llegada: Llegada,
               siguiente_camion: Sig,
               ocupacion: Ocup,
+              clima: Clima,
               simulado: true }.
 
 plan_a_dicts([], [], []).
