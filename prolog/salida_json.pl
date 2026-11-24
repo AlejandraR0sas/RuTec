@@ -48,7 +48,12 @@ armar_respuesta(O, D, Plan, H, M, Dia, Dict) :-
         Sig = _{en_minutos: Espera, frecuencia_min: F}
     ;   Sig = null
     ),
-    ocupacion(Dia, H, Ocup),
+    ocupacion(Dia, H, OcupacionBase),
+    (   lluvia(T0)
+    ->  Lluvia = true
+    ;   Lluvia = false
+    ),
+    ajustar_ocupacion(Lluvia, OcupacionBase, Ocup),
             Dict = _{ encontrada: true,
               origen:  _{id: O, nombre: NO},
               destino: _{id: D, nombre: ND},
