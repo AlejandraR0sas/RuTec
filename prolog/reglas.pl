@@ -157,3 +157,24 @@ llegada_plan([tramo(_, _, _, _, Bajada)], Bajada) :-
     !.
 llegada_plan([tramo(_, _, _, _, _) | Resto], Llegada) :-
     llegada_plan(Resto, Llegada).
+% --- Clima simulado (F1 – Ale) ---
+% lluvia(+T0): es verdadero si la salida cae en uno de los horarios simulados de lluvia.
+lluvia(T0) :-
+    integer(T0),
+    (   between(840, 959, T0)
+    ;   between(1080, 1169, T0)
+    ),
+    !.
+% --- Clima simulado (F1 – Ale) ---
+% retraso_lluvia(-Min): retraso adicional simulado, expresado en minutos.
+retraso_lluvia(10).
+% --- Clima simulado (F1 – Ale) ---
+% ajustar_ocupacion(+Lluvia, +Base, -Final): ajusta la ocupación simulada por lluvia.
+ajustar_ocupacion(false, Base, Base) :-
+    !.
+ajustar_ocupacion(true, baja, media) :-
+    !.
+ajustar_ocupacion(true, media, alta) :-
+    !.
+ajustar_ocupacion(true, alta, alta) :-
+    !.

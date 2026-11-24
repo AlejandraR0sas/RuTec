@@ -152,3 +152,76 @@ test(minutos_a_hora_despues_de_un_dia) :-
     minutos_a_hora(1445, '00:05').
 
 :- end_tests(formato_hora).
+% --- Clima simulado (F1 – Ale) ---
+:- begin_tests(clima_simulado).
+
+test(lluvia_inicio_primer_intervalo) :-
+    lluvia(840).
+
+test(lluvia_fin_primer_intervalo) :-
+    lluvia(959).
+
+test(lluvia_despues_primer_intervalo, [fail]) :-
+    lluvia(960).
+
+test(lluvia_antes_primer_intervalo, [fail]) :-
+    lluvia(839).
+
+test(lluvia_inicio_segundo_intervalo) :-
+    lluvia(1080).
+
+test(lluvia_fin_segundo_intervalo) :-
+    lluvia(1169).
+
+test(lluvia_despues_segundo_intervalo, [fail]) :-
+    lluvia(1170).
+
+test(lluvia_madrugada, [fail]) :-
+    lluvia(180).
+
+:- end_tests(clima_simulado).
+% --- Clima simulado (F1 – Ale) ---
+:- begin_tests(retraso_lluvia).
+
+test(retraso_lluvia_diez) :-
+    retraso_lluvia(10).
+
+:- end_tests(retraso_lluvia).
+% --- Clima simulado (F1 – Ale) ---
+:- begin_tests(ajustar_ocupacion).
+
+test(lluvia_subir_baja_a_media) :-
+    ajustar_ocupacion(true, baja, media).
+
+test(lluvia_subir_media_a_alta) :-
+    ajustar_ocupacion(true, media, alta).
+
+test(lluvia_mantener_alta) :-
+    ajustar_ocupacion(true, alta, alta).
+
+test(sin_lluvia_conservar_baja) :-
+    ajustar_ocupacion(false, baja, baja).
+
+:- end_tests(ajustar_ocupacion).
+% --- Clima simulado (F1 – Ale) ---
+:- begin_tests(clima_json).
+
+test(clima_sabado_1430) :-
+    with_output_to(atom(JSON),
+    recomendar_json(zt_alameda, itsslpc, 14, 30, sabado)),
+    atom_json_dict(JSON, Respuesta, []),
+    get_dict(clima, Respuesta, Clima),
+    get_dict(lluvia, Clima, true),
+    get_dict(retraso_extra_min, Clima, 10),
+    get_dict(ocupacion, Respuesta, "media").
+
+test(clima_lunes_1100) :-
+    with_output_to(atom(JSON),
+        recomendar_json(zt_alameda, itsslpc, 11, 0, lunes)),
+    atom_json_dict(JSON, Respuesta, []),
+    get_dict(clima, Respuesta, Clima),
+    get_dict(lluvia, Clima, false),
+    get_dict(retraso_extra_min, Clima, 0),
+    get_dict(ocupacion, Respuesta, "media").
+
+:- end_tests(clima_json).
