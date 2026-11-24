@@ -64,10 +64,10 @@ Los tres participamos en **las tres materias**. El trabajo se divide por **funci
 ### Primeros pasos por funcionalidad
 
 **F1 – Ale**
-- [ ] Correr las pruebas de rutas en Prolog y corregir lo que falle
-- [ ] Probar `recomendar_json` desde la terminal con `swipl`
-- [ ] Probar `POST /api/recomendacion` (Postman o curl) con Prolog conectado
-- [ ] Mostrar el resultado real en `Planificador`
+- [x] Correr las pruebas de rutas en Prolog y corregir lo que falle
+- [x] Probar `recomendar_json` desde la terminal con `swipl`
+- [x] Probar `POST /api/recomendacion` (Postman o curl) con Prolog conectado
+- [x] Mostrar el resultado real en `Planificador`
 - [ ] Caso sin ruta → botón "Solicitar esta ruta"
 
 **F2 – Antulio**
@@ -93,7 +93,7 @@ Los tres participamos en **las tres materias**. El trabajo se divide por **funci
 - [ ] Sistema experto en Prolog con base de conocimiento → Ale (F1) y Osiel (F3)
 - [ ] API REST con métodos HTTP (GET, POST, PUT) → los tres
 - [ ] Consumo de APIs públicas → Osiel (F3)
-- [ ] Servicio en la nube (AWS u otro) → decidirlo entre los tres
+
 
 ## 8. Reglas generales (aplican a los tres)
 
