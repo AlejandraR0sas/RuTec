@@ -203,3 +203,25 @@ test(sin_lluvia_conservar_baja) :-
     ajustar_ocupacion(false, baja, baja).
 
 :- end_tests(ajustar_ocupacion).
+% --- Clima simulado (F1 – Ale) ---
+:- begin_tests(clima_json).
+
+test(clima_sabado_1430) :-
+    with_output_to(atom(JSON),
+    recomendar_json(zt_alameda, itsslpc, 14, 30, sabado)),
+    atom_json_dict(JSON, Respuesta, []),
+    get_dict(clima, Respuesta, Clima),
+    get_dict(lluvia, Clima, true),
+    get_dict(retraso_extra_min, Clima, 10),
+    get_dict(ocupacion, Respuesta, "media").
+
+test(clima_lunes_1100) :-
+    with_output_to(atom(JSON),
+        recomendar_json(zt_alameda, itsslpc, 11, 0, lunes)),
+    atom_json_dict(JSON, Respuesta, []),
+    get_dict(clima, Respuesta, Clima),
+    get_dict(lluvia, Clima, false),
+    get_dict(retraso_extra_min, Clima, 0),
+    get_dict(ocupacion, Respuesta, "media").
+
+:- end_tests(clima_json).
