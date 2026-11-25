@@ -129,15 +129,47 @@
   width: 50%;
   padding: 2.5rem;
   border-radius: 0 28px 28px 0;
-  background: var(--login-panel);
+  background:
+  radial-gradient(
+    circle at 0% 100%,
+    transparent 0 5.8rem,
+    color-mix(in srgb, var(--login-lima) 16%, transparent) 5.85rem 5.95rem,
+    transparent 6rem
+  ),
+  radial-gradient(
+    circle at 0% 100%,
+    transparent 0 6.7rem,
+    color-mix(in srgb, var(--login-lima) 7%, transparent) 6.75rem 7.8rem,
+    transparent 7.85rem
+  ),
+  var(--login-panel);
   color: #ffffff;
   text-align: center;
   transform: translateX(0);
   transition:
     transform 0.6s ease,
     border-radius 0.6s ease;
+  isolation: isolate;
+  overflow: hidden;
 }
-
+.login__panel::before {
+  content: "";
+  position: absolute;
+  top: -10rem;
+  right: -8rem;
+  width: 22rem;
+  aspect-ratio: 1;
+  border: 1px solid color-mix(in srgb, var(--login-lima) 30%, transparent);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 1.5rem color-mix(in srgb, var(--login-lima) 10%, transparent),
+    0 0 0 3rem color-mix(in srgb, var(--login-lima) 6%, transparent);
+  pointer-events: none;
+}
+.login__panel > * {
+  position: relative;
+  z-index: 1;
+}
 .login__tarjeta--registro .login__panel {
   border-radius: 28px 0 0 28px;
   transform: translateX(-100%);
