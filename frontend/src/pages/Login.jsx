@@ -15,10 +15,16 @@ export default function Login() {
   const [modoRegistro, setModoRegistro] = useState(false);
   const [nombre, setNombre] = useState('');
   const [correo, setCorreo] = useState('');
+  const [correoValido, setCorreoValido] = useState(true);
   const [password, setPassword] = useState('');
   const [passwordConfirmacion, setPasswordConfirmacion] = useState('');
   const [error, setError] = useState('');
   const navegar = useNavigate();
+  function actualizarCorreo(e) {
+    const valor = e.target.value;
+    setCorreo(valor);
+    setCorreoValido(valor === '' || e.target.validity.valid);
+  }
   const formularioLoginRef = useRef(null);
   const formularioRegistroRef = useRef(null);
   const campoLoginRef = useRef(null);
@@ -100,10 +106,12 @@ export default function Login() {
               id="login-correo"
               type="email"
               value={correo}
-              onChange={(e) => setCorreo(e.target.value)}
+              onChange={actualizarCorreo}
               required
             />
-
+            {correo && !correoValido && (
+              <small className="error">Escribe un correo con formato válido.</small>
+            )}
             <label htmlFor="login-password">Contraseña</label>
               <input
                 id="login-password"
@@ -112,8 +120,8 @@ export default function Login() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
-
-            {error && <p className="error" role="alert">{error}</p>}
+           
+                        {error && <p className="error" role="alert">{error}</p>}
 
             <button type="submit">Iniciar sesión</button>
           </form>
@@ -149,10 +157,12 @@ export default function Login() {
                 id="registro-correo"
                 type="email"
                 value={correo}
-                onChange={(e) => setCorreo(e.target.value)}
+                onChange={actualizarCorreo}
                 required
               />
-
+              {correo && !correoValido && (
+                <small className="error">Escribe un correo con formato válido.</small>
+              )}
             <label htmlFor="registro-password">Contraseña</label>
               <input
                 id="registro-password"
