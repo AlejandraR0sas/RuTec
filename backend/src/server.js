@@ -7,7 +7,16 @@
  *  - Aquí solo va el arranque. La configuración de Express vive en app.js.
  *  - Si MongoDB no conecta, el proceso termina con mensaje claro (no seguir sin base de datos).
  */
-require('dotenv').config();
+const path = require('node:path');
+
+// Resuelve el .env junto a package.json aunque nodemon se ejecute desde otra carpeta.
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
+
+if (!process.env.MONGO_URI) {
+  console.error('Falta MONGO_URI. Crea backend/.env a partir de backend/.env.example.');
+  process.exit(1);
+}
+
 const { conectarDB } = require('./config/db');
 const app = require('./app');
 
