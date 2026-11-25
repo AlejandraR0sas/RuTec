@@ -4,6 +4,7 @@
 --login-superficie: #ffffff;
 --login-texto: var(--texto);
 --login-borde: var(--borde);
+  --login-fondo-pagina: #e9efeb;
   position: relative;
   display: grid;
   place-items: center;
@@ -12,6 +13,13 @@
   min-height: 100vh;
   min-height: 100dvh;
   padding: 4.5rem 1rem 1rem;
+  background:
+  radial-gradient(
+    circle at 12% 10%,
+    color-mix(in srgb, var(--login-lima) 9%, transparent),
+    transparent 28rem
+  ),
+  var(--login-fondo-pagina);
 }
 
 .login__tarjeta {
@@ -151,6 +159,17 @@
     border-radius 0.6s ease;
   isolation: isolate;
   overflow: hidden;
+}
+.login__etiqueta {
+  margin-bottom: 1.25rem;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--login-lima) 35%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--login-panel) 78%, white);
+  color: var(--login-superficie);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
 }
 .login__panel::before {
   content: "";

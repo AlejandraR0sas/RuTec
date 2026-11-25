@@ -212,6 +212,7 @@ export default function Login() {
         </div>
 
         <aside className="login__panel">
+          <span className="login__etiqueta">MetroRed · ITSSLPC</span>
           <h2>
             {modoRegistro ? '¡Qué bueno verte de nuevo!' : '¿Aún no tienes cuenta?'}
           </h2>
