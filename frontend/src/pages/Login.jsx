@@ -133,9 +133,16 @@ export default function Login() {
                 ref={campoRegistroRef}
                 id="registro-nombre"
                 value={nombre}
-                onChange={(e) => setNombre(e.target.value)}
+                onChange={(e) => {
+                  const valor = e.target.value;
+
+                  if (/^[\p{L}\p{M}\s'-]*$/u.test(valor)) {
+                    setNombre(valor);
+                  }
+                }}
                 required
               />
+              <small>Escribe solo letras, espacios, guiones o apóstrofos.</small>
 
             <label htmlFor="registro-correo">Correo</label>
               <input
