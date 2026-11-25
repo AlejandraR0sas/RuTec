@@ -1,16 +1,17 @@
 .login {
   --login-panel: #04321f;
-  --login-lima: #91c91f;
-  --login-superficie: #ffffff;
-  --login-texto: var(--texto);
-  --login-borde: var(--borde);
-
+--login-lima: #91c91f;
+--login-superficie: #ffffff;
+--login-texto: var(--texto);
+--login-borde: var(--borde);
+  position: relative;
   display: grid;
   place-items: center;
   width: 100%;
   max-width: none;
-  min-height: calc(100vh - 4rem);
-  min-height: calc(100dvh - 4rem);
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 4.5rem 1rem 1rem;
 }
 
 .login__tarjeta {
@@ -214,4 +215,35 @@
     transition: none !important;
     animation: none !important;
   }
+}
+main:has(.login) {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.login__volver {
+  position: absolute;
+  top: 1rem;
+  left: max(1rem, calc((100% - 1040px) / 2));
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.55rem 0.85rem;
+  border-radius: 999px;
+  background: var(--login-superficie);
+  color: var(--login-panel);
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+.login__volver:hover {
+  text-decoration: underline;
+}
+
+.login__volver:focus-visible {
+  outline: 3px solid var(--login-lima);
+  outline-offset: 3px;
 }

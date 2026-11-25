@@ -5,7 +5,8 @@
  * REGLAS: errores del servidor se muestran tal cual (ya vienen legibles). Contraseña mínimo 8 caracteres.
  * PENDIENTE: [ ] Mejorar diseño y validaciones en el formulario
  */
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';import { useNavigate } from 'react-router-dom';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import './Login.css';
 
@@ -75,7 +76,10 @@ export default function Login() {
   }
 
   return (
-    <main className="login">
+    <div className="login">
+          <Link className="login__volver" to="/">
+      ← Volver al inicio
+    </Link>
       <section
         className={`login__tarjeta ${modoRegistro ? 'login__tarjeta--registro' : ''}`}
       >
@@ -185,6 +189,6 @@ export default function Login() {
           </button>
         </aside>
       </section>
-    </main>
+    </div>
   );
 }
