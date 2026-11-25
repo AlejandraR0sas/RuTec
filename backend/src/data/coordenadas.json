@@ -1,11 +1,33 @@
+
 {
-  "_instrucciones": "Osiel: llena lat/lng de cada estación usando el ID de prolog/conocimiento.pl. Ejemplo de formato abajo. Las claves que empiezan con _ se ignoran.",
-  "_ejemplo": { "id_de_estacion": { "lat": 0, "lng": 0 } },
-  "_fuentes": {
-    "itsslpc": "Coordenada del campus tomada como referencia del destino, no posición exacta del paradero: https://es.wikipedia.org/wiki/Instituto_Tecnol%C3%B3gico_Superior_de_San_Luis_Potos%C3%AD,_Capital",
-    "pendientes": "Faltan coordenadas verificables de los paraderos MetroRed. El esquema publicado por SCT en julio de 2026 es esquemático y no proporciona latitud/longitud; no usar sus posiciones dibujadas como coordenadas."
-  },
-  "_referencias": {
-    "itsslpc": { "lat": 22.06972, "lng": -100.86778 }
-  }
+  "_instrucciones": "Las coordenadas activas están al nivel raíz; claves con _ se ignoran.",
+  "_fuentes": {},
+  "zt_alameda": { "lat": 22.15593053637267, "lng": -100.97147770728861 },
+  "pipila": { "lat": 22.155511672179745, "lng": -100.97444566119177 },
+  "juan_sarabia": { "lat": 22.151651850762192, "lng": -100.97304745912523 },
+  "plaza_de_toros": { "lat": 22.151159276024732, "lng": -100.96601163410449 },
+  "av_universidad": { "lat": 22.151246996037692, "lng": -100.963463975328 },
+  "ttp": { "lat": 22.146592734974057, "lng": -100.95090270292611 },
+  "rutilo_torres": { "lat": 22.1451587761891, "lng": -100.9486085511476 },
+  "valle_dorado": { "lat": 22.139239045538538, "lng": -100.93989277948067 },
+  "jardines_del_sur": { "lat": 22.13698552114786, "lng": -100.936324613573 },
+  "cree": { "lat": 22.133036497215052, "lng": -100.93048178524805 },
+  "jose_de_galvez": { "lat": 22.13104926415154, "lng": -100.9276785102529 },
+  "sendero": { "lat": 22.128365404968243, "lng": -100.9235493692597 },
+  "eje_102": { "lat": 22.122171740717203, "lng": -100.91910394176264 },
+  "eje_104": { "lat": 22.120636091684048, "lng": -100.91686496409451 },
+  "eje_106": { "lat": 22.119503439416125, "lng": -100.91513865770494 },
+  "eje_108": { "lat": 22.11798027509895, "lng": -100.9129620487611 },
+  "eje_110": { "lat": 22.116389907561107, "lng": -100.91047860381848 },
+  "eje_114": { "lat": 22.11469027601764, "lng": -100.90782089165721 },
+  "eje_116": { "lat": 22.11176802142758, "lng": -100.90345425536285 },
+  "eje_118": { "lat": 22.110485788570735, "lng": -100.90163035321123 },
+  "eje_120": { "lat": 22.106509798574752, "lng": -100.89542908591501 },
+  "eje_122": { "lat": 22.103213433729625, "lng": -100.89087768800442 },
+  "eje_124": { "lat": 22.098750147177846, "lng": -100.88705822236275 },
+  "pozos": { "lat": 22.095310636285756, "lng": -100.88556691414199 },
+  "eje_126": { "lat": 22.087812707205504, "lng": -100.88297814558968 },
+  "cetram": { "lat": 22.082612793653986, "lng": -100.8784907431631 },
+  "noria_de_san_jose": { "lat": 22.069286235630976, "lng": -100.87105925773905 },
+  "itsslpc": { "lat": 22.06972, "lng": -100.86778 }
 }
