@@ -39,9 +39,10 @@ export default function Login() {
   }, []);
 
   function alternarModo() {
-    const siguienteModo = !modoRegistro;
-    setModoRegistro(siguienteModo);
-    window.clearTimeout(temporizadorFocoRef.current);
+  const siguienteModo = !modoRegistro;
+  setModoRegistro(siguienteModo);
+  setError('');
+  window.clearTimeout(temporizadorFocoRef.current);
 
     const movimientoReducido = window.matchMedia(
       '(prefers-reduced-motion: reduce)'
