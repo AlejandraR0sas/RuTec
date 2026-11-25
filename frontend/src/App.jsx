@@ -6,7 +6,8 @@
  *  - /admin solo se muestra a usuarios con rol 'admin' (el back igual valida; esto es solo para la interfaz).
  *  - Textos de la interfaz en español, claros y sin tecnicismos.
  */
-import { Routes, Route, NavLink, Navigate } from 'react-router-dom';import { useAuth } from './context/AuthContext.jsx';
+import { Routes, Route, NavLink, Navigate, useLocation } from 'react-router-dom';
+import { useAuth } from './context/AuthContext.jsx';
 import Planificador from './pages/Planificador.jsx';
 import Login from './pages/Login.jsx';
 import Solicitud from './pages/Solicitud.jsx';
@@ -14,8 +15,10 @@ import Admin from './pages/Admin.jsx';
 
 export default function App() {
   const { usuario, cerrarSesion } = useAuth();
+  const location = useLocation();
   return (
     <>
+    {location.pathname !== '/login' && (
       <nav className="encabezado" aria-label="Navegación principal">
         <NavLink
           to="/"
@@ -84,6 +87,7 @@ export default function App() {
           )}
         </div>
       </nav>
+      )}
       <main>
         <Routes>
           <Route path="/" element={<Planificador />} />
