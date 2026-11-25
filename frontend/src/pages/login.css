@@ -97,6 +97,16 @@
   background: var(--login-superficie);
   color: var(--login-texto);
 }
+.login__validacion {
+  display: block;
+  margin: 0.35rem 0 0.75rem;
+  color: var(--login-texto);
+  font-size: 0.875rem;
+}
+
+.login__validacion--valida {
+  color: var(--acento);
+}
 
 .login__formulario button[type="submit"] {
   width: 100%;

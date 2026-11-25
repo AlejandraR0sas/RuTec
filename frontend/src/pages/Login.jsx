@@ -172,6 +172,15 @@ export default function Login() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              <small
+                className={`login__validacion ${
+                  password.length >= 8 ? 'login__validacion--valida' : ''
+                }`}
+              >
+                {password.length >= 8
+                  ? 'La contraseña cumple el mínimo de 8 caracteres.'
+                  : `Te faltan ${8 - password.length} caracteres para el mínimo.`}
+              </small>
               <label htmlFor="registro-password-confirmacion">
                 Confirmar contraseña
               </label>
@@ -182,7 +191,20 @@ export default function Login() {
                 value={passwordConfirmacion}
                 onChange={(e) => setPasswordConfirmacion(e.target.value)}
                 required
-/>
+              />
+              {passwordConfirmacion && (
+                <small
+                  className={
+                    passwordConfirmacion === password
+                      ? 'login__validacion login__validacion--valida'
+                      : 'login__validacion error'
+                  }
+                >
+                  {passwordConfirmacion === password
+                    ? 'Las contraseñas coinciden.'
+                    : 'Las contraseñas no coinciden.'}
+                </small>
+              )}
             {error && <p className="error" role="alert">{error}</p>}
 
             <button type="submit">Crear cuenta</button>
