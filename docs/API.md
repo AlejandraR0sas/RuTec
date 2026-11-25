@@ -86,7 +86,7 @@ Campos de horario (se agregan a los anteriores, no cambian nada de lo que ya exi
 
 | Método | Ruta | Acceso | Body | Respuesta |
 |---|---|---|---|---|
-| POST | `/solicitudes` | logueado | `{origen, destino, comentario?}` (texto libre) | 201 `{solicitud}` · 409 si ya la pidió |
+| POST | `/solicitudes` | estudiante logueado | `{origen, destino, comentario?}` (texto libre) | 201 `{solicitud}` · 409 si ya la pidió |
 | GET | `/admin/solicitudes` | admin | — | `[{clave, origen, destino, total, ultima, sugerida}]` ordenado por `total` desc |
 | PUT | `/admin/solicitudes/:clave/aprobar` | admin | `{nombre_linea, estaciones:[{id, nombre, lat, lng}]}` | 200 `{ruta}` |
 | PUT | `/admin/solicitudes/:clave/rechazar` | admin | — | 200 `{ok:true}` |
@@ -94,5 +94,6 @@ Campos de horario (se agregan a los anteriores, no cambian nada de lo que ya exi
 - `clave` = origen y destino normalizados (minúsculas, sin acentos): `"colonia x->itsslpc"`. Se manda codificada con `encodeURIComponent`.
 - `sugerida` = `true` cuando `total >= UMBRAL_SOLICITUDES` (por defecto 10, se configura en `.env`).
 - Una persona solo puede pedir un mismo trayecto una vez.
+- Solo usuarios con rol `estudiante` pueden crear solicitudes; los administradores no pueden solicitarlas.
 - Al aprobar: se crea la línea en MongoDB, todas las solicitudes con esa `clave` pasan a `aprobada` y se regenera `prolog/rutas_aprobadas.pl`.
 - Los `id` de `estaciones` siguen la regla de IDs del README.
