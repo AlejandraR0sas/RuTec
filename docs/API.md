@@ -86,8 +86,9 @@ Campos de horario (se agregan a los anteriores, no cambian nada de lo que ya exi
 
 | Método | Ruta | Acceso | Body | Respuesta |
 |---|---|---|---|---|
-| POST | `/solicitudes` | estudiante logueado | `{origen, destino, comentario?}` (texto libre) | 201 `{solicitud}` · 403 si es admin · 409 si ya la pidió |
+| POST | `/solicitudes` | estudiante logueado | `{origen, origen_lat, origen_lng, destino_id, comentario?}` | 201 `{solicitud}` · 400 si coordenadas o destino no son válidos · 403 si es admin · 409 si ya la pidió |
 | GET | `/admin/solicitudes` | admin | — | `[{clave, origen, destino, total, ultima, sugerida}]` ordenado por `total` desc |
+| GET | `/admin/zonas` | admin | — | Zonas pendientes analizadas por el sistema experto, ordenadas por prioridad y total |
 | GET | `/admin/estadisticas` | admin | — | Resumen de cuentas, solicitudes, consultas de rutas y líneas (últimos 30 días) |
 | PUT | `/admin/solicitudes/:clave/aprobar` | admin | `{nombre_linea, estaciones:[{id, nombre, lat, lng}]}` | 200 `{ruta}` |
 | PUT | `/admin/solicitudes/:clave/rechazar` | admin | — | 200 `{ok:true}` |
@@ -118,3 +119,43 @@ Campos de horario (se agregan a los anteriores, no cambian nada de lo que ya exi
 - Solo usuarios con rol `estudiante` pueden crear solicitudes; los administradores no pueden solicitarlas.
 - Al aprobar: se crea la línea en MongoDB, todas las solicitudes con esa `clave` pasan a `aprobada` y se regenera `prolog/rutas_aprobadas.pl`.
 - Los `id` de `estaciones` siguen la regla de IDs del README.
+
+### Solicitudes nuevas agrupadas por zona
+
+El contrato anterior de `POST /solicitudes` con origen y destino de texto libre queda **reemplazado** para solicitudes nuevas. Las solicitudes antiguas sin coordenadas deben seguir apareciendo en `GET /admin/solicitudes`.
+
+El estudiante envía `{ "origen": "Colonia Satélite", "origen_lat": 22.155, "origen_lng": -100.985, "destino_id": "itsslpc", "comentario": "Cerca del parque" }`. Las coordenadas deben ser números dentro del área aproximada de San Luis Potosí: latitud entre `21.9` y `22.4`, longitud entre `-101.3` y `-100.6`. `destino_id` debe existir en el catálogo de estaciones. Si algo no cumple, la API responde `400`.
+
+Para una solicitud nueva, `zona` identifica una celda geográfica de aproximadamente 500 metros. Se calcula con `"z" + round(lat / 0.005) + "_" + ("n" si lng es negativo) + abs(round(lng / 0.005))`. Ejemplo: latitud `22.155` y longitud `-100.985` producen `z4431_n20197`. La `clave` para agrupar solicitudes iguales es `zona + "->" + destino_id`, por ejemplo `z4431_n20197->itsslpc`. La distancia exacta que representa una celda puede variar un poco según la latitud.
+
+`GET /admin/zonas` responde una lista. Cada elemento combina datos de las solicitudes agrupadas con el análisis de Prolog:
+
+```json
+[
+  {
+    "clave": "z4431_n20197->itsslpc",
+    "zona": "z4431_n20197",
+    "destino_id": "itsslpc",
+    "destino_nombre": "ITSSLPC (Tec Superior Capital)",
+    "total": 7,
+    "lat": 22.155,
+    "lng": -100.985,
+    "ejemplos_origen": ["Colonia Satélite", "Cerca del parque"],
+    "estacion_cercana": {"id": "pozos", "nombre": "Pozos"},
+    "distancia_m": 2300,
+    "accion": "recomendar_parada_nueva",
+    "prioridad": "alta",
+    "razones": [
+      "Hay 7 solicitudes desde esta zona hacia ITSSLPC (Tec Superior Capital).",
+      "La estación más cercana (Pozos) está a 2300 m, más allá del límite de cobertura de 1000 m.",
+      "Se alcanzó el umbral de 5 solicitudes."
+    ]
+  }
+]
+```
+
+`lat` y `lng` son el centro promedio de la zona; `ejemplos_origen` contiene como máximo tres textos. Si no hay coordenadas activas de ninguna estación, `GET /admin/zonas` responde `[]` y el backend registra el motivo en consola. `accion` puede ser `recomendar_parada_nueva`, `esperar_mas_solicitudes` o `ya_hay_cobertura`; `prioridad` es `alta`, `media` o `baja`. Prolog recibe `{zona, total, distancia_m, estacion_cercana_id, destino_id}` y responde `{zona, accion, prioridad, razones}`. El backend agrega los datos de la solicitud y de las coordenadas.
+
+Los parámetros del sistema experto están definidos en un solo lugar: umbral de `5` solicitudes, cobertura de `1000 m` y distancia crítica de `2000 m`. Si la estación más cercana está a más de `1000 m` y hay al menos `5` solicitudes, Prolog recomienda una parada nueva; si hay menos, sugiere esperar más solicitudes. A `1000 m` o menos indica que ya hay cobertura. La prioridad es alta cuando recomienda una parada nueva y hay al menos `10` solicitudes o la distancia supera `2000 m`; media cuando recomienda una parada nueva en otro caso; baja para las demás acciones. Las razones se devuelven en español.
+
+El orden de `GET /admin/zonas` es prioridad alta, media, baja; dentro de cada prioridad, mayor cantidad de solicitudes primero. Las solicitudes antiguas sin coordenadas siguen disponibles en `GET /admin/solicitudes` y quedan fuera del análisis geográfico.

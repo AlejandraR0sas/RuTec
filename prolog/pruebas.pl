@@ -225,3 +225,36 @@ test(clima_lunes_1100) :-
     get_dict(ocupacion, Respuesta, "media").
 
 :- end_tests(clima_json).
+% --- Zonas (F1 – Ale) ---
+:- consult(zonas).
+:- begin_tests(analisis_zonas).
+
+test(recomendar_parada_nueva_prioridad_media) :-
+    analizar_zona(z4431_n20197, 5, 1500, pozos, itsslpc, Resultado),
+    get_dict(accion, Resultado, recomendar_parada_nueva),
+    get_dict(prioridad, Resultado, media),
+    get_dict(razones, Resultado, Razones),
+    Razones \== [].
+
+test(recomendar_parada_nueva_prioridad_alta_por_total) :-
+    analizar_zona(z4431_n20197, 10, 1500, pozos, itsslpc, Resultado),
+    get_dict(accion, Resultado, recomendar_parada_nueva),
+    get_dict(prioridad, Resultado, alta).
+
+test(recomendar_parada_nueva_prioridad_alta_por_distancia) :-
+    analizar_zona(z4431_n20197, 5, 2001, pozos, itsslpc, Resultado),
+    get_dict(prioridad, Resultado, alta).
+
+test(esperar_mas_solicitudes_prioridad_baja) :-
+    analizar_zona(z4431_n20197, 4, 1500, pozos, itsslpc, Resultado),
+    get_dict(accion, Resultado, esperar_mas_solicitudes),
+    get_dict(prioridad, Resultado, baja).
+
+test(ya_hay_cobertura_prioridad_baja) :-
+    analizar_zona(z4431_n20197, 10, 1000, pozos, itsslpc, Resultado),
+    get_dict(accion, Resultado, ya_hay_cobertura),
+    get_dict(prioridad, Resultado, baja),
+    get_dict(razones, Resultado, Razones),
+    Razones \== [].
+
+:- end_tests(analisis_zonas).

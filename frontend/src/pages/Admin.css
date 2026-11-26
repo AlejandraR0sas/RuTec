@@ -56,6 +56,16 @@ main:has(.admin) { max-width: none; margin: 0; padding: 0; }
 .admin__estado-aprobada { background: #e0f3e8; color: #17633b; }
 .admin__estado-rechazada { background: #fbe7e2; color: #8a3523; }
 .admin__lista-solicitudes { display: grid; gap: 1rem; }
+.admin__subtitulo { margin: 1.5rem 0 .75rem; font-size: 1.2rem; }
+.admin__zona-encabezado { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+.admin__zona-encabezado h3 { margin: .35rem 0; font-size: 1.1rem; }
+.admin__zona-encabezado span { color: #526a5d; font-size: .9rem; }
+.admin__prioridad { flex: 0 0 auto; padding: .35rem .65rem; border-radius: 1rem; font-size: .82rem; text-transform: capitalize; }
+.admin__prioridad-alta { background: #fbe7e2; color: #8a3523; }
+.admin__prioridad-media { background: #fff3d5; color: #765309; }
+.admin__prioridad-baja { background: #e0f3e8; color: #17633b; }
+.admin__razones { display: grid; gap: .4rem; padding-left: 1.3rem; color: #526a5d; }
+.admin__tarjeta-zona > button { margin-top: .3rem; }
 .admin__acciones { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: .8rem; }
 .admin__acciones button, .admin__form-aprobacion button { min-height: 2.6rem; padding: .55rem .9rem; }
 .admin__acciones button + button { background: #f2e6e2; color: #763622; }
@@ -80,4 +90,5 @@ main:has(.admin) { max-width: none; margin: 0; padding: 0; }
   .admin__encabezado { align-items: flex-start; }
   .admin__encabezado > span { font-size: .75rem; }
   .admin__linea ol { columns: 1; }
+  .admin__zona-encabezado { flex-direction: column; }
 }

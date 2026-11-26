@@ -44,6 +44,18 @@ function lineas() {
   return ejecutar(['lineas']);
 }
 
+// Envía a Prolog una lista de grupos; cada grupo se convierte en cinco argumentos seguros.
+function analizarZonas(zonas) {
+  const argumentos = zonas.flatMap((zona) => [
+    zona.zona,
+    String(zona.total),
+    String(zona.distancia_m),
+    zona.estacion_cercana_id,
+    zona.destino_id,
+  ]);
+  return ejecutar(['zonas', ...argumentos]);
+}
+
 const esc = (s) => String(s).replace(/[\r\n]/g, ' ').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 
 // Convierte las rutas aprobadas de MongoDB a hechos de Prolog
@@ -66,4 +78,4 @@ async function regenerarRutasAprobadas() {
   await fs.writeFile(path.join(DIR_PROLOG, 'rutas_aprobadas.pl'), out, 'utf8');
 }
 
-module.exports = { recomendar, lineas, regenerarRutasAprobadas };
+module.exports = { recomendar, lineas, analizarZonas, regenerarRutasAprobadas };

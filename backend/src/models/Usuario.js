@@ -31,6 +31,10 @@ const usuarioSchema = new Schema({
     enum: ['estudiante', 'admin'],
     default: 'estudiante'
   },
+  demo: {
+    type: Boolean,
+    default: false
+  },
   // Identificador de la única sesión activa del usuario
   sesion_activa: {
     type: String,

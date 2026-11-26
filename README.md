@@ -142,12 +142,30 @@ swipl -g run_tests -t halt prolog/pruebas.pl
 
 ## 10. Estado del cascarón (honesto)
 
-- El backend pasó revisión de sintaxis, pero **no se ha corrido contra MongoDB ni contra Prolog**.
-- Los archivos de Prolog **no se han ejecutado** (no había `swipl` disponible al generarlos). Lo primero: que Ale y Osiel corran `pruebas.pl` y corrijan lo que falle.
-- El frontend **no se ha levantado** todavía; lo primero: que cualquiera corra `npm install && npm run dev` y arregle lo que salga.
-- Coordenadas de paraderos: pendientes. La coordenada del campus ITSSLPC está documentada como referencia en `_referencias`, no como punto de parada. No se asignan coordenadas aproximadas porque el buscador de estación más cercana requiere puntos reales de ascenso/descenso.
+- Las pruebas de Prolog pasaron: **46/46**.
+- Se revisó la sintaxis de los archivos JavaScript del backend; no se ha hecho una prueba de integración contra MongoDB.
+- El frontend no se ha compilado ni probado en el navegador en este checkpoint.
+- Las coordenadas de paraderos siguen pendientes. La coordenada del campus ITSSLPC está documentada como referencia en `_referencias`, no como punto de parada. No se asignan coordenadas aproximadas porque el buscador de estación más cercana requiere puntos reales de ascenso/descenso.
 
-## 11. Datos y fuentes
+## 11. Datos de demostración para zonas
+
+`backend/scripts/sembrarZonaDemo.js` crea seis cuentas (`demo1@rutec.local` a `demo6@rutec.local`) y seis solicitudes ficticias hacia ITSSLPC, próximas a las coordenadas que se indiquen. Todas las cuentas y solicitudes quedan marcadas `demo: true`; no representan personas ni peticiones reales. La contraseña compartida de estas cuentas es `MetroRedDemo123!`.
+
+Para ejecutarlo manualmente desde `backend` (no ejecutar sobre datos reales sin autorización):
+
+```powershell
+npm run seed:demo -- --lat 22.155 --lng -100.985
+```
+
+Para borrar exclusivamente cuentas y solicitudes marcadas `demo: true`:
+
+```powershell
+npm run seed:demo -- --borrar
+```
+
+No ejecutar el modo `--borrar` sobre una base que contenga datos demo que se quieran conservar.
+
+## 12. Datos y fuentes
 
 - Estaciones de L1, L2 y L4: lista de [TV Azteca, publicada el 23/07/2026](https://www.aztecaqueretaro.com/san-luis/notas/metrored-slp-cuales-son-las-4-lineas-paradas-y-rutas-que-la-conforman/); para L2 también se consultó la [guía de Antena San Luis](https://antenasanluis.mx/metrored-slp-guia-completa-de-estaciones-y-rutas/). Son referencias periodísticas; contrastar cambios de operación con SCT/MetroRed.
 - El [mapa oficial de SCT publicado en julio de 2026](https://codigosanluis.com/conoce-el-mapa-oficial-de-la-metrored-de-la-zona-metropolitana/) confirma L1 Eje 128–Alameda, L2 Los Salazares, L3 Circuito Potosí y L4 Valle de los Fantasmas. El mapa gráfico es esquemático; no contiene coordenadas descargables.
@@ -155,7 +173,7 @@ swipl -g run_tests -t halt prolog/pruebas.pl
 - Frecuencias, horarios de servicio y reglas de ocupación: **simulados**, se pueden ajustar con observación propia.
 - L3 (Circuito Potosí) no se modela por ahora.
 
-## 12. Backlog (ideas aceptadas, pero después del núcleo)
+## 13. Backlog (ideas aceptadas, pero después del núcleo)
 
 Solo se pasa a desarrollo si el núcleo ya funciona y los tres están de acuerdo.
 
