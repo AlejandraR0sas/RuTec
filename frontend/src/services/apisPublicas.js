@@ -20,17 +20,20 @@ export function obtenerUbicacion() {
   });
 }
 
-// 2) Búsqueda de direcciones con Nominatim (limitada a México)
+/// 2) Búsqueda de direcciones y nombres de ubicación con Nominatim
 let ultimaBusquedaNominatim = 0;
 let colaNominatim = Promise.resolve();
 
-export async function buscarDireccion(texto) {
-  const consulta = texto.trim();
-  if (!consulta) throw new Error('Escribe una dirección para buscarla.');
+async function esperarTurnoNominatim() {
   const turnoAnterior = colaNominatim;
   let liberarTurno;
-  colaNominatim = new Promise((resolve) => { liberarTurno = resolve; });
+
+  colaNominatim = new Promise((resolve) => {
+    liberarTurno = resolve;
+  });
+
   await turnoAnterior;
+
   try {
     const espera = Math.max(0, 1000 - (Date.now() - ultimaBusquedaNominatim));
     if (espera) await new Promise((resolve) => setTimeout(resolve, espera));
@@ -38,11 +41,57 @@ export async function buscarDireccion(texto) {
   } finally {
     liberarTurno();
   }
+}
+
+export async function buscarDireccion(texto) {
+  const consulta = texto.trim();
+  if (!consulta) throw new Error('Escribe una dirección para buscarla.');
+
+  await esperarTurnoNominatim();
+
   const url = `https://nominatim.openstreetmap.org/search?format=json&limit=5&countrycodes=mx&q=${encodeURIComponent(consulta + ', San Luis Potosí')}`;
   const resp = await fetch(url);
   if (!resp.ok) throw new Error('No se pudo buscar la dirección');
+
   const datos = await resp.json();
-  return datos.map((d) => ({ nombre: d.display_name, lat: Number(d.lat), lng: Number(d.lon) }));
+  return datos.map((d) => ({
+    nombre: d.display_name,
+    lat: Number(d.lat),
+    lng: Number(d.lon),
+  }));
+}
+
+export async function buscarNombreUbicacion(lat, lng) {
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+    throw new Error('Las coordenadas de la ubicación no son válidas.');
+  }
+
+  await esperarTurnoNominatim();
+
+  const parametros = new URLSearchParams({
+    format: 'jsonv2',
+    lat: String(lat),
+    lon: String(lng),
+    zoom: '18',
+    addressdetails: '1',
+    'accept-language': 'es',
+  });
+  const resp = await fetch(`https://nominatim.openstreetmap.org/reverse?${parametros}`);
+
+  if (!resp.ok) throw new Error('No se pudo identificar esta ubicación.');
+
+  const dato = await resp.json();
+  const direccion = dato.address || {};
+  const zona = direccion.neighbourhood
+    || direccion.suburb
+    || direccion.quarter
+    || direccion.city_district;
+
+  const partes = [direccion.road, zona].filter(Boolean);
+  const nombre = partes.join(', ')
+    || dato.display_name?.split(',').slice(0, 2).join(', ').trim();
+
+  return nombre || null;
 }
 
 // 3) Clima actual con Open-Meteo
