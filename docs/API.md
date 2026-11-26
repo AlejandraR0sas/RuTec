@@ -154,7 +154,7 @@ Para una solicitud nueva, `zona` identifica una celda geográfica de aproximadam
 ]
 ```
 
-`lat` y `lng` son el centro promedio de la zona; `ejemplos_origen` contiene como máximo tres textos. `estacion_cercana` es `null` si no hay coordenadas conocidas para calcular la cobertura. `accion` puede ser `recomendar_parada_nueva`, `esperar_mas_solicitudes` o `ya_hay_cobertura`; `prioridad` es `alta`, `media` o `baja`. Prolog recibe `{zona, total, distancia_m, estacion_cercana_id, destino_id}` y responde `{zona, accion, prioridad, razones}`. El backend agrega los datos de la solicitud y de las coordenadas.
+`lat` y `lng` son el centro promedio de la zona; `ejemplos_origen` contiene como máximo tres textos. Si no hay coordenadas activas de ninguna estación, `GET /admin/zonas` responde `[]` y el backend registra el motivo en consola. `accion` puede ser `recomendar_parada_nueva`, `esperar_mas_solicitudes` o `ya_hay_cobertura`; `prioridad` es `alta`, `media` o `baja`. Prolog recibe `{zona, total, distancia_m, estacion_cercana_id, destino_id}` y responde `{zona, accion, prioridad, razones}`. El backend agrega los datos de la solicitud y de las coordenadas.
 
 Los parámetros del sistema experto están definidos en un solo lugar: umbral de `5` solicitudes, cobertura de `1000 m` y distancia crítica de `2000 m`. Si la estación más cercana está a más de `1000 m` y hay al menos `5` solicitudes, Prolog recomienda una parada nueva; si hay menos, sugiere esperar más solicitudes. A `1000 m` o menos indica que ya hay cobertura. La prioridad es alta cuando recomienda una parada nueva y hay al menos `10` solicitudes o la distancia supera `2000 m`; media cuando recomienda una parada nueva en otro caso; baja para las demás acciones. Las razones se devuelven en español.
 
