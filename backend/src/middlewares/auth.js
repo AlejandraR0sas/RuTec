@@ -3,25 +3,102 @@
  * RESPONSABLE: Antulio (F2)
  * QUÉ HACE: Protege rutas según la sesión.
  * REGLAS:
- *  - requiereLogin → 401 si no hay sesión.
+ *  - requiereLogin → 401 si no hay sesión válida.
  *  - requiereAdmin → 403 si el rol no es admin.
- *  - El rol se lee de la sesión, NUNCA del body de la petición.
+ *  - requiereEstudiante → 403 si el rol no es estudiante.
+ *  - El rol se lee de la base de datos, NUNCA del body.
  */
-function requiereLogin(req, res, next) {
-  if (!req.session.usuario_id) return res.status(401).json({ error: 'Debes iniciar sesión' });
-  next();
+const Usuario = require('../models/Usuario');
+
+const OCHO_HORAS = 1000 * 60 * 60 * 8;
+
+async function validarSesion(req, res) {
+  if (!req.session?.usuario_id) {
+    res.status(401).json({
+      error: 'Debes iniciar sesión'
+    });
+    return null;
+  }
+
+  const ahora = new Date();
+
+  const usuario = await Usuario.findOneAndUpdate(
+    {
+      _id: req.session.usuario_id,
+      sesion_activa: req.sessionID,
+      sesion_expira: { $gt: ahora }
+    },
+    {
+      $set: {
+        sesion_expira: new Date(ahora.getTime() + OCHO_HORAS)
+      }
+    },
+    { new: true }
+  );
+
+  if (!usuario) {
+    res.status(401).json({
+      error: 'Tu sesión ha vencido o ya no es válida. Inicia sesión nuevamente.'
+    });
+    return null;
+  }
+
+  return usuario;
 }
 
-function requiereAdmin(req, res, next) {
-  if (!req.session.usuario_id) return res.status(401).json({ error: 'Debes iniciar sesión' });
-  if (req.session.rol !== 'admin') return res.status(403).json({ error: 'Solo para administradores' });
-  next();
+async function requiereLogin(req, res, next) {
+  try {
+    const usuario = await validarSesion(req, res);
+
+    if (!usuario) return;
+
+    req.usuario = usuario;
+    next();
+  } catch (error) {
+    next(error);
+  }
 }
 
-function requiereEstudiante(req, res, next) {
-  if (!req.session.usuario_id) return res.status(401).json({ error: 'Debes iniciar sesión' });
-  if (req.session.rol !== 'estudiante') return res.status(403).json({ error: 'Solo estudiantes pueden solicitar rutas' });
-  next();
+async function requiereAdmin(req, res, next) {
+  try {
+    const usuario = req.usuario || await validarSesion(req, res);
+
+    if (!usuario) return;
+
+    if (usuario.rol !== 'admin') {
+      return res.status(403).json({
+        error: 'Solo para administradores'
+      });
+    }
+
+    req.usuario = usuario;
+    next();
+  } catch (error) {
+    next(error);
+  }
 }
 
-module.exports = { requiereLogin, requiereAdmin, requiereEstudiante };
+async function requiereEstudiante(req, res, next) {
+  try {
+    const usuario = req.usuario || await validarSesion(req, res);
+
+    if (!usuario) return;
+
+    if (usuario.rol !== 'estudiante') {
+      return res.status(403).json({
+        error: 'Solo estudiantes pueden solicitar rutas'
+      });
+    }
+
+    req.usuario = usuario;
+    next();
+  } catch (error) {
+    next(error);
+  }
+}
+
+module.exports = {
+  requiereLogin,
+  requiereAdmin,
+  requiereEstudiante
+};

@@ -1,0 +1,70 @@
+warning: in the working copy of 'backend/src/data/coordenadas.json', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/backend/src/data/coordenadas.json b/backend/src/data/coordenadas.json[m
+[1mindex 5078961..dcc44ce 100644[m
+[1m--- a/backend/src/data/coordenadas.json[m
+[1m+++ b/backend/src/data/coordenadas.json[m
+[36m@@ -1,11 +1,33 @@[m
+[32m+[m
+ {[m
+[31m-  "_instrucciones": "Osiel: llena lat/lng de cada estación usando el ID de prolog/conocimiento.pl. Ejemplo de formato abajo. Las claves que empiezan con _ se ignoran.",[m
+[31m-  "_ejemplo": { "id_de_estacion": { "lat": 0, "lng": 0 } },[m
+[31m-  "_fuentes": {[m
+[31m-    "itsslpc": "Coordenada del campus tomada como referencia del destino, no posición exacta del paradero: https://es.wikipedia.org/wiki/Instituto_Tecnol%C3%B3gico_Superior_de_San_Luis_Potos%C3%AD,_Capital",[m
+[31m-    "pendientes": "Faltan coordenadas verificables de los paraderos MetroRed. El esquema publicado por SCT en julio de 2026 es esquemático y no proporciona latitud/longitud; no usar sus posiciones dibujadas como coordenadas."[m
+[31m-  },[m
+[31m-  "_referencias": {[m
+[31m-    "itsslpc": { "lat": 22.06972, "lng": -100.86778 }[m
+[31m-  }[m
+[32m+[m[32m  "_instrucciones": "Las coordenadas activas están al nivel raíz; claves con _ se ignoran.",[m
+[32m+[m[32m  "_fuentes": {},[m
+[32m+[m[32m  "zt_alameda": { "lat": 22.15593053637267, "lng": -100.97147770728861 },[m
+[32m+[m[32m  "pipila": { "lat": 22.155511672179745, "lng": -100.97444566119177 },[m
+[32m+[m[32m  "juan_sarabia": { "lat": 22.151651850762192, "lng": -100.97304745912523 },[m
+[32m+[m[32m  "plaza_de_toros": { "lat": 22.151159276024732, "lng": -100.96601163410449 },[m
+[32m+[m[32m  "av_universidad": { "lat": 22.151246996037692, "lng": -100.963463975328 },[m
+[32m+[m[32m  "ttp": { "lat": 22.146592734974057, "lng": -100.95090270292611 },[m
+[32m+[m[32m  "rutilo_torres": { "lat": 22.1451587761891, "lng": -100.9486085511476 },[m
+[32m+[m[32m  "valle_dorado": { "lat": 22.139239045538538, "lng": -100.93989277948067 },[m
+[32m+[m[32m  "jardines_del_sur": { "lat": 22.13698552114786, "lng": -100.936324613573 },[m
+[32m+[m[32m  "cree": { "lat": 22.133036497215052, "lng": -100.93048178524805 },[m
+[32m+[m[32m  "jose_de_galvez": { "lat": 22.13104926415154, "lng": -100.9276785102529 },[m
+[32m+[m[32m  "sendero": { "lat": 22.128365404968243, "lng": -100.9235493692597 },[m
+[32m+[m[32m  "eje_102": { "lat": 22.122171740717203, "lng": -100.91910394176264 },[m
+[32m+[m[32m  "eje_104": { "lat": 22.120636091684048, "lng": -100.91686496409451 },[m
+[32m+[m[32m  "eje_106": { "lat": 22.119503439416125, "lng": -100.91513865770494 },[m
+[32m+[m[32m  "eje_108": { "lat": 22.11798027509895, "lng": -100.9129620487611 },[m
+[32m+[m[32m  "eje_110": { "lat": 22.116389907561107, "lng": -100.91047860381848 },[m
+[32m+[m[32m  "eje_114": { "lat": 22.11469027601764, "lng": -100.90782089165721 },[m
+[32m+[m[32m  "eje_116": { "lat": 22.11176802142758, "lng": -100.90345425536285 },[m
+[32m+[m[32m  "eje_118": { "lat": 22.110485788570735, "lng": -100.90163035321123 },[m
+[32m+[m[32m  "eje_120": { "lat": 22.106509798574752, "lng": -100.89542908591501 },[m
+[32m+[m[32m  "eje_122": { "lat": 22.103213433729625, "lng": -100.89087768800442 },[m
+[32m+[m[32m  "eje_124": { "lat": 22.098750147177846, "lng": -100.88705822236275 },[m
+[32m+[m[32m  "pozos": { "lat": 22.095310636285756, "lng": -100.88556691414199 },[m
+[32m+[m[32m  "eje_126": { "lat": 22.087812707205504, "lng": -100.88297814558968 },[m
+[32m+[m[32m  "cetram": { "lat": 22.082612793653986, "lng": -100.8784907431631 },[m
+[32m+[m[32m  "noria_de_san_jose": { "lat": 22.069286235630976, "lng": -100.87105925773905 },[m
+[32m+[m[32m  "itsslpc": { "lat": 22.06972, "lng": -100.86778 }[m
+ }[m
+[1mdiff --git a/backend/src/server.js b/backend/src/server.js[m
+[1mindex e6a7361..36338f7 100644[m
+[1m--- a/backend/src/server.js[m
+[1m+++ b/backend/src/server.js[m
+[36m@@ -7,7 +7,16 @@[m
+  *  - Aquí solo va el arranque. La configuración de Express vive en app.js.[m
+  *  - Si MongoDB no conecta, el proceso termina con mensaje claro (no seguir sin base de datos).[m
+  */[m
+[31m-require('dotenv').config();[m
+[32m+[m[32mconst path = require('node:path');[m
+[32m+[m
+[32m+[m[32m// Resuelve el .env junto a package.json aunque nodemon se ejecute desde otra carpeta.[m
+[32m+[m[32mrequire('dotenv').config({ path: path.resolve(__dirname, '../.env') });[m
+[32m+[m
+[32m+[m[32mif (!process.env.MONGO_URI) {[m
+[32m+[m[32m  console.error('Falta MONGO_URI. Crea backend/.env a partir de backend/.env.example.');[m
+[32m+[m[32m  process.exit(1);[m
+[32m+[m[32m}[m
+[32m+[m
+ const { conectarDB } = require('./config/db');[m
+ const app = require('./app');[m
+ [m
