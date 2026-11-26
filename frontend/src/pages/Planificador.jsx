@@ -16,6 +16,7 @@
  */
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext.jsx';
 import { api } from '../api/cliente.js';
 import Mapa from '../components/Mapa.jsx';
 import ResultadoRuta from '../components/ResultadoRuta.jsx';
@@ -54,6 +55,7 @@ function obtenerDiaActual() {
   const [clima, setClima] = useState(null);
   const [cargandoUbicacion, setCargandoUbicacion] = useState(false);
   const navegar = useNavigate();
+  const { usuario } = useAuth();
 
   useEffect(() => {
     api.lineas().then(setLineas).catch((e) => setError(e.message));
@@ -267,7 +269,7 @@ function obtenerDiaActual() {
           {clima && <p className="aviso">Clima en tu ubicación: {clima.temperature_2m} °C; precipitación {clima.precipitation} mm.</p>}
                  </div>
           {resultado && <ResultadoRuta resultado={resultado} />}
-          {resultado && !resultado.encontrada && resultado.puede_solicitar && (
+          {usuario?.rol !== 'admin' && resultado && !resultado.encontrada && resultado.puede_solicitar && (
             <button onClick={() => navegar('/solicitar', { state: { origen: nombreDe(origen), destino: nombreDe(destino) } })}>
               Solicitar esta ruta
             </button>

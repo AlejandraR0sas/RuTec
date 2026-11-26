@@ -11,6 +11,8 @@
  */
 const Solicitud = require('../models/Solicitud');
 const RutaAprobada = require('../models/RutaAprobada');
+const Usuario = require('../models/Usuario');
+const ConsultaRecomendacion = require('../models/ConsultaRecomendacion');
 const { claveTrayecto } = require('../utils/helpers');
 const { regenerarRutasAprobadas } = require('../services/prologService');
 
@@ -88,4 +90,64 @@ async function rechazar(req, res, next) {
   }
 }
 
-module.exports = { crear, listarAdmin, aprobar, rechazar };
+async function estadisticasAdmin(req, res, next) {
+  try {
+    const desde = new Date();
+    desde.setDate(desde.getDate() - 30);
+    const filtroPeriodo = { consultada_en: { $gte: desde } };
+
+    const [usuarios, pendientes, porEstado, rutas, lineas, consultasHora, recientes] = await Promise.all([
+      Usuario.countDocuments(),
+      Solicitud.countDocuments({ estado: 'pendiente' }),
+      Solicitud.aggregate([{ $group: { _id: '$estado', total: { $sum: 1 } } }]),
+      ConsultaRecomendacion.aggregate([
+        { $match: filtroPeriodo },
+        { $group: { _id: { origen_id: '$origen_id', destino_id: '$destino_id', origen_nombre: '$origen_nombre', destino_nombre: '$destino_nombre' }, total: { $sum: 1 } } },
+        { $sort: { total: -1 } }, { $limit: 1 },
+      ]),
+      ConsultaRecomendacion.aggregate([
+        { $match: filtroPeriodo }, { $unwind: '$lineas' },
+        { $group: { _id: '$lineas.id', nombre: { $first: '$lineas.nombre' }, total: { $sum: 1 } } },
+        { $sort: { total: -1 } }, { $limit: 1 },
+      ]),
+      ConsultaRecomendacion.aggregate([
+        { $match: filtroPeriodo },
+        { $group: { _id: { $hour: { date: '$consultada_en', timezone: 'America/Mexico_City' } }, total: { $sum: 1 } } },
+      ]),
+      Solicitud.find().sort({ creada_en: -1 }).limit(8).populate('usuario', 'nombre').lean(),
+    ]);
+
+    const estados = { pendientes: 0, aprobadas: 0, rechazadas: 0 };
+    porEstado.forEach(({ _id, total }) => {
+      const clave = { pendiente: 'pendientes', aprobada: 'aprobadas', rechazada: 'rechazadas' }[_id];
+      if (clave) estados[clave] = total;
+    });
+
+    const horas = Array.from({ length: 24 }, (_, hora) => ({ hora, total: 0 }));
+    consultasHora.forEach(({ _id, total }) => { horas[_id].total = total; });
+    const ruta = rutas[0];
+    const linea = lineas[0];
+
+    res.json({
+      periodo_dias: 30,
+      usuarios_registrados: usuarios,
+      solicitudes_pendientes: pendientes,
+      ruta_mas_consultada: ruta ? { ...ruta._id, total: ruta.total } : null,
+      linea_mas_recomendada: linea ? { id: linea._id, nombre: linea.nombre, total: linea.total } : null,
+      consultas_por_hora: horas,
+      solicitudes_por_estado: estados,
+      solicitudes_recientes: recientes.map((solicitud) => ({
+        id: String(solicitud._id),
+        estudiante: solicitud.usuario?.nombre || 'Cuenta no disponible',
+        origen: solicitud.origen,
+        destino: solicitud.destino,
+        creada_en: solicitud.creada_en,
+        estado: solicitud.estado,
+      })),
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = { crear, listarAdmin, aprobar, rechazar, estadisticasAdmin };

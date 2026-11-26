@@ -13,6 +13,7 @@
 const prolog = require('../services/prologService');
 const coordenadas = require('../data/coordenadas.json');
 const { DIAS, ahoraMX } = require('../utils/helpers');
+const ConsultaRecomendacion = require('../models/ConsultaRecomendacion');
 
 const ID_VALIDO = /^[a-z][a-z0-9_]*$/;
 const MENSAJES = {
@@ -54,6 +55,23 @@ async function recomendacion(req, res, next) {
         mensaje: MENSAJES[resultado.motivo] || 'No se encontró una ruta.',
         puede_solicitar: resultado.motivo === 'sin_ruta',
       });
+    }
+    // Contamos recomendaciones exitosas de forma agregada, sin guardar quién consultó.
+    try {
+      const lineasUnicas = [...new Map((resultado.plan || []).map((tramo) => [
+        tramo.linea,
+        { id: tramo.linea, nombre: tramo.linea_nombre },
+      ])).values()];
+      await ConsultaRecomendacion.create({
+        origen_id: resultado.origen.id,
+        origen_nombre: resultado.origen.nombre,
+        destino_id: resultado.destino.id,
+        destino_nombre: resultado.destino.nombre,
+        lineas: lineasUnicas,
+      });
+    } catch (errorRegistro) {
+      // Un fallo de analítica no debe impedir que la persona reciba su ruta.
+      console.error('No se pudo guardar la consulta de recomendación:', errorRegistro.message);
     }
     res.json(resultado);
   } catch (err) {

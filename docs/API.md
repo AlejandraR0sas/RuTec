@@ -86,13 +86,35 @@ Campos de horario (se agregan a los anteriores, no cambian nada de lo que ya exi
 
 | Método | Ruta | Acceso | Body | Respuesta |
 |---|---|---|---|---|
-| POST | `/solicitudes` | logueado | `{origen, destino, comentario?}` (texto libre) | 201 `{solicitud}` · 409 si ya la pidió |
+| POST | `/solicitudes` | estudiante logueado | `{origen, destino, comentario?}` (texto libre) | 201 `{solicitud}` · 403 si es admin · 409 si ya la pidió |
 | GET | `/admin/solicitudes` | admin | — | `[{clave, origen, destino, total, ultima, sugerida}]` ordenado por `total` desc |
+| GET | `/admin/estadisticas` | admin | — | Resumen de cuentas, solicitudes, consultas de rutas y líneas (últimos 30 días) |
 | PUT | `/admin/solicitudes/:clave/aprobar` | admin | `{nombre_linea, estaciones:[{id, nombre, lat, lng}]}` | 200 `{ruta}` |
 | PUT | `/admin/solicitudes/:clave/rechazar` | admin | — | 200 `{ok:true}` |
+
+`GET /admin/estadisticas` responde:
+
+```json
+{
+  "periodo_dias": 30,
+  "usuarios_registrados": 0,
+  "solicitudes_pendientes": 0,
+  "ruta_mas_consultada": null,
+  "linea_mas_recomendada": null,
+  "consultas_por_hora": [{"hora": 7, "total": 0}],
+  "solicitudes_por_estado": {"pendientes": 0, "aprobadas": 0, "rechazadas": 0},
+  "solicitudes_recientes": []
+}
+```
+
+- `ruta_mas_consultada`, cuando hay datos: `{origen_id, origen_nombre, destino_id, destino_nombre, total}`.
+- `linea_mas_recomendada`, cuando hay datos: `{id, nombre, total}`.
+- `solicitudes_recientes` contiene hasta 8 elementos `{id, estudiante, origen, destino, creada_en, estado}`.
+- Las consultas cuentan recomendaciones exitosas, incluidas las de visitantes, desde que se habilite el registro. No identifican a la persona ni representan viajes realizados.
 
 - `clave` = origen y destino normalizados (minúsculas, sin acentos): `"colonia x->itsslpc"`. Se manda codificada con `encodeURIComponent`.
 - `sugerida` = `true` cuando `total >= UMBRAL_SOLICITUDES` (por defecto 10, se configura en `.env`).
 - Una persona solo puede pedir un mismo trayecto una vez.
+- Solo usuarios con rol `estudiante` pueden crear solicitudes; los administradores no pueden solicitarlas.
 - Al aprobar: se crea la línea en MongoDB, todas las solicitudes con esa `clave` pasan a `aprobada` y se regenera `prolog/rutas_aprobadas.pl`.
 - Los `id` de `estaciones` siguen la regla de IDs del README.

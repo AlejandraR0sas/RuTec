@@ -3,11 +3,11 @@
  * RESPONSABLE: Antulio (F2)
  * QUÉ HACE: Protege rutas según la sesión.
  * REGLAS:
- *  - requiereLogin → 401 si no hay sesión.
+ *  - requiereLogin → 401 si no hay sesión válida.
  *  - requiereAdmin → 403 si el rol no es admin.
- *  - El rol se lee de la sesión, NUNCA del body de la petición.
+ *  - requiereEstudiante → 403 si el rol no es estudiante.
+ *  - El rol se lee de la base de datos, NUNCA del body.
  */
-
 const Usuario = require('../models/Usuario');
 
 const OCHO_HORAS = 1000 * 60 * 60 * 8;
@@ -61,7 +61,7 @@ async function requiereLogin(req, res, next) {
 
 async function requiereAdmin(req, res, next) {
   try {
-    const usuario = await validarSesion(req, res);
+    const usuario = req.usuario || await validarSesion(req, res);
 
     if (!usuario) return;
 
@@ -78,7 +78,27 @@ async function requiereAdmin(req, res, next) {
   }
 }
 
+async function requiereEstudiante(req, res, next) {
+  try {
+    const usuario = req.usuario || await validarSesion(req, res);
+
+    if (!usuario) return;
+
+    if (usuario.rol !== 'estudiante') {
+      return res.status(403).json({
+        error: 'Solo estudiantes pueden solicitar rutas'
+      });
+    }
+
+    req.usuario = usuario;
+    next();
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   requiereLogin,
-  requiereAdmin
+  requiereAdmin,
+  requiereEstudiante
 };

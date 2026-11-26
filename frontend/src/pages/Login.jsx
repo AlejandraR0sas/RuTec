@@ -15,10 +15,16 @@ export default function Login() {
   const [modoRegistro, setModoRegistro] = useState(false);
   const [nombre, setNombre] = useState('');
   const [correo, setCorreo] = useState('');
+  const [correoValido, setCorreoValido] = useState(true);
   const [password, setPassword] = useState('');
   const [passwordConfirmacion, setPasswordConfirmacion] = useState('');
   const [error, setError] = useState('');
   const navegar = useNavigate();
+  function actualizarCorreo(e) {
+    const valor = e.target.value;
+    setCorreo(valor);
+    setCorreoValido(valor === '' || e.target.validity.valid);
+  }
   const formularioLoginRef = useRef(null);
   const formularioRegistroRef = useRef(null);
   const campoLoginRef = useRef(null);
@@ -100,10 +106,12 @@ export default function Login() {
               id="login-correo"
               type="email"
               value={correo}
-              onChange={(e) => setCorreo(e.target.value)}
+              onChange={actualizarCorreo}
               required
             />
-
+            {correo && !correoValido && (
+              <small className="error">Escribe un correo con formato válido.</small>
+            )}
             <label htmlFor="login-password">Contraseña</label>
               <input
                 id="login-password"
@@ -112,8 +120,8 @@ export default function Login() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
-
-            {error && <p className="error" role="alert">{error}</p>}
+           
+                        {error && <p className="error" role="alert">{error}</p>}
 
             <button type="submit">Iniciar sesión</button>
           </form>
@@ -133,19 +141,28 @@ export default function Login() {
                 ref={campoRegistroRef}
                 id="registro-nombre"
                 value={nombre}
-                onChange={(e) => setNombre(e.target.value)}
+                onChange={(e) => {
+                  const valor = e.target.value;
+
+                  if (/^[\p{L}\p{M}\s'-]*$/u.test(valor)) {
+                    setNombre(valor);
+                  }
+                }}
                 required
               />
+              <small>Escribe solo letras, espacios, guiones o apóstrofos.</small>
 
             <label htmlFor="registro-correo">Correo</label>
               <input
                 id="registro-correo"
                 type="email"
                 value={correo}
-                onChange={(e) => setCorreo(e.target.value)}
+                onChange={actualizarCorreo}
                 required
               />
-
+              {correo && !correoValido && (
+                <small className="error">Escribe un correo con formato válido.</small>
+              )}
             <label htmlFor="registro-password">Contraseña</label>
               <input
                 id="registro-password"
@@ -155,6 +172,15 @@ export default function Login() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              <small
+                className={`login__validacion ${
+                  password.length >= 8 ? 'login__validacion--valida' : ''
+                }`}
+              >
+                {password.length >= 8
+                  ? 'La contraseña cumple el mínimo de 8 caracteres.'
+                  : `Te faltan ${8 - password.length} caracteres para el mínimo.`}
+              </small>
               <label htmlFor="registro-password-confirmacion">
                 Confirmar contraseña
               </label>
@@ -165,7 +191,20 @@ export default function Login() {
                 value={passwordConfirmacion}
                 onChange={(e) => setPasswordConfirmacion(e.target.value)}
                 required
-/>
+              />
+              {passwordConfirmacion && (
+                <small
+                  className={
+                    passwordConfirmacion === password
+                      ? 'login__validacion login__validacion--valida'
+                      : 'login__validacion error'
+                  }
+                >
+                  {passwordConfirmacion === password
+                    ? 'Las contraseñas coinciden.'
+                    : 'Las contraseñas no coinciden.'}
+                </small>
+              )}
             {error && <p className="error" role="alert">{error}</p>}
 
             <button type="submit">Crear cuenta</button>
@@ -173,6 +212,7 @@ export default function Login() {
         </div>
 
         <aside className="login__panel">
+          <span className="login__etiqueta">MetroRed · ITSSLPC</span>
           <h2>
             {modoRegistro ? '¡Qué bueno verte de nuevo!' : '¿Aún no tienes cuenta?'}
           </h2>
