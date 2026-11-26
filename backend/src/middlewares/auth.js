@@ -18,4 +18,10 @@ function requiereAdmin(req, res, next) {
   next();
 }
 
-module.exports = { requiereLogin, requiereAdmin };
+function requiereEstudiante(req, res, next) {
+  if (!req.session.usuario_id) return res.status(401).json({ error: 'Debes iniciar sesión' });
+  if (req.session.rol !== 'estudiante') return res.status(403).json({ error: 'Solo estudiantes pueden solicitar rutas' });
+  next();
+}
+
+module.exports = { requiereLogin, requiereAdmin, requiereEstudiante };

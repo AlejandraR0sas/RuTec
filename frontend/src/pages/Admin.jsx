@@ -10,10 +10,14 @@
 
 import { useEffect, useState } from 'react';
 import { api } from '../api/cliente.js';
+import './Admin.css';
 
 export default function Admin() {
   const [grupos, setGrupos] = useState([]);
   const [catalogo, setCatalogo] = useState([]);
+  const [lineas, setLineas] = useState([]);
+  const [estadisticas, setEstadisticas] = useState(null);
+  const [seccion, setSeccion] = useState('resumen');
 
   const [claveAbierta, setClaveAbierta] = useState(null);
   const [nombreLinea, setNombreLinea] = useState('');
@@ -65,6 +69,7 @@ export default function Admin() {
           a.nombre.localeCompare(b.nombre)
         )
       );
+      setLineas(lineas);
     } catch (e) {
       setError(e.message);
     }
@@ -73,7 +78,13 @@ export default function Admin() {
   useEffect(() => {
     cargarSolicitudes();
     cargarEstaciones();
+    api.estadisticasAdmin().then(setEstadisticas).catch((e) => setError(e.message));
   }, []);
+
+  async function recargarResumen() {
+    const [resumen] = await Promise.all([api.estadisticasAdmin(), cargarSolicitudes()]);
+    setEstadisticas(resumen);
+  }
 
   // Abrir o cerrar el formulario de aprobación.
   function abrirFormulario(grupo) {
@@ -167,7 +178,7 @@ export default function Admin() {
       );
 
       cerrarFormulario();
-      await cargarSolicitudes();
+      await recargarResumen();
     } catch (e) {
       setError(e.message);
     } finally {
@@ -188,7 +199,7 @@ export default function Admin() {
       setCargando(true);
 
       await api.rechazar(clave);
-      await cargarSolicitudes();
+      await recargarResumen();
     } catch (e) {
       setError(e.message);
     } finally {
@@ -196,19 +207,47 @@ export default function Admin() {
     }
   }
 
+  const estados = estadisticas?.solicitudes_por_estado || { pendientes: 0, aprobadas: 0, rechazadas: 0 };
+  const maxConsultas = Math.max(1, ...(estadisticas?.consultas_por_hora || []).map((dato) => dato.total));
+
   return (
-    <>
-      <h1>Solicitudes de rutas</h1>
+    <div className="admin">
+      <aside className="admin__barra">
+        <div className="admin__marca"><span aria-hidden="true">◉</span><strong>RuTec</strong><small>ADMIN</small></div>
+        <nav className="admin__menu" aria-label="Secciones de administración">
+          {[['resumen', 'Resumen'], ['solicitudes', 'Solicitudes'], ['rutas', 'Rutas y paradas'], ['analitica', 'Analítica']].map(([id, texto]) => (
+            <button key={id} className={seccion === id ? 'admin__menu-activo' : ''} onClick={() => setSeccion(id)} type="button">{texto}</button>
+          ))}
+        </nav>
+      </aside>
 
-      {error && <p className="error">{error}</p>}
+      <section className="admin__contenido">
+        <header className="admin__encabezado"><div><p>Administración</p><h1>{seccion === 'resumen' ? 'Panel general · RuTec' : seccion === 'solicitudes' ? 'Solicitudes de estudiantes' : seccion === 'rutas' ? 'Rutas y estaciones' : 'Analítica de consultas'}</h1></div><span>Últimos 30 días</span></header>
+        {error && <p className="admin__error" role="alert">{error}</p>}
 
-      {grupos.length === 0 && (
-        <p>No hay solicitudes pendientes.</p>
-      )}
+        {seccion === 'resumen' && <>
+          <div className="admin__metricas">
+            <article className="admin__metrica admin__metrica-principal"><span>Usuarios registrados</span><strong>{estadisticas?.usuarios_registrados ?? '—'}</strong><small>Cuentas registradas en RuTec</small></article>
+            <article className="admin__metrica"><span>Solicitudes pendientes</span><strong>{estadisticas?.solicitudes_pendientes ?? '—'}</strong><small>Esperan revisión</small></article>
+            <article className="admin__metrica"><span>Ruta más consultada</span><strong>{estadisticas?.ruta_mas_consultada ? `${estadisticas.ruta_mas_consultada.origen_nombre} ↔ ${estadisticas.ruta_mas_consultada.destino_nombre}` : 'Sin datos todavía'}</strong><small>{estadisticas?.ruta_mas_consultada ? `${estadisticas.ruta_mas_consultada.total} consultas exitosas` : 'Se llenará con nuevas consultas'}</small></article>
+            <article className="admin__metrica"><span>Línea más recomendada</span><strong>{estadisticas?.linea_mas_recomendada?.nombre || 'Sin datos todavía'}</strong><small>{estadisticas?.linea_mas_recomendada ? `${estadisticas.linea_mas_recomendada.total} recomendaciones` : 'Se llenará con nuevas consultas'}</small></article>
+          </div>
 
-      <ul>
+          <div className="admin__graficas">
+            <article className="admin__panel admin__panel-horas"><h2>Consultas por hora</h2><p>Recomendaciones exitosas de los últimos 30 días</p><div className="admin__barras" aria-label="Gráfica de consultas por hora">
+              {(estadisticas?.consultas_por_hora || []).filter((dato) => dato.hora % 2 === 0).map((dato) => <div className="admin__barra-columna" key={dato.hora} title={`${dato.hora}:00 — ${dato.total} consultas`}><span style={{ height: `${Math.max(3, dato.total / maxConsultas * 100)}%` }} /><small>{dato.hora}:00</small></div>)}
+            </div></article>
+            <article className="admin__panel"><h2>Estado de solicitudes</h2><p>Solicitudes recibidas, agrupadas por estado</p><div className="admin__estados">{[['Pendientes', estados.pendientes], ['Aprobadas', estados.aprobadas], ['Rechazadas', estados.rechazadas]].map(([nombre, total]) => <div key={nombre}><span>{nombre}</span><strong>{total}</strong></div>)}</div></article>
+          </div>
+
+          <article className="admin__panel admin__recientes"><h2>Solicitudes recientes</h2>{(estadisticas?.solicitudes_recientes || []).length === 0 ? <p>Aún no hay solicitudes registradas.</p> : <div className="admin__tabla-contenedor"><table><thead><tr><th>Estudiante</th><th>Trayecto solicitado</th><th>Fecha</th><th>Estado</th></tr></thead><tbody>{estadisticas.solicitudes_recientes.map((solicitud) => <tr key={solicitud.id}><td>{solicitud.estudiante}</td><td>{solicitud.origen} → {solicitud.destino}</td><td>{new Date(solicitud.creada_en).toLocaleDateString('es-MX')}</td><td><span className={`admin__estado admin__estado-${solicitud.estado}`}>{({ pendiente: 'Pendiente', aprobada: 'Aprobada', rechazada: 'Rechazada' })[solicitud.estado] || solicitud.estado}</span></td></tr>)}</tbody></table></div>}</article>
+        </>}
+
+        {seccion === 'solicitudes' && <>
+          {grupos.length === 0 && <article className="admin__panel"><p>No hay solicitudes pendientes.</p></article>}
+          <div className="admin__lista-solicitudes">
         {grupos.map((g) => (
-          <li key={g.clave}>
+          <article className="admin__panel" key={g.clave}>
             <strong>
               {g.origen} → {g.destino}
             </strong>
@@ -219,7 +258,8 @@ export default function Admin() {
               <strong> · Ya alcanzó el umbral</strong>
             )}
 
-            <div>
+            <p>{g.total} solicitud(es) · {g.sugerida ? 'Trayecto más solicitado' : 'Pendiente de revisión'}</p>
+            <div className="admin__acciones">
               <button
                 type="button"
                 onClick={() => abrirFormulario(g)}
@@ -240,7 +280,7 @@ export default function Admin() {
             </div>
 
             {claveAbierta === g.clave && (
-              <form onSubmit={(e) => aprobar(e, g.clave)}>
+              <form className="admin__form-aprobacion" onSubmit={(e) => aprobar(e, g.clave)}>
                 <h3>Configurar nueva ruta</h3>
 
                 <label>
@@ -355,9 +395,14 @@ export default function Admin() {
                 </button>
               </form>
             )}
-          </li>
+          </article>
         ))}
-      </ul>
-    </>
+          </div>
+        </>}
+
+        {seccion === 'rutas' && <article className="admin__panel"><h2>Líneas actuales</h2>{lineas.length === 0 ? <p>No se pudieron cargar las líneas.</p> : lineas.map((linea) => <section className="admin__linea" key={linea.id}><h3>{linea.nombre}</h3><p>{linea.estaciones?.length || 0} estaciones</p><ol>{linea.estaciones?.map((estacion) => <li key={estacion.id}>{estacion.nombre}</li>)}</ol></section>)}</article>}
+        {seccion === 'analitica' && <article className="admin__panel"><h2>Consultas exitosas por hora</h2><p>Datos agregados, sin identificar a las personas. Son consultas a RuTec; no representan viajes reales.</p><div className="admin__barras admin__barras-grande">{(estadisticas?.consultas_por_hora || []).map((dato) => <div className="admin__barra-columna" key={dato.hora} title={`${dato.hora}:00 — ${dato.total} consultas`}><span style={{ height: `${Math.max(3, dato.total / maxConsultas * 100)}%` }} /><small>{dato.hora}:00</small></div>)}</div></article>}
+      </section>
+    </div>
   );
 }

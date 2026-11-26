@@ -58,9 +58,11 @@ export default function App() {
           <NavLink to="/" end className="encabezado__enlace">
             Rutas
           </NavLink>
-          <NavLink to="/solicitar" className="encabezado__enlace">
-            Solicitar
-          </NavLink>
+          {usuario?.rol !== 'admin' && (
+            <NavLink to="/solicitar" className="encabezado__enlace">
+              Solicitar
+            </NavLink>
+          )}
           {usuario?.rol === 'admin' && (
             <NavLink to="/admin" className="encabezado__enlace">
               Administrar
@@ -92,7 +94,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Planificador />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/solicitar" element={<Solicitud />} />
+          <Route path="/solicitar" element={usuario?.rol === 'admin' ? <Navigate to="/admin" /> : <Solicitud />} />
           <Route path="/admin" element={usuario?.rol === 'admin' ? <Admin /> : <Navigate to="/" />} />
         </Routes>
       </main>

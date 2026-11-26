@@ -1,0 +1,83 @@
+/* Estilos aislados del panel administrativo. */
+main:has(.admin) { max-width: none; margin: 0; padding: 0; }
+.admin {
+  --admin-verde: #073d2e;
+  --admin-verde-2: #0b513b;
+  --admin-lima: #92ce20;
+  --admin-fondo: #f0f1ed;
+  --admin-texto: #142c22;
+  min-height: calc(100vh - 4.2rem);
+  display: grid;
+  grid-template-columns: 230px minmax(0, 1fr);
+  background: var(--admin-fondo);
+  color: var(--admin-texto);
+  font-family: inherit;
+}
+.admin__barra { padding: 1.5rem 1rem; background: var(--admin-verde); color: #fff; }
+.admin__marca { display: flex; align-items: center; gap: .65rem; padding: .25rem .5rem 2rem; }
+.admin__marca span { display: grid; width: 2.2rem; height: 2.2rem; place-items: center; border: 2px solid var(--admin-lima); border-radius: 50%; color: var(--admin-lima); }
+.admin__marca strong { font-size: 1.2rem; }
+.admin__marca small { margin-left: auto; padding: .2rem .5rem; border-radius: 1rem; background: #126448; color: #adf0ce; }
+.admin__menu { display: grid; gap: .45rem; }
+.admin__menu button { padding: .8rem .9rem; border-radius: .65rem; background: transparent; color: #dcebe3; text-align: left; }
+.admin__menu button:hover, .admin__menu button.admin__menu-activo { background: #174f3e; color: #fff; }
+.admin__menu button.admin__menu-activo::before { content: '•'; margin-right: .6rem; color: var(--admin-lima); }
+.admin__contenido { min-width: 0; padding: 1.5rem clamp(1rem, 3vw, 2.5rem) 3rem; }
+.admin__encabezado { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.35rem; }
+.admin__encabezado p, .admin__panel > p, .admin__metrica small { color: #60736a; }
+.admin__encabezado p { margin: 0 0 .2rem; font-size: .85rem; }
+.admin__encabezado h1 { margin: 0; font-size: clamp(1.35rem, 2vw, 1.8rem); }
+.admin__encabezado > span { padding: .55rem .8rem; border: 1px solid #d9dfd9; border-radius: .7rem; background: #fff; white-space: nowrap; }
+.admin__metricas { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+.admin__metrica, .admin__panel { min-width: 0; padding: 1.25rem; border: 1px solid #e4e8e2; border-radius: 1.1rem; background: #fff; box-shadow: 0 5px 18px #1437280d; }
+.admin__metrica { display: grid; align-content: start; gap: .65rem; min-height: 145px; }
+.admin__metrica > span { font-size: .9rem; }
+.admin__metrica strong { font-size: clamp(1.35rem, 2vw, 2rem); overflow-wrap: anywhere; }
+.admin__metrica:nth-child(n+3) strong { font-size: 1.05rem; line-height: 1.4; }
+.admin__metrica small { font-size: .8rem; }
+.admin__metrica-principal { background: var(--admin-verde); color: #fff; }
+.admin__metrica-principal small { color: #c3e3d3; }
+.admin__graficas { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(250px, .9fr); gap: 1rem; margin-top: 1rem; }
+.admin__panel h2 { margin: 0 0 .35rem; font-size: 1.1rem; }
+.admin__panel > p { margin: 0 0 1rem; font-size: .88rem; }
+.admin__barras { display: flex; align-items: end; justify-content: space-between; gap: .45rem; height: 185px; padding: 1rem .25rem 0; border-bottom: 1px solid #e4e8e2; }
+.admin__barra-columna { display: flex; flex: 1; height: 100%; min-width: 0; flex-direction: column; align-items: center; justify-content: end; gap: .45rem; }
+.admin__barra-columna span { display: block; width: min(70%, 1.4rem); min-height: 4px; border-radius: .5rem .5rem 0 0; background: var(--admin-lima); }
+.admin__barra-columna small { color: #64776d; font-size: .68rem; white-space: nowrap; }
+.admin__estados { display: grid; gap: .7rem; margin-top: 1.5rem; }
+.admin__estados div { display: flex; justify-content: space-between; padding: .7rem; border-radius: .55rem; background: #f4f7f3; }
+.admin__recientes { margin-top: 1rem; }
+.admin__tabla-contenedor { overflow-x: auto; }
+.admin table { width: 100%; border-collapse: collapse; text-align: left; }
+.admin th, .admin td { padding: .8rem .6rem; border-bottom: 1px solid #e8ece7; white-space: nowrap; }
+.admin th { color: #61736a; font-size: .75rem; font-weight: 600; text-transform: uppercase; }
+.admin__estado { display: inline-block; padding: .25rem .55rem; border-radius: 1rem; background: #edf1ed; font-size: .78rem; }
+.admin__estado-pendiente { background: #fff3d5; color: #765309; }
+.admin__estado-aprobada { background: #e0f3e8; color: #17633b; }
+.admin__estado-rechazada { background: #fbe7e2; color: #8a3523; }
+.admin__lista-solicitudes { display: grid; gap: 1rem; }
+.admin__acciones { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: .8rem; }
+.admin__acciones button, .admin__form-aprobacion button { min-height: 2.6rem; padding: .55rem .9rem; }
+.admin__acciones button + button { background: #f2e6e2; color: #763622; }
+.admin__form-aprobacion { display: grid; gap: .7rem; margin-top: 1rem; padding: 1rem; border-radius: .75rem; background: #f5f7f3; }
+.admin__form-aprobacion input, .admin__form-aprobacion select { width: 100%; max-width: 32rem; border: 1px solid #cdd8d2; border-radius: .5rem; background: white; }
+.admin__form-aprobacion ol { display: grid; gap: .5rem; padding-left: 1.5rem; }
+.admin__form-aprobacion li button { margin-left: .4rem; }
+.admin__linea { padding: 1rem 0; border-bottom: 1px solid #e3e8e2; }
+.admin__linea h3 { margin-bottom: .25rem; }
+.admin__linea ol { columns: 2; }
+.admin__error { padding: .8rem 1rem; border-radius: .6rem; background: #fbe7e2; color: #8a3523; }
+@media (max-width: 1000px) { .admin__metricas { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 700px) {
+  .admin { grid-template-columns: 1fr; }
+  .admin__barra { padding: .75rem; }
+  .admin__marca { padding: .2rem .4rem .7rem; }
+  .admin__menu { display: flex; overflow-x: auto; }
+  .admin__menu button { flex: 0 0 auto; }
+  .admin__contenido { padding: 1rem .75rem 2rem; }
+  .admin__metricas, .admin__graficas { grid-template-columns: 1fr; }
+  .admin__metrica { min-height: auto; }
+  .admin__encabezado { align-items: flex-start; }
+  .admin__encabezado > span { font-size: .75rem; }
+  .admin__linea ol { columns: 1; }
+}

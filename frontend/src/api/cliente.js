@@ -37,6 +37,7 @@ export const api = {
   crearSolicitud: (origen, destino, comentario) => pedir('/solicitudes', { metodo: 'POST', cuerpo: { origen, destino, comentario } }),
   // admin
   solicitudesAdmin: () => pedir('/admin/solicitudes'),
+  estadisticasAdmin: () => pedir('/admin/estadisticas'),
   aprobar: (clave, nombre_linea, estaciones) =>
     pedir(`/admin/solicitudes/${encodeURIComponent(clave)}/aprobar`, { metodo: 'PUT', cuerpo: { nombre_linea, estaciones } }),
   rechazar: (clave) => pedir(`/admin/solicitudes/${encodeURIComponent(clave)}/rechazar`, { metodo: 'PUT' }),
