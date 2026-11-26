@@ -8,8 +8,11 @@ import { useEffect, useMemo, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { api } from '../api/cliente.js';
 import { useAuth } from '../context/AuthContext.jsx';
-import { buscarDireccion, obtenerUbicacion } from '../services/apisPublicas.js';
-
+import {
+  buscarDireccion,
+  buscarNombreUbicacion,
+  obtenerUbicacion,
+} from '../services/apisPublicas.js';
 const LIMITES_SLP = { latMin: 21.9, latMax: 22.4, lngMin: -101.3, lngMax: -100.6 };
 
 function coordenadasEnSanLuis(lat, lng) {
@@ -89,20 +92,41 @@ export default function Solicitud() {
   }
 
   async function usarUbicacion() {
-    setError('');
-    setMensaje('');
-    setCoincidencias([]);
-    try {
-      const punto = await obtenerUbicacion();
-      if (!coordenadasEnSanLuis(punto.lat, punto.lng)) {
-        throw new Error('Tu ubicación está fuera del área de San Luis Potosí.');
-      }
-      setDireccion('Mi ubicación actual');
-      setOrigenSeleccionado({ nombre: 'Mi ubicación actual', lat: punto.lat, lng: punto.lng });
-    } catch (err) {
-      setError(err.message);
+  setError('');
+  setMensaje('');
+  setCoincidencias([]);
+
+  try {
+    const punto = await obtenerUbicacion();
+
+    if (!coordenadasEnSanLuis(punto.lat, punto.lng)) {
+      throw new Error('Tu ubicación está fuera del área de San Luis Potosí.');
     }
+
+    let nombreUbicacion = 'Mi ubicación actual';
+
+    try {
+      const nombreEncontrado = await buscarNombreUbicacion(punto.lat, punto.lng);
+
+      if (nombreEncontrado) {
+        nombreUbicacion = nombreEncontrado;
+      } else {
+        setMensaje('No encontramos un nombre cercano; se usará “Mi ubicación actual”.');
+      }
+    } catch {
+      setMensaje('No pudimos consultar el nombre cercano; se usará “Mi ubicación actual”.');
+    }
+
+    setDireccion(nombreUbicacion);
+    setOrigenSeleccionado({
+      nombre: nombreUbicacion,
+      lat: punto.lat,
+      lng: punto.lng,
+    });
+  } catch (err) {
+    setError(err.message);
   }
+}
 
   async function enviar(e) {
     e.preventDefault();
