@@ -61,7 +61,13 @@ async function listarAdmin(req, res, next) {
   try {
     const umbral = Number(process.env.UMBRAL_SOLICITUDES) || 10;
     const grupos = await Solicitud.aggregate([
-      { $match: { estado: 'pendiente' } },
+      {
+        $match: {
+          estado: 'pendiente',
+          origen_lat: { $exists: false },
+          origen_lng: { $exists: false },
+        },
+      },
       {
         $group: {
           _id: '$clave',

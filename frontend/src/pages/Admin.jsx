@@ -14,6 +14,8 @@ import './Admin.css';
 
 export default function Admin() {
   const [grupos, setGrupos] = useState([]);
+  const [zonas, setZonas] = useState([]);
+  const [cargandoZonas, setCargandoZonas] = useState(true);
   const [catalogo, setCatalogo] = useState([]);
   const [lineas, setLineas] = useState([]);
   const [estadisticas, setEstadisticas] = useState(null);
@@ -34,6 +36,17 @@ export default function Admin() {
       setGrupos(datos);
     } catch (e) {
       setError(e.message);
+    }
+  }
+
+  async function cargarZonas() {
+    setCargandoZonas(true);
+    try {
+      setZonas(await api.zonasAdmin());
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setCargandoZonas(false);
     }
   }
 
@@ -77,12 +90,17 @@ export default function Admin() {
 
   useEffect(() => {
     cargarSolicitudes();
+    cargarZonas();
     cargarEstaciones();
     api.estadisticasAdmin().then(setEstadisticas).catch((e) => setError(e.message));
   }, []);
 
   async function recargarResumen() {
-    const [resumen] = await Promise.all([api.estadisticasAdmin(), cargarSolicitudes()]);
+    const [resumen] = await Promise.all([
+      api.estadisticasAdmin(),
+      cargarSolicitudes(),
+      cargarZonas(),
+    ]);
     setEstadisticas(resumen);
   }
 
@@ -104,6 +122,26 @@ export default function Admin() {
     setClaveAbierta(null);
     setNombreLinea('');
     setEstaciones([]);
+    setEstacionSeleccionada('');
+    setError('');
+  }
+
+  function prepararAprobacion(zona) {
+    const nombreOrigen = zona.ejemplos_origen?.[0] || `Zona ${zona.zona}`;
+    setClaveAbierta(zona.clave);
+    setNombreLinea(`Extensión ${nombreOrigen} – ${zona.destino_nombre}`);
+    setEstaciones([
+      {
+        id: `parada_${zona.zona}`,
+        nombre: nombreOrigen,
+        lat: zona.lat,
+        lng: zona.lng,
+      },
+      {
+        id: zona.destino_id,
+        nombre: zona.destino_nombre,
+      },
+    ]);
     setEstacionSeleccionada('');
     setError('');
   }
@@ -151,6 +189,45 @@ export default function Admin() {
     ];
 
     setEstaciones(nuevoOrden);
+  }
+
+  function formularioAprobacion(clave) {
+    if (claveAbierta !== clave) return null;
+    const esZona = estaciones.some((estacion) => estacion.id.startsWith('parada_'));
+
+    return (
+      <form className="admin__form-aprobacion" onSubmit={(e) => aprobar(e, clave)}>
+        <h3>{esZona ? 'Revisar la propuesta del sistema experto' : 'Configurar nueva ruta'}</h3>
+        <label>
+          Nombre de la línea
+          <input type="text" value={nombreLinea} onChange={(e) => setNombreLinea(e.target.value)} required />
+        </label>
+        <h4>Agregar estaciones</h4>
+        <select value={estacionSeleccionada} onChange={(e) => setEstacionSeleccionada(e.target.value)}>
+          <option value="">Selecciona una estación</option>
+          {catalogo.filter((estacion) => !estaciones.some((e) => e.id === estacion.id)).map((estacion) => (
+            <option key={estacion.id} value={estacion.id}>{estacion.nombre}</option>
+          ))}
+        </select>
+        <button type="button" onClick={agregarEstacion} disabled={!estacionSeleccionada}>Agregar estación</button>
+        <h4>Recorrido de la ruta</h4>
+        {estaciones.length === 0 && <p>Todavía no has agregado estaciones.</p>}
+        <ol>
+          {estaciones.map((estacion, indice) => (
+            <li key={estacion.id}>
+              <strong>{estacion.nombre}</strong> <small>({estacion.id})</small>
+              {Number.isFinite(estacion.lat) && Number.isFinite(estacion.lng) && <small> · {estacion.lat.toFixed(5)}, {estacion.lng.toFixed(5)}</small>}
+              <button type="button" onClick={() => moverEstacion(indice, -1)} disabled={indice === 0} aria-label="Mover estación arriba">↑</button>
+              <button type="button" onClick={() => moverEstacion(indice, 1)} disabled={indice === estaciones.length - 1} aria-label="Mover estación abajo">↓</button>
+              <button type="button" onClick={() => quitarEstacion(estacion.id)}>Quitar</button>
+            </li>
+          ))}
+        </ol>
+        {esZona && <p>Revisa la propuesta: todavía no se ha aprobado.</p>}
+        <button type="submit" disabled={cargando || estaciones.length < 2}>{cargando ? 'Procesando…' : 'Confirmar aprobación'}</button>
+        <button type="button" onClick={cerrarFormulario} disabled={cargando}>Cancelar</button>
+      </form>
+    );
   }
 
   // Aprobar una ruta.
@@ -244,7 +321,32 @@ export default function Admin() {
         </>}
 
         {seccion === 'solicitudes' && <>
-          {grupos.length === 0 && <article className="admin__panel"><p>No hay solicitudes pendientes.</p></article>}
+          <h2 className="admin__subtitulo">Zonas sugeridas por el sistema experto</h2>
+          {cargandoZonas && <p>Cargando análisis de zonas…</p>}
+          {!cargandoZonas && zonas.length === 0 && <article className="admin__panel"><p>No hay solicitudes pendientes con coordenadas para analizar.</p></article>}
+          <div className="admin__lista-solicitudes">
+            {zonas.map((zona) => (
+              <article className="admin__panel admin__tarjeta-zona" key={zona.clave}>
+                <div className="admin__zona-encabezado">
+                  <div><span>{zona.total} solicitudes</span><h3>{zona.ejemplos_origen?.[0] || zona.zona} → {zona.destino_nombre}</h3></div>
+                  <strong className={`admin__prioridad admin__prioridad-${zona.prioridad}`}>Prioridad {zona.prioridad}</strong>
+                </div>
+                <p><strong>Decisión del sistema experto:</strong> {{ recomendar_parada_nueva: 'Recomendar parada nueva', esperar_mas_solicitudes: 'Esperar más solicitudes', ya_hay_cobertura: 'Ya hay cobertura' }[zona.accion] || zona.accion}</p>
+                <p><strong>Estación más cercana:</strong> {zona.estacion_cercana.nombre} · {zona.distancia_m} m</p>
+                <p><strong>Otros ejemplos de origen:</strong> {zona.ejemplos_origen?.join(', ') || 'Sin ejemplos'}</p>
+                <ul className="admin__razones">{zona.razones.map((razon, indice) => <li key={`${zona.clave}-${indice}`}>{razon}</li>)}</ul>
+                {zona.accion === 'recomendar_parada_nueva' && (
+                  <button type="button" onClick={() => prepararAprobacion(zona)} disabled={cargando}>
+                    Preparar aprobación
+                  </button>
+                )}
+                {formularioAprobacion(zona.clave)}
+              </article>
+            ))}
+          </div>
+
+          <h2 className="admin__subtitulo">Solicitudes antiguas sin coordenadas</h2>
+          {grupos.length === 0 && <article className="admin__panel"><p>No hay solicitudes antiguas pendientes.</p></article>}
           <div className="admin__lista-solicitudes">
         {grupos.map((g) => (
           <article className="admin__panel" key={g.clave}>
@@ -279,122 +381,7 @@ export default function Admin() {
               </button>
             </div>
 
-            {claveAbierta === g.clave && (
-              <form className="admin__form-aprobacion" onSubmit={(e) => aprobar(e, g.clave)}>
-                <h3>Configurar nueva ruta</h3>
-
-                <label>
-                  Nombre de la línea
-
-                  <input
-                    type="text"
-                    value={nombreLinea}
-                    onChange={(e) =>
-                      setNombreLinea(e.target.value)
-                    }
-                    placeholder="Ej. Línea Alameda - ITSSLPC"
-                    required
-                  />
-                </label>
-
-                <h4>Agregar estaciones</h4>
-
-                <select
-                  value={estacionSeleccionada}
-                  onChange={(e) =>
-                    setEstacionSeleccionada(e.target.value)
-                  }
-                >
-                  <option value="">
-                    Selecciona una estación
-                  </option>
-
-                  {catalogo
-                    .filter(
-                      (estacion) =>
-                        !estaciones.some(
-                          (e) => e.id === estacion.id
-                        )
-                    )
-                    .map((estacion) => (
-                      <option
-                        key={estacion.id}
-                        value={estacion.id}
-                      >
-                        {estacion.nombre}
-                      </option>
-                    ))}
-                </select>
-
-                <button
-                  type="button"
-                  onClick={agregarEstacion}
-                  disabled={!estacionSeleccionada}
-                >
-                  Agregar estación
-                </button>
-
-                <h4>Recorrido de la ruta</h4>
-
-                {estaciones.length === 0 && (
-                  <p>
-                    Todavía no has agregado estaciones.
-                  </p>
-                )}
-
-                <ol>
-                  {estaciones.map((estacion, indice) => (
-                    <li key={estacion.id}>
-                      <strong>{estacion.nombre}</strong>
-                      {' '}
-                      <small>({estacion.id})</small>
-
-                      <button
-                        type="button"
-                        onClick={() =>
-                          moverEstacion(indice, -1)
-                        }
-                        disabled={indice === 0}
-                        aria-label="Mover estación arriba"
-                      >
-                        ↑
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() =>
-                          moverEstacion(indice, 1)
-                        }
-                        disabled={
-                          indice === estaciones.length - 1
-                        }
-                        aria-label="Mover estación abajo"
-                      >
-                        ↓
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() =>
-                          quitarEstacion(estacion.id)
-                        }
-                      >
-                        Quitar
-                      </button>
-                    </li>
-                  ))}
-                </ol>
-
-                <button
-                  type="submit"
-                  disabled={cargando}
-                >
-                  {cargando
-                    ? 'Procesando...'
-                    : 'Confirmar aprobación'}
-                </button>
-              </form>
-            )}
+            {formularioAprobacion(g.clave)}
           </article>
         ))}
           </div>
